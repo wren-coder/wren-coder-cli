@@ -61,15 +61,15 @@ interface MockServerConfig {
   getUserAgent: Mock<() => string>;
   getUserMemory: Mock<() => string>;
   setUserMemory: Mock<(newUserMemory: string) => void>;
-  getGeminiMdFileCount: Mock<() => number>;
-  setGeminiMdFileCount: Mock<(count: number) => void>;
+  getMdFileCount: Mock<() => number>;
+  setMdFileCount: Mock<(count: number) => void>;
   getApprovalMode: Mock<() => ApprovalMode>;
   setApprovalMode: Mock<(skip: ApprovalMode) => void>;
   getVertexAI: Mock<() => boolean | undefined>;
   getShowMemoryUsage: Mock<() => boolean>;
   getAccessibility: Mock<() => AccessibilitySettings>;
   getProjectRoot: Mock<() => string | undefined>;
-  getAllGeminiMdFilenames: Mock<() => string[]>;
+  getAllMdFilenames: Mock<() => string[]>;
   getGeminiClient: Mock<() => GeminiClient | undefined>;
   getUserTier: Mock<() => Promise<string | undefined>>;
 }
@@ -121,8 +121,8 @@ vi.mock('@wren/wren-coder-core', async (importOriginal) => {
         getUserAgent: vi.fn(() => opts.userAgent || 'test-agent'),
         getUserMemory: vi.fn(() => opts.userMemory || ''),
         setUserMemory: vi.fn(),
-        getGeminiMdFileCount: vi.fn(() => opts.geminiMdFileCount || 0),
-        setGeminiMdFileCount: vi.fn(),
+        getMdFileCount: vi.fn(() => opts.geminiMdFileCount || 0),
+        setMdFileCount: vi.fn(),
         getApprovalMode: vi.fn(() => opts.approvalMode ?? ApprovalMode.DEFAULT),
         setApprovalMode: vi.fn(),
         getVertexAI: vi.fn(() => opts.vertexai),
@@ -131,7 +131,7 @@ vi.mock('@wren/wren-coder-core', async (importOriginal) => {
         getProjectRoot: vi.fn(() => opts.targetDir),
         getGeminiClient: vi.fn(() => ({})),
         getCheckpointingEnabled: vi.fn(() => opts.checkpointing ?? true),
-        getAllGeminiMdFilenames: vi.fn(() => ['GEMINI.md']),
+        getAllMdFilenames: vi.fn(() => ['GEMINI.md']),
         setFlashFallbackHandler: vi.fn(),
         getSessionId: vi.fn(() => 'test-session-id'),
         getUserTier: vi.fn().mockResolvedValue(undefined),
@@ -141,7 +141,7 @@ vi.mock('@wren/wren-coder-core', async (importOriginal) => {
     ...actualCore,
     Config: ConfigClassMock,
     MCPServerConfig: actualCore.MCPServerConfig,
-    getAllGeminiMdFilenames: vi.fn(() => ['GEMINI.md']),
+    getAllMdFilenames: vi.fn(() => ['GEMINI.md']),
   };
 });
 
@@ -259,7 +259,7 @@ describe('App UI', () => {
   });
 
   it('should display default "GEMINI.md" in footer when contextFileName is not set and count is 1', async () => {
-    mockConfig.getGeminiMdFileCount.mockReturnValue(1);
+    mockConfig.getMdFileCount.mockReturnValue(1);
     // For this test, ensure showMemoryUsage is false or debugMode is false if it relies on that
     mockConfig.getDebugMode.mockReturnValue(false);
     mockConfig.getShowMemoryUsage.mockReturnValue(false);
@@ -277,7 +277,7 @@ describe('App UI', () => {
   });
 
   it('should display default "GEMINI.md" with plural when contextFileName is not set and count is > 1', async () => {
-    mockConfig.getGeminiMdFileCount.mockReturnValue(2);
+    mockConfig.getMdFileCount.mockReturnValue(2);
     mockConfig.getDebugMode.mockReturnValue(false);
     mockConfig.getShowMemoryUsage.mockReturnValue(false);
 
@@ -297,7 +297,7 @@ describe('App UI', () => {
     mockSettings = createMockSettings({
       workspace: { contextFileName: 'AGENTS.md', theme: 'Default' },
     });
-    mockConfig.getGeminiMdFileCount.mockReturnValue(1);
+    mockConfig.getMdFileCount.mockReturnValue(1);
     mockConfig.getDebugMode.mockReturnValue(false);
     mockConfig.getShowMemoryUsage.mockReturnValue(false);
 
@@ -320,7 +320,7 @@ describe('App UI', () => {
         theme: 'Default',
       },
     });
-    mockConfig.getGeminiMdFileCount.mockReturnValue(2);
+    mockConfig.getMdFileCount.mockReturnValue(2);
     mockConfig.getDebugMode.mockReturnValue(false);
     mockConfig.getShowMemoryUsage.mockReturnValue(false);
 
@@ -340,7 +340,7 @@ describe('App UI', () => {
     mockSettings = createMockSettings({
       workspace: { contextFileName: 'MY_NOTES.TXT', theme: 'Default' },
     });
-    mockConfig.getGeminiMdFileCount.mockReturnValue(3);
+    mockConfig.getMdFileCount.mockReturnValue(3);
     mockConfig.getDebugMode.mockReturnValue(false);
     mockConfig.getShowMemoryUsage.mockReturnValue(false);
 
@@ -360,7 +360,7 @@ describe('App UI', () => {
     mockSettings = createMockSettings({
       workspace: { contextFileName: 'ANY_FILE.MD', theme: 'Default' },
     });
-    mockConfig.getGeminiMdFileCount.mockReturnValue(0);
+    mockConfig.getMdFileCount.mockReturnValue(0);
     mockConfig.getDebugMode.mockReturnValue(false);
     mockConfig.getShowMemoryUsage.mockReturnValue(false);
 
@@ -377,7 +377,7 @@ describe('App UI', () => {
   });
 
   it('should display GEMINI.md and MCP server count when both are present', async () => {
-    mockConfig.getGeminiMdFileCount.mockReturnValue(2);
+    mockConfig.getMdFileCount.mockReturnValue(2);
     mockConfig.getMcpServers.mockReturnValue({
       server1: {} as MCPServerConfig,
     });
@@ -397,7 +397,7 @@ describe('App UI', () => {
   });
 
   it('should display only MCP server count when GEMINI.md count is 0', async () => {
-    mockConfig.getGeminiMdFileCount.mockReturnValue(0);
+    mockConfig.getMdFileCount.mockReturnValue(0);
     mockConfig.getMcpServers.mockReturnValue({
       server1: {} as MCPServerConfig,
       server2: {} as MCPServerConfig,

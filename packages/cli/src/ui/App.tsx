@@ -51,7 +51,7 @@ import process from 'node:process';
 import {
   getErrorMessage,
   type Config,
-  getAllGeminiMdFilenames,
+  getAllMdFilenames,
   ApprovalMode,
   isEditorAvailable,
   EditorType,
@@ -130,7 +130,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     setStaticKey((prev) => prev + 1);
   }, [setStaticKey, stdout]);
 
-  const [geminiMdFileCount, setGeminiMdFileCount] = useState<number>(0);
+  const [geminiMdFileCount, setMdFileCount] = useState<number>(0);
   const [debugMessage, setDebugMessage] = useState<string>('');
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [themeError, setThemeError] = useState<string | null>(null);
@@ -241,8 +241,8 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
         config.getExtensionContextFilePaths(),
       );
       config.setUserMemory(memoryContent);
-      config.setGeminiMdFileCount(fileCount);
-      setGeminiMdFileCount(fileCount);
+      config.setMdFileCount(fileCount);
+      setMdFileCount(fileCount);
 
       addItem(
         {
@@ -483,7 +483,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
 
   useEffect(() => {
     if (config) {
-      setGeminiMdFileCount(config.getGeminiMdFileCount());
+      setMdFileCount(config.getMdFileCount());
     }
   }, [config]);
 
@@ -641,7 +641,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     if (fromSettings) {
       return Array.isArray(fromSettings) ? fromSettings : [fromSettings];
     }
-    return getAllGeminiMdFilenames();
+    return getAllMdFilenames();
   }, [settings.merged.contextFileName]);
 
   const initialPrompt = useMemo(() => config.getQuestion(), [config]);

@@ -30,7 +30,7 @@ export function createShowMemoryAction(
     }
 
     const currentMemory = config.getUserMemory();
-    const fileCount = config.getGeminiMdFileCount();
+    const fileCount = config.getMdFileCount();
     const contextFileName = settings.merged.contextFileName;
     const contextFileNames = Array.isArray(contextFileName)
       ? contextFileName
@@ -48,9 +48,8 @@ export function createShowMemoryAction(
       const name = allNamesTheSame ? contextFileNames[0] : 'context';
       addMessage({
         type: MessageType.INFO,
-        content: `Loaded memory from ${fileCount} ${name} file${
-          fileCount > 1 ? 's' : ''
-        }.`,
+        content: `Loaded memory from ${fileCount} ${name} file${fileCount > 1 ? 's' : ''
+          }.`,
         timestamp: new Date(),
       });
     }

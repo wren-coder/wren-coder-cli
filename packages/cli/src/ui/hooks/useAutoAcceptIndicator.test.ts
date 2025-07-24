@@ -49,7 +49,7 @@ interface MockConfigInstanceShape {
   getFullContext: Mock<() => boolean>;
   getUserAgent: Mock<() => string>;
   getUserMemory: Mock<() => string>;
-  getGeminiMdFileCount: Mock<() => number>;
+  getMdFileCount: Mock<() => number>;
   getToolRegistry: Mock<() => { discoverTools: Mock<() => void> }>;
 }
 
@@ -98,12 +98,12 @@ describe('useAutoAcceptIndicator', () => {
           () => string
         >,
         getUserMemory: vi.fn().mockReturnValue('') as Mock<() => string>,
-        getGeminiMdFileCount: vi.fn().mockReturnValue(0) as Mock<() => number>,
+        getMdFileCount: vi.fn().mockReturnValue(0) as Mock<() => number>,
         getToolRegistry: vi
           .fn()
           .mockReturnValue({ discoverTools: vi.fn() }) as Mock<
-          () => { discoverTools: Mock<() => void> }
-        >,
+            () => { discoverTools: Mock<() => void> }
+          >,
       };
       instanceSetApprovalModeMock.mockImplementation((value: ApprovalMode) => {
         instanceGetApprovalModeMock.mockReturnValue(value);

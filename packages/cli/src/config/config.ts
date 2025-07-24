@@ -10,8 +10,8 @@ import process from 'node:process';
 import {
   Config,
   loadServerHierarchicalMemory,
-  setGeminiMdFilename as setServerGeminiMdFilename,
-  getCurrentGeminiMdFilename,
+  setMdFilename as setServerMdFilename,
+  getCurrentMdFilename,
   ApprovalMode,
   DEFAULT_MODEL,
   DEFAULT_EMBEDDING_MODEL,
@@ -274,13 +274,13 @@ export async function loadCliConfig(
 
   // Set the context filename in the server's memoryTool module BEFORE loading memory
   // TODO(b/343434939): This is a bit of a hack. The contextFileName should ideally be passed
-  // directly to the Config constructor in core, and have core handle setGeminiMdFilename.
+  // directly to the Config constructor in core, and have core handle setMdFilename.
   // However, loadHierarchicalGeminiMemory is called *before* createServerConfig.
   if (settings.contextFileName) {
-    setServerGeminiMdFilename(settings.contextFileName);
+    setServerMdFilename(settings.contextFileName);
   } else {
     // Reset to default if not provided in settings.
-    setServerGeminiMdFilename(getCurrentGeminiMdFilename());
+    setServerMdFilename(getCurrentMdFilename());
   }
 
   const extensionContextFilePaths = activeExtensions.flatMap(

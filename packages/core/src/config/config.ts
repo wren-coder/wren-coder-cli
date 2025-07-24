@@ -24,8 +24,8 @@ import { WebFetchTool } from '../tools/web-fetch.js';
 import { ReadManyFilesTool } from '../tools/read-many-files.js';
 import {
   MemoryTool,
-  setGeminiMdFilename,
-  GEMINI_CONFIG_DIR as GEMINI_DIR,
+  setMdFilename,
+  CONFIG_DIR,
 } from '../tools/memoryTool.js';
 import { GeminiClient } from '../core/client.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
@@ -260,7 +260,7 @@ export class Config {
     this.sampling_params = params.sampling_params;
 
     if (params.contextFileName) {
-      setGeminiMdFilename(params.contextFileName);
+      setMdFilename(params.contextFileName);
     }
 
     if (this.telemetrySettings.enabled) {
@@ -421,11 +421,11 @@ export class Config {
     this.userMemory = newUserMemory;
   }
 
-  getGeminiMdFileCount(): number {
+  getMdFileCount(): number {
     return this.geminiMdFileCount;
   }
 
-  setGeminiMdFileCount(count: number): void {
+  setMdFileCount(count: number): void {
     this.geminiMdFileCount = count;
   }
 
@@ -466,7 +466,7 @@ export class Config {
   }
 
   getGeminiDir(): string {
-    return path.join(this.targetDir, GEMINI_DIR);
+    return path.join(this.targetDir, CONFIG_DIR);
   }
 
   getProjectTempDir(): string {
@@ -549,7 +549,7 @@ export class Config {
     );
 
     this.setUserMemory(memoryContent);
-    this.setGeminiMdFileCount(fileCount);
+    this.setMdFileCount(fileCount);
 
     return { memoryContent, fileCount };
   }

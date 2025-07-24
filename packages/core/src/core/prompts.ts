@@ -16,13 +16,13 @@ import { ShellTool } from '../tools/shell.js';
 import { WriteFileTool } from '../tools/write-file.js';
 import process from 'node:process';
 import { isGitRepository } from '../utils/gitUtils.js';
-import { MemoryTool, GEMINI_CONFIG_DIR } from '../tools/memoryTool.js';
+import { MemoryTool, CONFIG_DIR } from '../tools/memoryTool.js';
 
 export function getCoreSystemPrompt(userMemory?: string): string {
   // if GEMINI_SYSTEM_MD is set (and not 0|false), override system prompt from file
   // default path is .wren/system.md but can be modified via custom path in GEMINI_SYSTEM_MD
   let systemMdEnabled = false;
-  let systemMdPath = path.resolve(path.join(GEMINI_CONFIG_DIR, 'system.md'));
+  let systemMdPath = path.resolve(path.join(CONFIG_DIR, 'system.md'));
   const systemMdVar = process.env.GEMINI_SYSTEM_MD?.toLowerCase();
   if (systemMdVar && !['0', 'false'].includes(systemMdVar)) {
     systemMdEnabled = true; // enable system prompt override
@@ -110,31 +110,31 @@ When requested to perform tasks like fixing bugs, adding features, refactoring, 
 - **Feedback:** To report a bug or provide feedback, please use the /bug command.
 
 ${(function () {
-  // Determine sandbox status based on environment variables
-  const isSandboxExec = process.env.SANDBOX === 'sandbox-exec';
-  const isGenericSandbox = !!process.env.SANDBOX; // Check if SANDBOX is set to any non-empty value
+        // Determine sandbox status based on environment variables
+        const isSandboxExec = process.env.SANDBOX === 'sandbox-exec';
+        const isGenericSandbox = !!process.env.SANDBOX; // Check if SANDBOX is set to any non-empty value
 
-  if (isSandboxExec) {
-    return `
+        if (isSandboxExec) {
+          return `
 # MacOS Seatbelt
 You are running under macos seatbelt with limited access to files outside the project directory or system temp directory, and with limited access to host system resources such as ports. If you encounter failures that could be due to MacOS Seatbelt (e.g. if a command fails with 'Operation not permitted' or similar error), as you report the error to the user, also explain why you think it could be due to MacOS Seatbelt, and how the user may need to adjust their Seatbelt profile.
 `;
-  } else if (isGenericSandbox) {
-    return `
+        } else if (isGenericSandbox) {
+          return `
 # Sandbox
 You are running in a sandbox container with limited access to files outside the project directory or system temp directory, and with limited access to host system resources such as ports. If you encounter failures that could be due to sandboxing (e.g. if a command fails with 'Operation not permitted' or similar error), when you report the error to the user, also explain why you think it could be due to sandboxing, and how the user may need to adjust their sandbox configuration.
 `;
-  } else {
-    return `
+        } else {
+          return `
 # Outside of Sandbox
 You are running outside of a sandbox container, directly on the user's system. For critical commands that are particularly likely to modify the user's system outside of the project directory or system temp directory, as you explain the command to the user (per the Explain Critical Commands rule above), also remind the user to consider enabling sandboxing.
 `;
-  }
-})()}
+        }
+      })()}
 
 ${(function () {
-  if (isGitRepository(process.cwd())) {
-    return `
+        if (isGitRepository(process.cwd())) {
+          return `
 # Git Repository
 - The current working (project) directory is being managed by a git repository.
 - When asked to commit changes or prepare a commit, always start by gathering information using shell commands:
@@ -150,9 +150,9 @@ ${(function () {
 - If a commit fails, never attempt to work around the issues without being asked to do so.
 - Never push changes to a remote repository without being asked explicitly by the user.
 `;
-  }
-  return '';
-})()}
+        }
+        return '';
+      })()}
 
 # Examples (Illustrating Tone and Workflow)
 <example>
@@ -203,11 +203,11 @@ Refactoring complete. Running verification...
 (After verification passes)
 All checks passed. This is a stable checkpoint.
 ${(function () {
-  if (isGitRepository(process.cwd())) {
-    return `Would you like me to write a commit message and commit these changes?`;
-  }
-  return '';
-})()}
+        if (isGitRepository(process.cwd())) {
+          return `Would you like me to write a commit message and commit these changes?`;
+        }
+        return '';
+      })()}
 </example>
 
 <example>

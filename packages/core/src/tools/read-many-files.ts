@@ -9,7 +9,7 @@ import { SchemaValidator } from '../utils/schemaValidator.js';
 import { getErrorMessage } from '../utils/errors.js';
 import * as path from 'path';
 import { glob } from 'glob';
-import { getCurrentGeminiMdFilename } from './memoryTool.js';
+import { getCurrentMdFilename } from './memoryTool.js';
 import {
   detectFileType,
   processSingleFileContent,
@@ -109,7 +109,7 @@ const DEFAULT_EXCLUDES: string[] = [
   '**/*.odp',
   '**/*.DS_Store',
   '**/.env',
-  `**/${getCurrentGeminiMdFilename()}`,
+  `**/${getCurrentMdFilename()}`,
 ];
 
 const DEFAULT_OUTPUT_SEPARATOR_FORMAT = '--- {filePath} ---';
@@ -295,13 +295,13 @@ Use this tool when the user's query implies needing the content of several files
 
       const filteredEntries = respectGitIgnore
         ? fileDiscovery
-            .filterFiles(
-              entries.map((p) => path.relative(this.config.getTargetDir(), p)),
-              {
-                respectGitIgnore,
-              },
-            )
-            .map((p) => path.resolve(this.config.getTargetDir(), p))
+          .filterFiles(
+            entries.map((p) => path.relative(this.config.getTargetDir(), p)),
+            {
+              respectGitIgnore,
+            },
+          )
+          .map((p) => path.resolve(this.config.getTargetDir(), p))
         : entries;
 
       let gitIgnoredCount = 0;
