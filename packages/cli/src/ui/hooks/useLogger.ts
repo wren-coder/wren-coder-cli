@@ -25,7 +25,7 @@ export const useLogger = () => {
       .then(() => {
         setLogger(newLogger);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, []);
 
   return logger;

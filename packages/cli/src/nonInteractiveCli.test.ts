@@ -193,7 +193,7 @@ describe('runNonInteractive', () => {
       .mockResolvedValueOnce(stream2);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     await runNonInteractive(mockConfig, 'Trigger tool error', 'prompt-id-3');
 
@@ -217,7 +217,7 @@ describe('runNonInteractive', () => {
     mockChat.sendMessageStream.mockRejectedValue(apiError);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     await runNonInteractive(mockConfig, 'Initial fail', 'prompt-id-4');
 
@@ -269,7 +269,7 @@ describe('runNonInteractive', () => {
       .mockResolvedValueOnce(stream2);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     await runNonInteractive(
       mockConfig,
@@ -330,7 +330,7 @@ describe('runNonInteractive', () => {
     mockChat.sendMessageStream.mockResolvedValue(stream);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     await runNonInteractive(mockConfig, 'Trigger loop');
 

@@ -272,10 +272,10 @@ export class OpenAIContentGenerator implements ContentGenerator {
       if (isTimeoutError) {
         throw new Error(
           `${errorMessage}\n\nTroubleshooting tips:\n` +
-          `- Reduce input length or complexity\n` +
-          `- Increase timeout in config: contentGenerator.timeout\n` +
-          `- Check network connectivity\n` +
-          `- Consider using streaming mode for long responses`,
+            `- Reduce input length or complexity\n` +
+            `- Increase timeout in config: contentGenerator.timeout\n` +
+            `- Check network connectivity\n` +
+            `- Consider using streaming mode for long responses`,
         );
       }
 
@@ -419,10 +419,10 @@ export class OpenAIContentGenerator implements ContentGenerator {
           if (isTimeoutError) {
             throw new Error(
               `${errorMessage}\n\nStreaming timeout troubleshooting:\n` +
-              `- Reduce input length or complexity\n` +
-              `- Increase timeout in config: contentGenerator.timeout\n` +
-              `- Check network stability for streaming connections\n` +
-              `- Consider using non-streaming mode for very long inputs`,
+                `- Reduce input length or complexity\n` +
+                `- Increase timeout in config: contentGenerator.timeout\n` +
+                `- Check network stability for streaming connections\n` +
+                `- Consider using non-streaming mode for very long inputs`,
             );
           }
 
@@ -483,10 +483,10 @@ export class OpenAIContentGenerator implements ContentGenerator {
       if (isTimeoutError) {
         throw new Error(
           `${errorMessage}\n\nStreaming setup timeout troubleshooting:\n` +
-          `- Reduce input length or complexity\n` +
-          `- Increase timeout in config: contentGenerator.timeout\n` +
-          `- Check network connectivity and firewall settings\n` +
-          `- Consider using non-streaming mode for very long inputs`,
+            `- Reduce input length or complexity\n` +
+            `- Increase timeout in config: contentGenerator.timeout\n` +
+            `- Check network connectivity and firewall settings\n` +
+            `- Consider using non-streaming mode for very long inputs`,
         );
       }
 

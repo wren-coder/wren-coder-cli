@@ -125,7 +125,7 @@ describe('parseArguments', () => {
 
     const mockConsoleError = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     await expect(parseArguments()).rejects.toThrow('process.exit called');
 
@@ -155,7 +155,7 @@ describe('parseArguments', () => {
 
     const mockConsoleError = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     await expect(parseArguments()).rejects.toThrow('process.exit called');
 

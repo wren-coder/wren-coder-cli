@@ -405,14 +405,14 @@ This example demonstrates how you can provide general project context, specific 
 
 - **Hierarchical Loading and Precedence:** The CLI implements a sophisticated hierarchical memory system by loading context files (e.g., `GEMINI.md`) from several locations. Content from files lower in this list (more specific) typically overrides or supplements content from files higher up (more general). The exact concatenation order and final context can be inspected using the `/memory show` command. The typical loading order is:
   1. **Global Context File:**
-      - Location: `~/.wren/<contextFileName>` (e.g., `~/.wren/GEMINI.md` in your user home directory).
-      - Scope: Provides default instructions for all your projects.
+     - Location: `~/.wren/<contextFileName>` (e.g., `~/.wren/GEMINI.md` in your user home directory).
+     - Scope: Provides default instructions for all your projects.
   2. **Project Root & Ancestors Context Files:**
-      - Location: The CLI searches for the configured context file in the current working directory and then in each parent directory up to either the project root (identified by a `.git` folder) or your home directory.
-      - Scope: Provides context relevant to the entire project or a significant portion of it.
+     - Location: The CLI searches for the configured context file in the current working directory and then in each parent directory up to either the project root (identified by a `.git` folder) or your home directory.
+     - Scope: Provides context relevant to the entire project or a significant portion of it.
   3. **Sub-directory Context Files (Contextual/Local):**
-      - Location: The CLI also scans for the configured context file in subdirectories _below_ the current working directory (respecting common ignore patterns like `node_modules`, `.git`, etc.).
-      - Scope: Allows for highly specific instructions relevant to a particular component, module, or subsection of your project.
+     - Location: The CLI also scans for the configured context file in subdirectories _below_ the current working directory (respecting common ignore patterns like `node_modules`, `.git`, etc.).
+     - Scope: Allows for highly specific instructions relevant to a particular component, module, or subsection of your project.
 - **Concatenation & UI Indication:** The contents of all found context files are concatenated (with separators indicating their origin and path) and provided as part of the system prompt to the Gemini model. The CLI footer displays the count of loaded context files, giving you a quick visual cue about the active instructional context.
 - **Commands for Memory Management:**
   - Use `/memory refresh` to force a re-scan and reload of all context files from all configured locations. This updates the AI's instructional context.

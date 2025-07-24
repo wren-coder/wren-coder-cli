@@ -89,8 +89,8 @@ This section guides contributors on how to build, modify, and understand the dev
 **Prerequisites:**
 
 1. **Node.js**:
-    - **Development:** Please use Node.js `~20.19.0`. This specific version is required due to an upstream development dependency issue. You can use a tool like [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions.
-    - **Production:** For running the CLI in a production environment, any version of Node.js `>=20` is acceptable.
+   - **Development:** Please use Node.js `~20.19.0`. This specific version is required due to an upstream development dependency issue. You can use a tool like [nvm](https://github.com/nvm-sh/nvm) to manage Node.js versions.
+   - **Production:** For running the CLI in a production environment, any version of Node.js `>=20` is acceptable.
 2. **Git**
 
 ### Build Process
@@ -229,11 +229,12 @@ For more detailed architecture, see `docs/architecture.md`.
 0. Run the CLI to interactively debug in VS Code with `F5`
 1. Start the CLI in debug mode from the root directory:
 
-    ```bash
-    npm run debug
-    ```
+   ```bash
+   npm run debug
+   ```
 
-    This command runs `node --inspect-brk dist/gemini.js` within the `packages/cli` directory, pausing execution until a debugger attaches. You can then open `chrome://inspect` in your Chrome browser to connect to the debugger.
+   This command runs `node --inspect-brk dist/gemini.js` within the `packages/cli` directory, pausing execution until a debugger attaches. You can then open `chrome://inspect` in your Chrome browser to connect to the debugger.
+
 2. In VS Code, use the "Attach" launch configuration (found in `.vscode/launch.json`).
 
 Alternatively, you can use the "Launch Program" configuration in VS Code if you prefer to launch the currently open file directly, but 'F5' is generally recommended.
@@ -250,27 +251,27 @@ To debug the CLI's React-based UI, you can use React DevTools. Ink, the library 
 
 1. **Start the Gemini CLI in development mode:**
 
-    ```bash
-    DEV=true npm start
-    ```
+   ```bash
+   DEV=true npm start
+   ```
 
 2. **Install and run React DevTools version 4.28.5 (or the latest compatible 4.x version):**
 
-    You can either install it globally:
+   You can either install it globally:
 
-    ```bash
-    npm install -g react-devtools@4.28.5
-    react-devtools
-    ```
+   ```bash
+   npm install -g react-devtools@4.28.5
+   react-devtools
+   ```
 
-    Or run it directly using npx:
+   Or run it directly using npx:
 
-    ```bash
-    npx react-devtools@4.28.5
-    ```
+   ```bash
+   npx react-devtools@4.28.5
+   ```
 
-    Your running CLI application should then connect to React DevTools.
-    ![](/docs/assets/connected_devtools.png)
+   Your running CLI application should then connect to React DevTools.
+   ![](/docs/assets/connected_devtools.png)
 
 ## Sandboxing
 

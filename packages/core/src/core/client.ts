@@ -243,11 +243,11 @@ export class GeminiClient {
         this.config.getModel(),
       )
         ? {
-          ...this.generateContentConfig,
-          thinkingConfig: {
-            includeThoughts: true,
-          },
-        }
+            ...this.generateContentConfig,
+            thinkingConfig: {
+              includeThoughts: true,
+            },
+          }
         : this.generateContentConfig;
       return new GeminiChat(
         this.config,

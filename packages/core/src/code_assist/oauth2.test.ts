@@ -212,7 +212,7 @@ describe('oauth2', () => {
     };
     (readline.createInterface as Mock).mockReturnValue(mockReadline);
 
-    const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => { });
+    const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
 
     const client = await getOauthClient(
       AuthType.LOGIN_WITH_GOOGLE,

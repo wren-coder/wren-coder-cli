@@ -188,7 +188,7 @@ describe('Logger', () => {
       await fs.writeFile(TEST_LOG_FILE_PATH, 'invalid json');
       const consoleDebugSpy = vi
         .spyOn(console, 'debug')
-        .mockImplementation(() => { });
+        .mockImplementation(() => {});
 
       const newLogger = new Logger(testSessionId);
       await newLogger.initialize();
@@ -216,7 +216,7 @@ describe('Logger', () => {
       );
       const consoleDebugSpy = vi
         .spyOn(console, 'debug')
-        .mockImplementation(() => { });
+        .mockImplementation(() => {});
 
       const newLogger = new Logger(testSessionId);
       await newLogger.initialize();
@@ -272,7 +272,7 @@ describe('Logger', () => {
       uninitializedLogger.close(); // Ensure it's treated as uninitialized
       const consoleDebugSpy = vi
         .spyOn(console, 'debug')
-        .mockImplementation(() => { });
+        .mockImplementation(() => {});
       await uninitializedLogger.logMessage(MessageSenderType.USER, 'test');
       expect(consoleDebugSpy).toHaveBeenCalledWith(
         'Logger not initialized or session ID missing. Cannot log message.',
@@ -322,7 +322,7 @@ describe('Logger', () => {
       vi.spyOn(fs, 'writeFile').mockRejectedValueOnce(new Error('Disk full'));
       const consoleDebugSpy = vi
         .spyOn(console, 'debug')
-        .mockImplementation(() => { });
+        .mockImplementation(() => {});
       const initialMessageId = logger['messageId'];
       const initialLogCount = logger['logs'].length;
 
@@ -409,7 +409,7 @@ describe('Logger', () => {
       uninitializedLogger.close();
       const consoleErrorSpy = vi
         .spyOn(console, 'error')
-        .mockImplementation(() => { });
+        .mockImplementation(() => {});
 
       await expect(
         uninitializedLogger.saveCheckpoint(conversation, 'tag'),
@@ -467,7 +467,7 @@ describe('Logger', () => {
       await fs.writeFile(TEST_CHECKPOINT_FILE_PATH, 'invalid json');
       const consoleErrorSpy = vi
         .spyOn(console, 'error')
-        .mockImplementation(() => { });
+        .mockImplementation(() => {});
       const loadedCheckpoint = await logger.loadCheckpoint('missing');
       expect(loadedCheckpoint).toEqual([]);
       expect(consoleErrorSpy).toHaveBeenCalledWith(
@@ -481,7 +481,7 @@ describe('Logger', () => {
       uninitializedLogger.close();
       const consoleErrorSpy = vi
         .spyOn(console, 'error')
-        .mockImplementation(() => { });
+        .mockImplementation(() => {});
       const loadedCheckpoint = await uninitializedLogger.loadCheckpoint('tag');
       expect(loadedCheckpoint).toEqual([]);
       expect(consoleErrorSpy).toHaveBeenCalledWith(
@@ -496,7 +496,7 @@ describe('Logger', () => {
       logger.close();
       const consoleDebugSpy = vi
         .spyOn(console, 'debug')
-        .mockImplementation(() => { });
+        .mockImplementation(() => {});
       await logger.logMessage(MessageSenderType.USER, 'Another message');
       expect(consoleDebugSpy).toHaveBeenCalledWith(
         'Logger not initialized or session ID missing. Cannot log message.',
