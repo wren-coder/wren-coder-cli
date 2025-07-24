@@ -29,7 +29,12 @@ const USER_WREN_CODER_DIR = path.join(os.homedir(), '.wren');
 const WORKSPACE_DIR = path.join(projectRoot, '.wren');
 
 // Telemetry artifacts are stored in a hashed directory under the user's ~/.wren/tmp
-export const OTEL_DIR = path.join(USER_WREN_CODER_DIR, 'tmp', projectHash, 'otel');
+export const OTEL_DIR = path.join(
+  USER_WREN_CODER_DIR,
+  'tmp',
+  projectHash,
+  'otel',
+);
 export const BIN_DIR = path.join(OTEL_DIR, 'bin');
 
 // Workspace settings remain in the project's .gemini directory

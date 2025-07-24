@@ -139,8 +139,8 @@ export async function getOauthClient(
     // This does basically nothing, as it isn't show to the user.
     console.log(
       `\n\nCode Assist login required.\n` +
-      `Attempting to open authentication page in your browser.\n` +
-      `Otherwise navigate to:\n\n${webLogin.authUrl}\n\n`,
+        `Attempting to open authentication page in your browser.\n` +
+        `Otherwise navigate to:\n\n${webLogin.authUrl}\n\n`,
     );
     await open(webLogin.authUrl);
     console.log('Waiting for authentication...');

@@ -120,7 +120,7 @@ describe('filterActiveExtensions', () => {
   });
 
   it('should log an error for unknown extensions', () => {
-    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => { });
+    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
     filterActiveExtensions(extensions, ['ext4']);
     expect(consoleSpy).toHaveBeenCalledWith('Extension not found: ext4');
     consoleSpy.mockRestore();
