@@ -15,7 +15,7 @@ import {
   AccessibilitySettings,
   SandboxConfig,
   GeminiClient,
-} from '@qwen-code/qwen-code-core';
+} from '@cli-coder/cli-coder-core';
 import { LoadedSettings, SettingsFile, Settings } from '../config/settings.js';
 import process from 'node:process';
 import { useGeminiStream } from './hooks/useGeminiStream.js';
@@ -74,10 +74,10 @@ interface MockServerConfig {
   getUserTier: Mock<() => Promise<string | undefined>>;
 }
 
-// Mock @qwen-code/qwen-code-core and its Config class
-vi.mock('@qwen-code/qwen-code-core', async (importOriginal) => {
+// Mock @cli-coder/cli-coder-core and its Config class
+vi.mock('@cli-coder/cli-coder-core', async (importOriginal) => {
   const actualCore =
-    await importOriginal<typeof import('@qwen-code/qwen-code-core')>();
+    await importOriginal<typeof import('@cli-coder/cli-coder-core')>();
   const ConfigClassMock = vi
     .fn()
     .mockImplementation((optionsPassedToConstructor) => {

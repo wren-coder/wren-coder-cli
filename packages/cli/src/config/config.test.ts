@@ -9,12 +9,12 @@ import * as os from 'os';
 import { loadCliConfig, parseArguments } from './config.js';
 import { Settings } from './settings.js';
 import { Extension } from './extension.js';
-import * as ServerConfig from '@qwen-code/qwen-code-core';
+import * as ServerConfig from '@cli-coder/cli-coder-core';
 import {
   TelemetryTarget,
   ConfigParameters,
   DEFAULT_TELEMETRY_TARGET,
-} from '@qwen-code/qwen-code-core';
+} from '@cli-coder/cli-coder-core';
 
 vi.mock('os', async (importOriginal) => {
   const actualOs = await importOriginal<typeof os>();
@@ -34,9 +34,9 @@ vi.mock('read-package-up', () => ({
   ),
 }));
 
-vi.mock('@qwen-code/qwen-code-core', async () => {
+vi.mock('@cli-coder/cli-coder-core', async () => {
   const actualServer = await vi.importActual<typeof ServerConfig>(
-    '@qwen-code/qwen-code-core',
+    '@cli-coder/cli-coder-core',
   );
   return {
     ...actualServer,
@@ -125,7 +125,7 @@ describe('parseArguments', () => {
 
     const mockConsoleError = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await expect(parseArguments()).rejects.toThrow('process.exit called');
 
@@ -155,7 +155,7 @@ describe('parseArguments', () => {
 
     const mockConsoleError = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await expect(parseArguments()).rejects.toThrow('process.exit called');
 

@@ -26,13 +26,13 @@ You can also provide the OpenAI credentials via command line arguments:
 
 ```bash
 # Basic usage with API key
-qwen-code --openai-api-key "your-api-key-here"
+cli-coder --openai-api-key "your-api-key-here"
 
 # With custom base URL
-qwen-code --openai-api-key "your-api-key-here" --openai-base-url "https://your-custom-endpoint.com/v1"
+cli-coder --openai-api-key "your-api-key-here" --openai-base-url "https://your-custom-endpoint.com/v1"
 
 # With custom model
-qwen-code --openai-api-key "your-api-key-here" --model "gpt-4-turbo"
+cli-coder --openai-api-key "your-api-key-here" --model "gpt-4-turbo"
 ```
 
 ### 3. Environment Variables

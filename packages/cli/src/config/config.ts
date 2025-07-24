@@ -18,7 +18,7 @@ import {
   FileDiscoveryService,
   TelemetryTarget,
   MCPServerConfig,
-} from '@qwen-code/qwen-code-core';
+} from '@cli-coder/cli-coder-core';
 import { Settings } from './settings.js';
 
 import { Extension, filterActiveExtensions } from './extension.js';

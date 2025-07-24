@@ -13,7 +13,7 @@ import {
   isGenericQuotaExceededError,
   isApiError,
   isStructuredError,
-} from '@qwen-code/qwen-code-core';
+} from '@cli-coder/cli-coder-core';
 // Free Tier message functions
 const getRateLimitErrorMessageGoogleFree = (
   fallbackModel: string = DEFAULT_GEMINI_FLASH_MODEL,
@@ -70,18 +70,18 @@ function getRateLimitMessage(
       if (isProQuotaExceededError(error)) {
         return isPaidTier
           ? getRateLimitErrorMessageGoogleProQuotaPaid(
-              currentModel || DEFAULT_GEMINI_MODEL,
-              fallbackModel,
-            )
+            currentModel || DEFAULT_GEMINI_MODEL,
+            fallbackModel,
+          )
           : getRateLimitErrorMessageGoogleProQuotaFree(
-              currentModel || DEFAULT_GEMINI_MODEL,
-              fallbackModel,
-            );
+            currentModel || DEFAULT_GEMINI_MODEL,
+            fallbackModel,
+          );
       } else if (isGenericQuotaExceededError(error)) {
         return isPaidTier
           ? getRateLimitErrorMessageGoogleGenericQuotaPaid(
-              currentModel || DEFAULT_GEMINI_MODEL,
-            )
+            currentModel || DEFAULT_GEMINI_MODEL,
+          )
           : getRateLimitErrorMessageGoogleGenericQuotaFree();
       } else {
         return isPaidTier

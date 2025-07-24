@@ -25,7 +25,7 @@ import {
   UnauthorizedError,
   UserPromptEvent,
   DEFAULT_GEMINI_FLASH_MODEL,
-} from '@qwen-code/qwen-code-core';
+} from '@cli-coder/cli-coder-core';
 import { type Part, type PartListUnion } from '@google/genai';
 import {
   StreamingState,
@@ -375,8 +375,8 @@ export const useGeminiStream = (
           const updatedTools = pendingHistoryItemRef.current.tools.map(
             (tool) =>
               tool.status === ToolCallStatus.Pending ||
-              tool.status === ToolCallStatus.Confirming ||
-              tool.status === ToolCallStatus.Executing
+                tool.status === ToolCallStatus.Confirming ||
+                tool.status === ToolCallStatus.Executing
                 ? { ...tool, status: ToolCallStatus.Canceled }
                 : tool,
           );

@@ -11,7 +11,7 @@ Qwen Code is a command-line AI workflow tool adapted from [**Gemini CLI**](https
 
 - **Code Understanding & Editing** - Query and edit large codebases beyond traditional context window limits
 - **Workflow Automation** - Automate operational tasks like handling pull requests and complex rebases
-- **Enhanced Parser** - Adapted parser specifically optimized for Qwen-Coder models
+- **Enhanced Parser** - Adapted parser specifically optimized for cli-coderr models
 
 ## Quick Start
 
@@ -26,7 +26,7 @@ curl -qL https://www.npmjs.com/install.sh | sh
 ### Installation
 
 ```bash
-npm install -g @qwen-code/qwen-code
+npm install -g @cli-coder/cli-coder
 qwen --version
 ```
 
@@ -39,8 +39,8 @@ qwen
 Or you can install it from source:
 
 ```bash
-git clone https://github.com/QwenLM/qwen-code.git
-cd qwen-code
+git clone https://github.com/QwenLM/cli-coder.git
+cd cli-coder
 npm install
 npm install -g .
 ```
@@ -50,8 +50,8 @@ npm install -g .
 Set your Qwen API key (In Qwen Code project, you can also set your API key in `.env` file). the `.env` file should be placed in the root directory of your current project.
 
 > ⚠️ **Notice:** <br>
-> **If you are in mainland China, please go to https://bailian.console.aliyun.com/ to apply for your API key** <br>
-> **If you are not in mainland China, please go to https://modelstudio.console.alibabacloud.com/ to apply for your API key**
+> **If you are in mainland China, please go to <https://bailian.console.aliyun.com/> to apply for your API key** <br>
+> **If you are not in mainland China, please go to <https://modelstudio.console.alibabacloud.com/> to apply for your API key**
 
 ```bash
 # If you are in mainland China, use the following URL:
@@ -126,7 +126,7 @@ qwen
 ## Project Structure
 
 ```
-qwen-code/
+cli-coder/
 ├── packages/           # Core packages
 ├── docs/              # Documentation
 ├── examples/          # Example code
@@ -143,7 +143,7 @@ If you encounter issues, check the [troubleshooting guide](docs/troubleshooting.
 
 ## Acknowledgments
 
-This project is based on [Google Gemini CLI](https://github.com/google-gemini/gemini-cli). We acknowledge and appreciate the excellent work of the Gemini CLI team. Our main contribution focuses on parser-level adaptations to better support Qwen-Coder models.
+This project is based on [Google Gemini CLI](https://github.com/google-gemini/gemini-cli). We acknowledge and appreciate the excellent work of the Gemini CLI team. Our main contribution focuses on parser-level adaptations to better support cli-coderr models.
 
 ## License
 

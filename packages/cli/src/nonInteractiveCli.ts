@@ -12,7 +12,7 @@ import {
   shutdownTelemetry,
   isTelemetrySdkInitialized,
   ToolResultDisplay,
-} from '@qwen-code/qwen-code-core';
+} from '@cli-coder/cli-coder-core';
 import {
   Content,
   Part,

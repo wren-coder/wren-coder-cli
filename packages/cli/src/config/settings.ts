@@ -15,7 +15,7 @@ import {
   BugCommandSettings,
   TelemetrySettings,
   AuthType,
-} from '@qwen-code/qwen-code-core';
+} from '@cli-coder/cli-coder-core';
 import stripJsonComments from 'strip-json-comments';
 import { DefaultLight } from '../ui/themes/default-light.js';
 import { DefaultDark } from '../ui/themes/default.js';
@@ -28,9 +28,9 @@ function getSystemSettingsPath(): string {
   if (platform() === 'darwin') {
     return '/Library/Application Support/QwenCode/settings.json';
   } else if (platform() === 'win32') {
-    return 'C:\\ProgramData\\qwen-code\\settings.json';
+    return 'C:\\ProgramData\\cli-coder\\settings.json';
   } else {
-    return '/etc/qwen-code/settings.json';
+    return '/etc/cli-coder/settings.json';
   }
 }
 

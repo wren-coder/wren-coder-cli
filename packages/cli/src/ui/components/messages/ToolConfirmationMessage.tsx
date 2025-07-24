@@ -14,7 +14,7 @@ import {
   ToolExecuteConfirmationDetails,
   ToolMcpConfirmationDetails,
   Config,
-} from '@qwen-code/qwen-code-core';
+} from '@cli-coder/cli-coder-core';
 import {
   RadioButtonSelect,
   RadioSelectItem,

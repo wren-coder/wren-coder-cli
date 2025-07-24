@@ -11,7 +11,7 @@ import { useCompletion } from './useCompletion.js';
 import * as fs from 'fs/promises';
 import { glob } from 'glob';
 import { CommandContext, SlashCommand } from '../commands/types.js';
-import { Config, FileDiscoveryService } from '@qwen-code/qwen-code-core';
+import { Config, FileDiscoveryService } from '@cli-coder/cli-coder-core';
 
 interface MockConfig {
   getFileFilteringRespectGitIgnore: () => boolean;
@@ -21,8 +21,8 @@ interface MockConfig {
 
 // Mock dependencies
 vi.mock('fs/promises');
-vi.mock('@qwen-code/qwen-code-core', async () => {
-  const actual = await vi.importActual('@qwen-code/qwen-code-core');
+vi.mock('@cli-coder/cli-coder-core', async () => {
+  const actual = await vi.importActual('@cli-coder/cli-coder-core');
   return {
     ...actual,
     FileDiscoveryService: vi.fn(),
@@ -361,7 +361,7 @@ describe('useCompletion git-aware filtering integration', () => {
       { name: 'README.md', isDirectory: () => false },
     ] as unknown as Awaited<ReturnType<typeof fs.readdir>>);
 
-    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
 
     const { result } = renderHook(() =>
       useCompletion(

@@ -15,7 +15,7 @@ import {
   SETTINGS_DIRECTORY_NAME,
 } from '../config/settings.js';
 import { promisify } from 'util';
-import { SandboxConfig } from '@qwen-code/qwen-code-core';
+import { SandboxConfig } from '@cli-coder/cli-coder-core';
 
 const execAsync = promisify(exec);
 
@@ -321,7 +321,7 @@ export async function start_sandbox(
     if (!gcPath.includes('gemini-cli/packages/')) {
       console.error(
         'ERROR: cannot build sandbox using installed gemini binary; ' +
-          'run `npm link ./packages/cli` under gemini-cli repo to switch to linked binary.',
+        'run `npm link ./packages/cli` under gemini-cli repo to switch to linked binary.',
       );
       process.exit(1);
     } else {

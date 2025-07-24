@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { MCPServerConfig } from '@qwen-code/qwen-code-core';
+import { MCPServerConfig } from '@cli-coder/cli-coder-core';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';

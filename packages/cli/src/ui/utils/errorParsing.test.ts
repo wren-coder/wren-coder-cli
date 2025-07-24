@@ -11,7 +11,7 @@ import {
   UserTierId,
   DEFAULT_GEMINI_FLASH_MODEL,
   isProQuotaExceededError,
-} from '@qwen-code/qwen-code-core';
+} from '@cli-coder/cli-coder-core';
 
 describe('parseAndFormatApiError', () => {
   const _enterpriseMessage =

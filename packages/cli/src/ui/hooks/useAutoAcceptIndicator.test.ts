@@ -20,14 +20,14 @@ import {
   Config,
   Config as ActualConfigType,
   ApprovalMode,
-} from '@qwen-code/qwen-code-core';
+} from '@cli-coder/cli-coder-core';
 import { useInput, type Key as InkKey } from 'ink';
 
 vi.mock('ink');
 
-vi.mock('@qwen-code/qwen-code-core', async () => {
+vi.mock('@cli-coder/cli-coder-core', async () => {
   const actualServerModule = (await vi.importActual(
-    '@qwen-code/qwen-code-core',
+    '@cli-coder/cli-coder-core',
   )) as Record<string, unknown>;
   return {
     ...actualServerModule,
@@ -102,8 +102,8 @@ describe('useAutoAcceptIndicator', () => {
         getToolRegistry: vi
           .fn()
           .mockReturnValue({ discoverTools: vi.fn() }) as Mock<
-          () => { discoverTools: Mock<() => void> }
-        >,
+            () => { discoverTools: Mock<() => void> }
+          >,
       };
       instanceSetApprovalModeMock.mockImplementation((value: ApprovalMode) => {
         instanceGetApprovalModeMock.mockReturnValue(value);

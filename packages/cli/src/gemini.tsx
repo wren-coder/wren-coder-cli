@@ -37,7 +37,7 @@ import {
   logUserPrompt,
   AuthType,
   getOauthClient,
-} from '@qwen-code/qwen-code-core';
+} from '@cli-coder/cli-coder-core';
 import { validateAuthMethod } from './config/auth.js';
 import { setMaxSizedBoxDebugging } from './ui/components/shared/MaxSizedBox.js';
 

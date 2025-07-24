@@ -7,14 +7,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { runNonInteractive } from './nonInteractiveCli.js';
-import { Config, GeminiClient, ToolRegistry } from '@qwen-code/qwen-code-core';
+import { Config, GeminiClient, ToolRegistry } from '@cli-coder/cli-coder-core';
 import { GenerateContentResponse, Part, FunctionCall } from '@google/genai';
 
 // Mock dependencies
-vi.mock('@qwen-code/qwen-code-core', async () => {
+vi.mock('@cli-coder/cli-coder-core', async () => {
   const actualCore = await vi.importActual<
-    typeof import('@qwen-code/qwen-code-core')
-  >('@qwen-code/qwen-code-core');
+    typeof import('@cli-coder/cli-coder-core')
+  >('@cli-coder/cli-coder-core');
   return {
     ...actualCore,
     GeminiClient: vi.fn(),
@@ -114,7 +114,7 @@ describe('runNonInteractive', () => {
     };
 
     const { executeToolCall: mockCoreExecuteToolCall } = await import(
-      '@qwen-code/qwen-code-core'
+      '@cli-coder/cli-coder-core'
     );
     vi.mocked(mockCoreExecuteToolCall).mockResolvedValue({
       callId: 'fc1',
@@ -168,7 +168,7 @@ describe('runNonInteractive', () => {
     };
 
     const { executeToolCall: mockCoreExecuteToolCall } = await import(
-      '@qwen-code/qwen-code-core'
+      '@cli-coder/cli-coder-core'
     );
     vi.mocked(mockCoreExecuteToolCall).mockResolvedValue({
       callId: 'fcError',
@@ -193,7 +193,7 @@ describe('runNonInteractive', () => {
       .mockResolvedValueOnce(stream2);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await runNonInteractive(mockConfig, 'Trigger tool error', 'prompt-id-3');
 
@@ -217,7 +217,7 @@ describe('runNonInteractive', () => {
     mockChat.sendMessageStream.mockRejectedValue(apiError);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await runNonInteractive(mockConfig, 'Initial fail', 'prompt-id-4');
 
@@ -241,7 +241,7 @@ describe('runNonInteractive', () => {
     };
 
     const { executeToolCall: mockCoreExecuteToolCall } = await import(
-      '@qwen-code/qwen-code-core'
+      '@cli-coder/cli-coder-core'
     );
     vi.mocked(mockCoreExecuteToolCall).mockResolvedValue({
       callId: 'fcNotFound',
@@ -269,7 +269,7 @@ describe('runNonInteractive', () => {
       .mockResolvedValueOnce(stream2);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await runNonInteractive(
       mockConfig,
@@ -314,7 +314,7 @@ describe('runNonInteractive', () => {
     vi.mocked(mockConfig.getMaxSessionTurns).mockReturnValue(1);
 
     const { executeToolCall: mockCoreExecuteToolCall } = await import(
-      '@qwen-code/qwen-code-core'
+      '@cli-coder/cli-coder-core'
     );
     vi.mocked(mockCoreExecuteToolCall).mockResolvedValue({
       callId: 'fcLoop',
@@ -330,7 +330,7 @@ describe('runNonInteractive', () => {
     mockChat.sendMessageStream.mockResolvedValue(stream);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await runNonInteractive(mockConfig, 'Trigger loop');
 
