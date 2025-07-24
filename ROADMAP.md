@@ -39,6 +39,7 @@ Goal: Support as many foundation models as possible via a modular adapter patter
 |-----------|-------------|
 | ✅ openai adapter | Basic support for OpenAI-compatible APIs (e.g., GPT-4, Claude via AWS Bedrock) |
 | 🔲 ollama support | Local models with streaming (Mistral, Phi, etc.) |
+| 🔲 Local embeddings support | Local embedding models for semantic search and context retrieval |
 | 🔲 openrouter, together.ai, groq support | Community-supported fast inference endpoints |
 | 🔲 Multi-model fallback | Let users configure priority lists, e.g. "try Claude, fallback to GPT-3.5" |
 | 🔲 Model testing CLI | Benchmark model behavior against reproducible tasks |
