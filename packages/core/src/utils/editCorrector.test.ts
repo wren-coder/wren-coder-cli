@@ -181,7 +181,7 @@ describe('editCorrector', () => {
         mcpServers: undefined as Record<string, any> | undefined,
         userAgent: 'test-agent',
         userMemory: '',
-        WrenCoderMdFileCount: 0,
+        wrenCoderMdFileCount: 0,
         alwaysSkipModificationConfirmation: false,
       };
       mockConfigInstance = {
@@ -204,9 +204,9 @@ describe('editCorrector', () => {
         setUserMemory: vi.fn((mem: string) => {
           configParams.userMemory = mem;
         }),
-        getMdFileCount: vi.fn(() => configParams.WrenCoderMdFileCount),
+        getMdFileCount: vi.fn(() => configParams.wrenCoderMdFileCount),
         setMdFileCount: vi.fn((count: number) => {
-          configParams.WrenCoderMdFileCount = count;
+          configParams.wrenCoderMdFileCount = count;
         }),
         getAlwaysSkipModificationConfirmation: vi.fn(
           () => configParams.alwaysSkipModificationConfirmation,
@@ -623,7 +623,7 @@ describe('editCorrector', () => {
         mcpServers: undefined as Record<string, any> | undefined,
         userAgent: 'test-agent',
         userMemory: '',
-        WrenCoderMdFileCount: 0,
+        wrenCoderMdFileCount: 0,
         alwaysSkipModificationConfirmation: false,
       };
       mockConfigInstance = {
@@ -646,9 +646,9 @@ describe('editCorrector', () => {
         setUserMemory: vi.fn((mem: string) => {
           configParams.userMemory = mem;
         }),
-        getMdFileCount: vi.fn(() => configParams.WrenCoderMdFileCount),
+        getMdFileCount: vi.fn(() => configParams.wrenCoderMdFileCount),
         setMdFileCount: vi.fn((count: number) => {
-          configParams.WrenCoderMdFileCount = count;
+          configParams.wrenCoderMdFileCount = count;
         }),
         getAlwaysSkipModificationConfirmation: vi.fn(
           () => configParams.alwaysSkipModificationConfirmation,

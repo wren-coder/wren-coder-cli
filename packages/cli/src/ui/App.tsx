@@ -130,7 +130,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     setStaticKey((prev) => prev + 1);
   }, [setStaticKey, stdout]);
 
-  const [WrenCoderMdFileCount, setMdFileCount] = useState<number>(0);
+  const [wrenCoderMdFileCount, setMdFileCount] = useState<number>(0);
   const [debugMessage, setDebugMessage] = useState<string>('');
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [themeError, setThemeError] = useState<string | null>(null);
@@ -884,7 +884,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
                     </Text>
                   ) : (
                     <ContextSummaryDisplay
-                      WrenCoderMdFileCount={WrenCoderMdFileCount}
+                      wrenCoderMdFileCount={wrenCoderMdFileCount}
                       contextFileNames={contextFileNames}
                       mcpServers={config.getMcpServers()}
                       showToolDescriptions={showToolDescriptions}

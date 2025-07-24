@@ -300,7 +300,7 @@ describe('useGeminiStream', () => {
       mcpServers: undefined,
       userAgent: 'test-agent',
       userMemory: '',
-      WrenCoderMdFileCount: 0,
+      wrenCoderMdFileCount: 0,
       alwaysSkipModificationConfirmation: false,
       vertexai: false,
       showMemoryUsage: false,

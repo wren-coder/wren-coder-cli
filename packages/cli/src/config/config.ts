@@ -345,7 +345,7 @@ export async function loadCliConfig(
     mcpServerCommand: settings.mcpServerCommand,
     mcpServers,
     userMemory: memoryContent,
-    WrenCoderMdFileCount: fileCount,
+    wrenCoderMdFileCount: fileCount,
     approvalMode: argv.yolo || false ? ApprovalMode.YOLO : ApprovalMode.DEFAULT,
     showMemoryUsage:
       argv.showMemoryUsage ||

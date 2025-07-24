@@ -14,7 +14,7 @@ interface TipsProps {
 }
 
 export const Tips: React.FC<TipsProps> = ({ config }) => {
-  const WrenCoderMdFileCount = config.getMdFileCount();
+  const wrenCoderMdFileCount = config.getMdFileCount();
   return (
     <Box flexDirection="column" marginBottom={1}>
       <Text color={Colors.Foreground}>Tips for getting started:</Text>
@@ -24,7 +24,7 @@ export const Tips: React.FC<TipsProps> = ({ config }) => {
       <Text color={Colors.Foreground}>
         2. Be specific for the best results.
       </Text>
-      {WrenCoderMdFileCount === 0 && (
+      {wrenCoderMdFileCount === 0 && (
         <Text color={Colors.Foreground}>
           3. Create{' '}
           <Text bold color={Colors.AccentPurple}>
@@ -34,7 +34,7 @@ export const Tips: React.FC<TipsProps> = ({ config }) => {
         </Text>
       )}
       <Text color={Colors.Foreground}>
-        {WrenCoderMdFileCount === 0 ? '4.' : '3.'}{' '}
+        {wrenCoderMdFileCount === 0 ? '4.' : '3.'}{' '}
         <Text bold color={Colors.AccentPurple}>
           /help
         </Text>{' '}

@@ -10,32 +10,32 @@ import { Colors } from '../colors.js';
 import { type MCPServerConfig } from '@wren/wren-coder-core';
 
 interface ContextSummaryDisplayProps {
-  WrenCoderMdFileCount: number;
+  wrenCoderMdFileCount: number;
   contextFileNames: string[];
   mcpServers?: Record<string, MCPServerConfig>;
   showToolDescriptions?: boolean;
 }
 
 export const ContextSummaryDisplay: React.FC<ContextSummaryDisplayProps> = ({
-  WrenCoderMdFileCount,
+  wrenCoderMdFileCount,
   contextFileNames,
   mcpServers,
   showToolDescriptions,
 }) => {
   const mcpServerCount = Object.keys(mcpServers || {}).length;
 
-  if (WrenCoderMdFileCount === 0 && mcpServerCount === 0) {
+  if (wrenCoderMdFileCount === 0 && mcpServerCount === 0) {
     return <Text> </Text>; // Render an empty space to reserve height
   }
 
-  const WrenCoderMdText = (() => {
-    if (WrenCoderMdFileCount === 0) {
+  const wrenCoderMdText = (() => {
+    if (wrenCoderMdFileCount === 0) {
       return '';
     }
     const allNamesTheSame = new Set(contextFileNames).size < 2;
     const name = allNamesTheSame ? contextFileNames[0] : 'context';
-    return `${WrenCoderMdFileCount} ${name} file${
-      WrenCoderMdFileCount > 1 ? 's' : ''
+    return `${wrenCoderMdFileCount} ${name} file${
+      wrenCoderMdFileCount > 1 ? 's' : ''
     }`;
   })();
 
@@ -45,10 +45,10 @@ export const ContextSummaryDisplay: React.FC<ContextSummaryDisplayProps> = ({
       : '';
 
   let summaryText = 'Using ';
-  if (WrenCoderMdText) {
-    summaryText += WrenCoderMdText;
+  if (wrenCoderMdText) {
+    summaryText += wrenCoderMdText;
   }
-  if (WrenCoderMdText && mcpText) {
+  if (wrenCoderMdText && mcpText) {
     summaryText += ' and ';
   }
   if (mcpText) {

@@ -38,7 +38,7 @@ interface MockServerConfig {
   mcpServers?: Record<string, MCPServerConfig>; // Use imported MCPServerConfig
   userAgent: string;
   userMemory: string;
-  WrenCoderMdFileCount: number;
+  wrenCoderMdFileCount: number;
   approvalMode: ApprovalMode;
   vertexai?: boolean;
   showMemoryUsage?: boolean;
@@ -98,7 +98,7 @@ vi.mock('@wren/wren-coder-core', async (importOriginal) => {
         mcpServers: opts.mcpServers,
         userAgent: opts.userAgent || 'test-agent',
         userMemory: opts.userMemory || '',
-        WrenCoderMdFileCount: opts.WrenCoderMdFileCount || 0,
+        wrenCoderMdFileCount: opts.wrenCoderMdFileCount || 0,
         approvalMode: opts.approvalMode ?? ApprovalMode.DEFAULT,
         vertexai: opts.vertexai,
         showMemoryUsage: opts.showMemoryUsage ?? false,
@@ -121,7 +121,7 @@ vi.mock('@wren/wren-coder-core', async (importOriginal) => {
         getUserAgent: vi.fn(() => opts.userAgent || 'test-agent'),
         getUserMemory: vi.fn(() => opts.userMemory || ''),
         setUserMemory: vi.fn(),
-        getMdFileCount: vi.fn(() => opts.WrenCoderMdFileCount || 0),
+        getMdFileCount: vi.fn(() => opts.wrenCoderMdFileCount || 0),
         setMdFileCount: vi.fn(),
         getApprovalMode: vi.fn(() => opts.approvalMode ?? ApprovalMode.DEFAULT),
         setApprovalMode: vi.fn(),
@@ -232,7 +232,7 @@ describe('App UI', () => {
       targetDir: '/test/dir',
       debugMode: false,
       userMemory: '',
-      WrenCoderMdFileCount: 0,
+      wrenCoderMdFileCount: 0,
       showMemoryUsage: false,
       sessionId: 'test-session-id',
       cwd: '/tmp',

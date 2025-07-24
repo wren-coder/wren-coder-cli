@@ -84,20 +84,20 @@ async function getMdFilePathsInternal(
   extensionContextFilePaths: string[] = [],
 ): Promise<string[]> {
   const allPaths = new Set<string>();
-  const WrenCoderMdFilenames = getAllMdFilenames();
+  const wrenCoderMdFilenames = getAllMdFilenames();
 
-  for (const WrenCoderMdFilename of WrenCoderMdFilenames) {
+  for (const wrenCoderMdFilename of wrenCoderMdFilenames) {
     const resolvedCwd = path.resolve(currentWorkingDirectory);
     const resolvedHome = path.resolve(userHomePath);
     const globalMemoryPath = path.join(
       resolvedHome,
       CONFIG_DIR,
-      WrenCoderMdFilename,
+      wrenCoderMdFilename,
     );
 
     if (debugMode)
       logger.debug(
-        `Searching for ${WrenCoderMdFilename} starting from CWD: ${resolvedCwd}`,
+        `Searching for ${wrenCoderMdFilename} starting from CWD: ${resolvedCwd}`,
       );
     if (debugMode) logger.debug(`User home directory: ${resolvedHome}`);
 
@@ -106,12 +106,12 @@ async function getMdFilePathsInternal(
       allPaths.add(globalMemoryPath);
       if (debugMode)
         logger.debug(
-          `Found readable global ${WrenCoderMdFilename}: ${globalMemoryPath}`,
+          `Found readable global ${wrenCoderMdFilename}: ${globalMemoryPath}`,
         );
     } catch {
       if (debugMode)
         logger.debug(
-          `Global ${WrenCoderMdFilename} not found or not readable: ${globalMemoryPath}`,
+          `Global ${wrenCoderMdFilename} not found or not readable: ${globalMemoryPath}`,
         );
     }
 
@@ -130,7 +130,7 @@ async function getMdFilePathsInternal(
       // Loop until filesystem root or currentDir is empty
       if (debugMode) {
         logger.debug(
-          `Checking for ${WrenCoderMdFilename} in (upward scan): ${currentDir}`,
+          `Checking for ${wrenCoderMdFilename} in (upward scan): ${currentDir}`,
         );
       }
 
@@ -145,7 +145,7 @@ async function getMdFilePathsInternal(
         break;
       }
 
-      const potentialPath = path.join(currentDir, WrenCoderMdFilename);
+      const potentialPath = path.join(currentDir, wrenCoderMdFilename);
       try {
         await fs.access(potentialPath, fsSync.constants.R_OK);
         // Add to upwardPaths only if it's not the already added globalMemoryPath
@@ -153,14 +153,14 @@ async function getMdFilePathsInternal(
           upwardPaths.unshift(potentialPath);
           if (debugMode) {
             logger.debug(
-              `Found readable upward ${WrenCoderMdFilename}: ${potentialPath}`,
+              `Found readable upward ${wrenCoderMdFilename}: ${potentialPath}`,
             );
           }
         }
       } catch {
         if (debugMode) {
           logger.debug(
-            `Upward ${WrenCoderMdFilename} not found or not readable in: ${currentDir}`,
+            `Upward ${wrenCoderMdFilename} not found or not readable in: ${currentDir}`,
           );
         }
       }
@@ -179,7 +179,7 @@ async function getMdFilePathsInternal(
     upwardPaths.forEach((p) => allPaths.add(p));
 
     const downwardPaths = await bfsFileSearch(resolvedCwd, {
-      fileName: WrenCoderMdFilename,
+      fileName: wrenCoderMdFilename,
       maxDirs: MAX_DIRECTORIES_TO_SCAN_FOR_MEMORY,
       debug: debugMode,
       fileService,
@@ -187,7 +187,7 @@ async function getMdFilePathsInternal(
     downwardPaths.sort(); // Sort for consistent ordering, though hierarchy might be more complex
     if (debugMode && downwardPaths.length > 0)
       logger.debug(
-        `Found downward ${WrenCoderMdFilename} files (sorted): ${JSON.stringify(
+        `Found downward ${wrenCoderMdFilename} files (sorted): ${JSON.stringify(
           downwardPaths,
         )}`,
       );
