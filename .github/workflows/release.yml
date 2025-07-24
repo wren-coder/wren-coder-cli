@@ -157,7 +157,7 @@ jobs:
           RELEASE_BRANCH: ${{ steps.release_branch.outputs.BRANCH_NAME }}
         run: |
           gh release create ${{ steps.version.outputs.RELEASE_TAG }} \
-            bundle/gemini.js \
+            bundle/wrenCoder.js \
             --target "$RELEASE_BRANCH" \
             --title "Release ${{ steps.version.outputs.RELEASE_TAG }}" \
             --generate-notes

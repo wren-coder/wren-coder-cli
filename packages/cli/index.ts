@@ -6,8 +6,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import './src/gemini.js';
-import { main } from './src/gemini.js';
+import './src/wrenCoder.js';
+import { main } from './src/wrenCoder.js';
 
 // --- Global Entry Point ---
 main().catch((error) => {

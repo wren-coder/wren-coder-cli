@@ -194,7 +194,7 @@ This is the most critical stage where files are moved and transformed into their
 2. The JavaScript Bundle is Created:
     - What happens: The built JavaScript from both packages/core/dist and packages/cli/dist are bundled into a single,
       executable JavaScript file.
-    - File movement: packages/cli/dist/index.js + packages/core/dist/index.js -> (bundled by esbuild) -> `bundle`/gemini.js (or a
+    - File movement: packages/cli/dist/index.js + packages/core/dist/index.js -> (bundled by esbuild) -> `bundle`/wrenCoder.js (or a
       similar name).
     - Why: This creates a single, optimized file that contains all the necessary application code. It simplifies the package
       by removing the need for the core package to be a separate dependency on NPM, as its code is now included directly.
