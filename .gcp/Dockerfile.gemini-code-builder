@@ -53,9 +53,9 @@ RUN set -eux; \
 RUN set -eux; \
     DOCKER_CLI_ARCH=$(dpkg --print-architecture); \
     case "${DOCKER_CLI_ARCH}" in \
-        amd64) DOCKER_CLI_ARCH_SUFFIX="x86_64" ;; \
-        arm64) DOCKER_CLI_ARCH_SUFFIX="aarch64" ;; \
-        *) echo "Unsupported architecture: ${DOCKER_CLI_ARCH}"; exit 1 ;; \
+    amd64) DOCKER_CLI_ARCH_SUFFIX="x86_64" ;; \
+    arm64) DOCKER_CLI_ARCH_SUFFIX="aarch64" ;; \
+    *) echo "Unsupported architecture: ${DOCKER_CLI_ARCH}"; exit 1 ;; \
     esac; \
     curl -fsSL "https://download.docker.com/linux/static/stable/${DOCKER_CLI_ARCH_SUFFIX}/docker-${DOCKER_CLI_VERSION}.tgz" -o docker.tgz && \
     tar -xzf docker.tgz --strip-components=1 -C /usr/local/bin docker/docker && \
@@ -67,9 +67,9 @@ RUN set -eux; \
 RUN set -eux; \
     BUILDX_ARCH_DEB=$(dpkg --print-architecture); \
     case "${BUILDX_ARCH_DEB}" in \
-        amd64) BUILDX_ARCH_SUFFIX="amd64" ;; \
-        arm64) BUILDX_ARCH_SUFFIX="arm64" ;; \
-        *) echo "Unsupported architecture for Buildx: ${BUILDX_ARCH_DEB}"; exit 1 ;; \
+    amd64) BUILDX_ARCH_SUFFIX="amd64" ;; \
+    arm64) BUILDX_ARCH_SUFFIX="arm64" ;; \
+    *) echo "Unsupported architecture for Buildx: ${BUILDX_ARCH_DEB}"; exit 1 ;; \
     esac; \
     mkdir -p /usr/local/lib/docker/cli-plugins && \
     curl -fsSL "https://github.com/docker/buildx/releases/download/${BUILDX_VERSION}/buildx-${BUILDX_VERSION}.linux-${BUILDX_ARCH_SUFFIX}" -o /usr/local/lib/docker/cli-plugins/docker-buildx && \

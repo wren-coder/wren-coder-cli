@@ -584,7 +584,7 @@ describe('useSlashCommandProcessor', () => {
     });
 
     it('should use the custom bug command URL from config if available', async () => {
-      process.env.CLI_VERSION = '0.1.0';
+      process.env.WREN_CODER_VERSION = '0.1.0';
       process.env.SANDBOX = 'sandbox-exec';
       process.env.SEATBELT_PROFILE = 'permissive-open';
       const bugCommand = {
@@ -595,7 +595,7 @@ describe('useSlashCommandProcessor', () => {
         ...mockConfig,
         getBugCommand: vi.fn(() => bugCommand),
       } as unknown as Config;
-      process.env.CLI_VERSION = '0.1.0';
+      process.env.WREN_CODER_VERSION = '0.1.0';
 
       const { handleSlashCommand } = getProcessor();
       const bugDescription = 'This is a custom bug';

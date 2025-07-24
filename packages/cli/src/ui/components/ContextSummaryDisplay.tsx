@@ -10,32 +10,32 @@ import { Colors } from '../colors.js';
 import { type MCPServerConfig } from '@wren/wren-coder-core';
 
 interface ContextSummaryDisplayProps {
-  geminiMdFileCount: number;
+  wrenCoderMdFileCount: number;
   contextFileNames: string[];
   mcpServers?: Record<string, MCPServerConfig>;
   showToolDescriptions?: boolean;
 }
 
 export const ContextSummaryDisplay: React.FC<ContextSummaryDisplayProps> = ({
-  geminiMdFileCount,
+  wrenCoderMdFileCount,
   contextFileNames,
   mcpServers,
   showToolDescriptions,
 }) => {
   const mcpServerCount = Object.keys(mcpServers || {}).length;
 
-  if (geminiMdFileCount === 0 && mcpServerCount === 0) {
+  if (wrenCoderMdFileCount === 0 && mcpServerCount === 0) {
     return <Text> </Text>; // Render an empty space to reserve height
   }
 
-  const geminiMdText = (() => {
-    if (geminiMdFileCount === 0) {
+  const wrenCoderMdText = (() => {
+    if (wrenCoderMdFileCount === 0) {
       return '';
     }
     const allNamesTheSame = new Set(contextFileNames).size < 2;
     const name = allNamesTheSame ? contextFileNames[0] : 'context';
-    return `${geminiMdFileCount} ${name} file${
-      geminiMdFileCount > 1 ? 's' : ''
+    return `${wrenCoderMdFileCount} ${name} file${
+      wrenCoderMdFileCount > 1 ? 's' : ''
     }`;
   })();
 
@@ -45,10 +45,10 @@ export const ContextSummaryDisplay: React.FC<ContextSummaryDisplayProps> = ({
       : '';
 
   let summaryText = 'Using ';
-  if (geminiMdText) {
-    summaryText += geminiMdText;
+  if (wrenCoderMdText) {
+    summaryText += wrenCoderMdText;
   }
-  if (geminiMdText && mcpText) {
+  if (wrenCoderMdText && mcpText) {
     summaryText += ' and ';
   }
   if (mcpText) {

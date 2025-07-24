@@ -14,7 +14,7 @@ Use `save_memory` to save and recall information across your Gemini CLI sessions
 
 ## How to use `save_memory` with the Gemini CLI
 
-The tool appends the provided `fact` to a special `GEMINI.md` file located in the user's home directory (`~/.wren/GEMINI.md`). This file can be configured to have a different name.
+The tool appends the provided `fact` to a special `WREN.md` file located in the user's home directory (`~/.wren/WREN.md`). This file can be configured to have a different name.
 
 Once added, the facts are stored under a `## Added Memories` section. This file is loaded as context in subsequent sessions, allowing the CLI to recall the saved information.
 
