@@ -43,7 +43,7 @@ import { DEFAULT_GEMINI_FLASH_MODEL } from '../config/models.js';
 import { LoopDetectionService } from '../services/loopDetectionService.js';
 
 function isThinkingSupported(model: string) {
-  if (model.startsWith('gemini-2.5')) return true;
+  if (model.startsWith('deepseek-reasoner')) return true;
   return false;
 }
 
@@ -243,11 +243,11 @@ export class GeminiClient {
         this.config.getModel(),
       )
         ? {
-            ...this.generateContentConfig,
-            thinkingConfig: {
-              includeThoughts: true,
-            },
-          }
+          ...this.generateContentConfig,
+          thinkingConfig: {
+            includeThoughts: true,
+          },
+        }
         : this.generateContentConfig;
       return new GeminiChat(
         this.config,
