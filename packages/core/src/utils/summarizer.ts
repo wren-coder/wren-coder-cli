@@ -11,7 +11,7 @@ import {
   GenerateContentResponse,
 } from '@google/genai';
 import { GeminiClient } from '../core/client.js';
-import { DEFAULT_GEMINI_FLASH_MODEL } from '../config/models.js';
+import { DEFAULT_THINKING_MODEL } from '../config/models.js';
 import { PartListUnion } from '@google/genai';
 
 /**
@@ -74,7 +74,7 @@ function getResponseText(response: GenerateContentResponse): string | null {
   return null;
 }
 
-const toolOutputSummarizerModel = DEFAULT_GEMINI_FLASH_MODEL;
+const toolOutputSummarizerModel = DEFAULT_THINKING_MODEL;
 const toolOutputSummarizerConfig: GenerateContentConfig = {
   maxOutputTokens: 2000,
 };

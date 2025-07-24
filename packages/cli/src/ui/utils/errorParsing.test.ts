@@ -9,7 +9,7 @@ import { parseAndFormatApiError } from './errorParsing.js';
 import {
   AuthType,
   UserTierId,
-  DEFAULT_GEMINI_FLASH_MODEL,
+  DEFAULT_THINKING_MODEL,
   isProQuotaExceededError,
 } from '@wren/wren-coder-core';
 
@@ -35,7 +35,7 @@ describe('parseAndFormatApiError', () => {
       undefined,
       undefined,
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
     expect(result).toContain('[API Error: Rate limit exceeded');
     expect(result).toContain(
@@ -51,7 +51,7 @@ describe('parseAndFormatApiError', () => {
       AuthType.LOGIN_WITH_GOOGLE,
       undefined,
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
     expect(result).toContain('[API Error: Rate limit exceeded');
     expect(result).toContain(
@@ -144,7 +144,7 @@ describe('parseAndFormatApiError', () => {
       AuthType.LOGIN_WITH_GOOGLE,
       undefined,
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
     expect(result).toContain(
       "[API Error: Quota exceeded for quota metric 'Gemini 2.5 Pro Requests'",
@@ -165,7 +165,7 @@ describe('parseAndFormatApiError', () => {
       AuthType.LOGIN_WITH_GOOGLE,
       undefined,
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
     expect(result).toContain('[API Error: Rate limit exceeded');
     expect(result).toContain(
@@ -184,7 +184,7 @@ describe('parseAndFormatApiError', () => {
       AuthType.LOGIN_WITH_GOOGLE,
       undefined,
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
     expect(result).toContain(
       "[API Error: Quota exceeded for quota metric 'GenerationRequests'",
@@ -203,7 +203,7 @@ describe('parseAndFormatApiError', () => {
       AuthType.LOGIN_WITH_GOOGLE,
       undefined,
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
     expect(result).toContain(
       "[API Error: Quota exceeded for quota metric 'Gemini 2.5 Pro Requests'",
@@ -222,7 +222,7 @@ describe('parseAndFormatApiError', () => {
       AuthType.LOGIN_WITH_GOOGLE,
       UserTierId.STANDARD,
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
     expect(result).toContain(
       "[API Error: Quota exceeded for quota metric 'Gemini 2.5 Pro Requests'",
@@ -246,7 +246,7 @@ describe('parseAndFormatApiError', () => {
       AuthType.LOGIN_WITH_GOOGLE,
       UserTierId.LEGACY,
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
     expect(result).toContain(
       "[API Error: Quota exceeded for quota metric 'Gemini 2.5 Pro Requests'",
@@ -273,14 +273,14 @@ describe('parseAndFormatApiError', () => {
       AuthType.LOGIN_WITH_GOOGLE,
       undefined,
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
     const resultPreview = parseAndFormatApiError(
       errorMessagePreview,
       AuthType.LOGIN_WITH_GOOGLE,
       undefined,
       'gemini-2.5-preview-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
 
     expect(result25).toContain(
@@ -343,7 +343,7 @@ describe('parseAndFormatApiError', () => {
       AuthType.LOGIN_WITH_GOOGLE,
       UserTierId.STANDARD,
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
     expect(result).toContain(
       "[API Error: Quota exceeded for quota metric 'GenerationRequests'",
@@ -365,7 +365,7 @@ describe('parseAndFormatApiError', () => {
       AuthType.LOGIN_WITH_GOOGLE,
       UserTierId.STANDARD,
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
     expect(result).toContain('[API Error: Rate limit exceeded');
     expect(result).toContain(

@@ -24,7 +24,7 @@ import {
   ThoughtSummary,
   UnauthorizedError,
   UserPromptEvent,
-  DEFAULT_GEMINI_FLASH_MODEL,
+  DEFAULT_THINKING_MODEL,
 } from '@wren/wren-coder-core';
 import { type Part, type PartListUnion } from '@google/genai';
 import {
@@ -375,8 +375,8 @@ export const useGeminiStream = (
           const updatedTools = pendingHistoryItemRef.current.tools.map(
             (tool) =>
               tool.status === ToolCallStatus.Pending ||
-              tool.status === ToolCallStatus.Confirming ||
-              tool.status === ToolCallStatus.Executing
+                tool.status === ToolCallStatus.Confirming ||
+                tool.status === ToolCallStatus.Executing
                 ? { ...tool, status: ToolCallStatus.Canceled }
                 : tool,
           );
@@ -413,7 +413,7 @@ export const useGeminiStream = (
             config.getContentGeneratorConfig()?.authType,
             undefined,
             config.getModel(),
-            DEFAULT_GEMINI_FLASH_MODEL,
+            DEFAULT_THINKING_MODEL,
           ),
         },
         userMessageTimestamp,
@@ -612,7 +612,7 @@ export const useGeminiStream = (
                 config.getContentGeneratorConfig()?.authType,
                 undefined,
                 config.getModel(),
-                DEFAULT_GEMINI_FLASH_MODEL,
+                DEFAULT_THINKING_MODEL,
               ),
             },
             userMessageTimestamp,

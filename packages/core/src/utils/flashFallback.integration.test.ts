@@ -13,7 +13,7 @@ import {
   createSimulated429Error,
   resetRequestCounter,
 } from './testUtils.js';
-import { DEFAULT_GEMINI_FLASH_MODEL } from '../config/models.js';
+import { DEFAULT_THINKING_MODEL } from '../config/models.js';
 import { retryWithBackoff } from './retry.js';
 import { AuthType } from '../core/contentGenerator.js';
 
@@ -43,7 +43,7 @@ describe('Flash Fallback Integration', () => {
     // Call the handler directly to test
     const result = await config.flashFallbackHandler!(
       'gemini-2.5-pro',
-      DEFAULT_GEMINI_FLASH_MODEL,
+      DEFAULT_THINKING_MODEL,
     );
 
     // Verify it automatically accepts
@@ -64,7 +64,7 @@ describe('Flash Fallback Integration', () => {
     // Mock fallback handler
     const mockFallbackHandler = vi.fn(async (_authType?: string) => {
       fallbackCalled = true;
-      fallbackModel = DEFAULT_GEMINI_FLASH_MODEL;
+      fallbackModel = DEFAULT_THINKING_MODEL;
       return fallbackModel;
     });
 
@@ -83,7 +83,7 @@ describe('Flash Fallback Integration', () => {
 
     // Verify fallback was triggered
     expect(fallbackCalled).toBe(true);
-    expect(fallbackModel).toBe(DEFAULT_GEMINI_FLASH_MODEL);
+    expect(fallbackModel).toBe(DEFAULT_THINKING_MODEL);
     expect(mockFallbackHandler).toHaveBeenCalledWith(
       AuthType.LOGIN_WITH_GOOGLE,
       expect.any(Error),
@@ -102,7 +102,7 @@ describe('Flash Fallback Integration', () => {
     // Mock fallback handler
     const mockFallbackHandler = vi.fn(async () => {
       fallbackCalled = true;
-      return DEFAULT_GEMINI_FLASH_MODEL;
+      return DEFAULT_THINKING_MODEL;
     });
 
     // Test with API key auth type - should not trigger fallback

@@ -6,7 +6,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Config } from './config.js';
-import { DEFAULT_GEMINI_MODEL, DEFAULT_GEMINI_FLASH_MODEL } from './models.js';
+import { DEFAULT_MODEL, DEFAULT_THINKING_MODEL } from './models.js';
 
 describe('Flash Model Fallback Configuration', () => {
   let config: Config;
@@ -17,31 +17,31 @@ describe('Flash Model Fallback Configuration', () => {
       targetDir: '/test',
       debugMode: false,
       cwd: '/test',
-      model: DEFAULT_GEMINI_MODEL,
+      model: DEFAULT_MODEL,
     });
 
     // Initialize contentGeneratorConfig for testing
     (
       config as unknown as { contentGeneratorConfig: unknown }
     ).contentGeneratorConfig = {
-      model: DEFAULT_GEMINI_MODEL,
+      model: DEFAULT_MODEL,
       authType: 'oauth-personal',
     };
   });
 
   describe('setModel', () => {
     it('should update the model and mark as switched during session', () => {
-      expect(config.getModel()).toBe(DEFAULT_GEMINI_MODEL);
+      expect(config.getModel()).toBe(DEFAULT_MODEL);
       expect(config.isModelSwitchedDuringSession()).toBe(false);
 
-      config.setModel(DEFAULT_GEMINI_FLASH_MODEL);
+      config.setModel(DEFAULT_THINKING_MODEL);
 
-      expect(config.getModel()).toBe(DEFAULT_GEMINI_FLASH_MODEL);
+      expect(config.getModel()).toBe(DEFAULT_THINKING_MODEL);
       expect(config.isModelSwitchedDuringSession()).toBe(true);
     });
 
     it('should handle multiple model switches during session', () => {
-      config.setModel(DEFAULT_GEMINI_FLASH_MODEL);
+      config.setModel(DEFAULT_THINKING_MODEL);
       expect(config.isModelSwitchedDuringSession()).toBe(true);
 
       config.setModel('gemini-1.5-pro');
@@ -56,11 +56,11 @@ describe('Flash Model Fallback Configuration', () => {
         targetDir: '/test',
         debugMode: false,
         cwd: '/test',
-        model: DEFAULT_GEMINI_MODEL,
+        model: DEFAULT_MODEL,
       });
 
       // Should not crash when contentGeneratorConfig is undefined
-      newConfig.setModel(DEFAULT_GEMINI_FLASH_MODEL);
+      newConfig.setModel(DEFAULT_THINKING_MODEL);
       expect(newConfig.isModelSwitchedDuringSession()).toBe(false);
     });
   });
@@ -68,8 +68,8 @@ describe('Flash Model Fallback Configuration', () => {
   describe('getModel', () => {
     it('should return contentGeneratorConfig model if available', () => {
       // Simulate initialized content generator config
-      config.setModel(DEFAULT_GEMINI_FLASH_MODEL);
-      expect(config.getModel()).toBe(DEFAULT_GEMINI_FLASH_MODEL);
+      config.setModel(DEFAULT_THINKING_MODEL);
+      expect(config.getModel()).toBe(DEFAULT_THINKING_MODEL);
     });
 
     it('should fallback to initial model if contentGeneratorConfig is not available', () => {
@@ -97,7 +97,7 @@ describe('Flash Model Fallback Configuration', () => {
     });
 
     it('should persist switched state throughout session', () => {
-      config.setModel(DEFAULT_GEMINI_FLASH_MODEL);
+      config.setModel(DEFAULT_THINKING_MODEL);
       expect(config.isModelSwitchedDuringSession()).toBe(true);
 
       // Should remain true even after getting model
@@ -109,15 +109,15 @@ describe('Flash Model Fallback Configuration', () => {
   describe('resetModelToDefault', () => {
     it('should reset model to default and clear session switch flag', () => {
       // Switch to Flash first
-      config.setModel(DEFAULT_GEMINI_FLASH_MODEL);
-      expect(config.getModel()).toBe(DEFAULT_GEMINI_FLASH_MODEL);
+      config.setModel(DEFAULT_THINKING_MODEL);
+      expect(config.getModel()).toBe(DEFAULT_THINKING_MODEL);
       expect(config.isModelSwitchedDuringSession()).toBe(true);
 
       // Reset to default
       config.resetModelToDefault();
 
       // Should be back to default with flag cleared
-      expect(config.getModel()).toBe(DEFAULT_GEMINI_MODEL);
+      expect(config.getModel()).toBe(DEFAULT_MODEL);
       expect(config.isModelSwitchedDuringSession()).toBe(false);
     });
 
@@ -128,7 +128,7 @@ describe('Flash Model Fallback Configuration', () => {
         targetDir: '/test',
         debugMode: false,
         cwd: '/test',
-        model: DEFAULT_GEMINI_MODEL,
+        model: DEFAULT_MODEL,
       });
 
       // Should not crash when contentGeneratorConfig is undefined
