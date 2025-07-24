@@ -6,7 +6,7 @@ FROM debian:bookworm-slim
 ENV DEBIAN_FRONTEND=noninteractive
 ENV NODE_VERSION=20.12.2
 ENV NODE_VERSION_MAJOR=20
-ENV DOCKER_WREN_CODER_VERSION=26.1.3
+ENV DOCKER_VERSION=26.1.3
 ENV BUILDX_VERSION=v0.14.0
 
 # Install dependencies for adding NodeSource repository, gcloud, and other tools
@@ -51,13 +51,13 @@ RUN set -eux; \
 # Install Docker CLI
 # Download the static binary from Docker's official source
 RUN set -eux; \
-    DOCKER_WREN_CODER_ARCH=$(dpkg --print-architecture); \
-    case "${DOCKER_WREN_CODER_ARCH}" in \
-        amd64) DOCKER_WREN_CODER_ARCH_SUFFIX="x86_64" ;; \
-        arm64) DOCKER_WREN_CODER_ARCH_SUFFIX="aarch64" ;; \
-        *) echo "Unsupported architecture: ${DOCKER_WREN_CODER_ARCH}"; exit 1 ;; \
+    DOCKER_ARCH=$(dpkg --print-architecture); \
+    case "${DOCKER_ARCH}" in \
+    amd64) DOCKER_ARCH_SUFFIX="x86_64" ;; \
+    arm64) DOCKER_ARCH_SUFFIX="aarch64" ;; \
+    *) echo "Unsupported architecture: ${DOCKER_ARCH}"; exit 1 ;; \
     esac; \
-    curl -fsSL "https://download.docker.com/linux/static/stable/${DOCKER_WREN_CODER_ARCH_SUFFIX}/docker-${DOCKER_WREN_CODER_VERSION}.tgz" -o docker.tgz && \
+    curl -fsSL "https://download.docker.com/linux/static/stable/${DOCKER_ARCH_SUFFIX}/docker-${DOCKER_VERSION}.tgz" -o docker.tgz && \
     tar -xzf docker.tgz --strip-components=1 -C /usr/local/bin docker/docker && \
     rm docker.tgz && \
     # Verify installation
@@ -67,9 +67,9 @@ RUN set -eux; \
 RUN set -eux; \
     BUILDX_ARCH_DEB=$(dpkg --print-architecture); \
     case "${BUILDX_ARCH_DEB}" in \
-        amd64) BUILDX_ARCH_SUFFIX="amd64" ;; \
-        arm64) BUILDX_ARCH_SUFFIX="arm64" ;; \
-        *) echo "Unsupported architecture for Buildx: ${BUILDX_ARCH_DEB}"; exit 1 ;; \
+    amd64) BUILDX_ARCH_SUFFIX="amd64" ;; \
+    arm64) BUILDX_ARCH_SUFFIX="arm64" ;; \
+    *) echo "Unsupported architecture for Buildx: ${BUILDX_ARCH_DEB}"; exit 1 ;; \
     esac; \
     mkdir -p /usr/local/lib/docker/cli-plugins && \
     curl -fsSL "https://github.com/docker/buildx/releases/download/${BUILDX_VERSION}/buildx-${BUILDX_VERSION}.linux-${BUILDX_ARCH_SUFFIX}" -o /usr/local/lib/docker/cli-plugins/docker-buildx && \
