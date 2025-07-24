@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { MCPServerConfig } from '@cli-coder/cli-coder-core';
+import { MCPServerConfig } from '@wren/wren-coder-core';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
@@ -106,7 +106,7 @@ function loadExtension(extensionDir: string): Extension | null {
 
 function getContextFileNames(config: ExtensionConfig): string[] {
   if (!config.contextFileName) {
-    return ['QWEN.md'];
+    return ['WREN.md'];
   } else if (!Array.isArray(config.contextFileName)) {
     return [config.contextFileName];
   }

@@ -57,7 +57,7 @@ describe('loadExtensions', () => {
     const ext1 = extensions.find((e) => e.config.name === 'ext1');
     const ext2 = extensions.find((e) => e.config.name === 'ext2');
     expect(ext1?.contextFiles).toEqual([
-      path.join(workspaceExtensionsDir, 'ext1', 'QWEN.md'),
+      path.join(workspaceExtensionsDir, 'ext1', 'WREN.md'),
     ]);
     expect(ext2?.contextFiles).toEqual([]);
   });
@@ -120,7 +120,7 @@ describe('filterActiveExtensions', () => {
   });
 
   it('should log an error for unknown extensions', () => {
-    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => { });
     filterActiveExtensions(extensions, ['ext4']);
     expect(consoleSpy).toHaveBeenCalledWith('Extension not found: ext4');
     consoleSpy.mockRestore();
@@ -142,7 +142,7 @@ function createExtension(
   );
 
   if (addContextFile) {
-    fs.writeFileSync(path.join(extDir, 'QWEN.md'), 'context');
+    fs.writeFileSync(path.join(extDir, 'WREN.md'), 'context');
   }
 
   if (contextFileName) {

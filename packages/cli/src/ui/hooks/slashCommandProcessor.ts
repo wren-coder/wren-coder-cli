@@ -18,7 +18,7 @@ import {
   MCPServerStatus,
   getMCPDiscoveryState,
   getMCPServerStatus,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 import { useSessionStats } from '../contexts/SessionContext.js';
 import {
   Message,

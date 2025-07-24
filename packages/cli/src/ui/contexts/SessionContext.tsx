@@ -17,7 +17,7 @@ import {
   uiTelemetryService,
   SessionMetrics,
   ModelMetrics,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 
 // --- Interface Definitions ---
 

@@ -65,7 +65,7 @@ import {
   getMCPDiscoveryState,
   getMCPServerStatus,
   GeminiClient,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 import { useSessionStats } from '../contexts/SessionContext.js';
 import { LoadedSettings } from '../../config/settings.js';
 import * as ShowMemoryCommandModule from './useShowMemoryCommand.js';
@@ -88,9 +88,9 @@ vi.mock('open', () => ({
   default: vi.fn(),
 }));
 
-vi.mock('@cli-coder/cli-coder-core', async (importOriginal) => {
+vi.mock('@wren/wren-coder-core', async (importOriginal) => {
   const actual =
-    await importOriginal<typeof import('@cli-coder/cli-coder-core')>();
+    await importOriginal<typeof import('@wren/wren-coder-core')>();
   return {
     ...actual,
     getMCPServerStatus: vi.fn(),
@@ -179,7 +179,7 @@ describe('useSlashCommandProcessor', () => {
   const getProcessorHook = (showToolDescriptions: boolean = false) => {
     const settings = {
       merged: {
-        contextFileName: 'QWEN.md',
+        contextFileName: 'WREN.md',
       },
     } as unknown as LoadedSettings;
     return renderHook(() =>

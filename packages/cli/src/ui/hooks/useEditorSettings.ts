@@ -11,7 +11,7 @@ import {
   allowEditorTypeInSandbox,
   checkHasEditorType,
   EditorType,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 
 interface UseEditorSettingsReturn {
   isEditorDialogOpen: boolean;

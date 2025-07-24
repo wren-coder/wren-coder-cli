@@ -21,7 +21,7 @@ import {
   ToolCall,
   Status as CoreStatus,
   EditorType,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 import { useCallback, useState, useMemo } from 'react';
 import {
   HistoryItemToolGroup,

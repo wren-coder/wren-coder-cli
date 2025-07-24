@@ -15,7 +15,7 @@ import {
   SETTINGS_DIRECTORY_NAME,
 } from '../config/settings.js';
 import { promisify } from 'util';
-import { SandboxConfig } from '@cli-coder/cli-coder-core';
+import { SandboxConfig } from '@wren/wren-coder-core';
 
 const execAsync = promisify(exec);
 

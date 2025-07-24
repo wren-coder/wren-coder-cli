@@ -9,7 +9,7 @@ import { Box, Text, useInput } from 'ink';
 import { Colors } from '../colors.js';
 import { RadioButtonSelect } from './shared/RadioButtonSelect.js';
 import { LoadedSettings, SettingScope } from '../../config/settings.js';
-import { AuthType } from '@cli-coder/cli-coder-core';
+import { AuthType } from '@wren/wren-coder-core';
 import {
   validateAuthMethod,
   setOpenAIApiKey,

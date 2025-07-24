@@ -20,14 +20,14 @@ import {
   Config,
   Config as ActualConfigType,
   ApprovalMode,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 import { useInput, type Key as InkKey } from 'ink';
 
 vi.mock('ink');
 
-vi.mock('@cli-coder/cli-coder-core', async () => {
+vi.mock('@wren/wren-coder-core', async () => {
   const actualServerModule = (await vi.importActual(
-    '@cli-coder/cli-coder-core',
+    '@wren/wren-coder-core',
   )) as Record<string, unknown>;
   return {
     ...actualServerModule,

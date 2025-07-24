@@ -11,7 +11,7 @@ import { useCompletion } from './useCompletion.js';
 import * as fs from 'fs/promises';
 import { glob } from 'glob';
 import { CommandContext, SlashCommand } from '../commands/types.js';
-import { Config, FileDiscoveryService } from '@cli-coder/cli-coder-core';
+import { Config, FileDiscoveryService } from '@wren/wren-coder-core';
 
 interface MockConfig {
   getFileFilteringRespectGitIgnore: () => boolean;
@@ -21,8 +21,8 @@ interface MockConfig {
 
 // Mock dependencies
 vi.mock('fs/promises');
-vi.mock('@cli-coder/cli-coder-core', async () => {
-  const actual = await vi.importActual('@cli-coder/cli-coder-core');
+vi.mock('@wren/wren-coder-core', async () => {
+  const actual = await vi.importActual('@wren/wren-coder-core');
   return {
     ...actual,
     FileDiscoveryService: vi.fn(),

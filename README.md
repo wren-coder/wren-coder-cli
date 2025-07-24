@@ -26,7 +26,7 @@ curl -qL https://www.npmjs.com/install.sh | sh
 ### Installation
 
 ```bash
-npm install -g @cli-coder/cli-coder
+npm install -g @wren/wren-coder
 qwen --version
 ```
 

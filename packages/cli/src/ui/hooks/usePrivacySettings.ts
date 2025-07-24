@@ -10,7 +10,7 @@ import {
   Config,
   CodeAssistServer,
   UserTierId,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 
 export interface PrivacyState {
   isLoading: boolean;

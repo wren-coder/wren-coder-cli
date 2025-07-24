@@ -25,7 +25,7 @@ import {
   UnauthorizedError,
   UserPromptEvent,
   DEFAULT_GEMINI_FLASH_MODEL,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 import { type Part, type PartListUnion } from '@google/genai';
 import {
   StreamingState,

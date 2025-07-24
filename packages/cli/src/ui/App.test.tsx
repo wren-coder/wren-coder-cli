@@ -15,7 +15,7 @@ import {
   AccessibilitySettings,
   SandboxConfig,
   GeminiClient,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 import { LoadedSettings, SettingsFile, Settings } from '../config/settings.js';
 import process from 'node:process';
 import { useGeminiStream } from './hooks/useGeminiStream.js';
@@ -74,10 +74,10 @@ interface MockServerConfig {
   getUserTier: Mock<() => Promise<string | undefined>>;
 }
 
-// Mock @cli-coder/cli-coder-core and its Config class
-vi.mock('@cli-coder/cli-coder-core', async (importOriginal) => {
+// Mock @wren/wren-coder-core and its Config class
+vi.mock('@wren/wren-coder-core', async (importOriginal) => {
   const actualCore =
-    await importOriginal<typeof import('@cli-coder/cli-coder-core')>();
+    await importOriginal<typeof import('@wren/wren-coder-core')>();
   const ConfigClassMock = vi
     .fn()
     .mockImplementation((optionsPassedToConstructor) => {

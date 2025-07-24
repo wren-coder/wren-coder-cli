@@ -11,7 +11,7 @@ import {
   UserTierId,
   DEFAULT_GEMINI_FLASH_MODEL,
   isProQuotaExceededError,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 
 describe('parseAndFormatApiError', () => {
   const _enterpriseMessage =

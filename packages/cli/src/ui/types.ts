@@ -7,7 +7,7 @@
 import {
   ToolCallConfirmationDetails,
   ToolResultDisplay,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 
 // Only defining the state enum needed by the UI
 export enum StreamingState {

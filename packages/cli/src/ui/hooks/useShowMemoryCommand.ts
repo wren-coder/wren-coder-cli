@@ -5,7 +5,7 @@
  */
 
 import { Message, MessageType } from '../types.js';
-import { Config } from '@cli-coder/cli-coder-core';
+import { Config } from '@wren/wren-coder-core';
 import { LoadedSettings } from '../../config/settings.js';
 
 export function createShowMemoryAction(

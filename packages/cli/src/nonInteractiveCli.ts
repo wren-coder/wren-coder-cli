@@ -12,7 +12,7 @@ import {
   shutdownTelemetry,
   isTelemetrySdkInitialized,
   ToolResultDisplay,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 import {
   Content,
   Part,

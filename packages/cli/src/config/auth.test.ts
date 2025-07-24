@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AuthType } from '@cli-coder/cli-coder-core';
+import { AuthType } from '@wren/wren-coder-core';
 import { vi } from 'vitest';
 import { validateAuthMethod } from './auth.js';
 

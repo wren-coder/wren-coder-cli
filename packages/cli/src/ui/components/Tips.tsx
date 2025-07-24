@@ -7,7 +7,7 @@
 import React from 'react';
 import { Box, Text } from 'ink';
 import { Colors } from '../colors.js';
-import { type Config } from '@cli-coder/cli-coder-core';
+import { type Config } from '@wren/wren-coder-core';
 
 interface TipsProps {
   config: Config;
@@ -28,7 +28,7 @@ export const Tips: React.FC<TipsProps> = ({ config }) => {
         <Text color={Colors.Foreground}>
           3. Create{' '}
           <Text bold color={Colors.AccentPurple}>
-            QWEN.md
+            WREN.md
           </Text>{' '}
           files to customize your interactions with Qwen Code.
         </Text>

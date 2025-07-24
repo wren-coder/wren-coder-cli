@@ -1,5 +1,5 @@
 {
-  "name": "@cli-coder/cli-coder",
+  "name": "@wren/wren-coder",
   "version": "0.0.1-alpha.8",
   "engines": {
     "node": ">=20"
@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+http://github.com/ryanrawlingswang/cli-coder.git"
+    "url": "git+http://github.com/ryanrawlingswang/wren-coder.git"
   },
   "config": {
     "sandboxImageUri": "us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.0.1-alpha.8"
@@ -83,6 +83,6 @@
     "yargs": "^18.0.0"
   },
   "dependencies": {
-    "@cli-coder/cli-coder": "^0.0.1-alpha.8"
+    "@wren/wren-coder": "^0.0.1-alpha.8"
   }
 }

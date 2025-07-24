@@ -9,12 +9,12 @@ import * as os from 'os';
 import { loadCliConfig, parseArguments } from './config.js';
 import { Settings } from './settings.js';
 import { Extension } from './extension.js';
-import * as ServerConfig from '@cli-coder/cli-coder-core';
+import * as ServerConfig from '@wren/wren-coder-core';
 import {
   TelemetryTarget,
   ConfigParameters,
   DEFAULT_TELEMETRY_TARGET,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 
 vi.mock('os', async (importOriginal) => {
   const actualOs = await importOriginal<typeof os>();
@@ -34,9 +34,9 @@ vi.mock('read-package-up', () => ({
   ),
 }));
 
-vi.mock('@cli-coder/cli-coder-core', async () => {
+vi.mock('@wren/wren-coder-core', async () => {
   const actualServer = await vi.importActual<typeof ServerConfig>(
-    '@cli-coder/cli-coder-core',
+    '@wren/wren-coder-core',
   );
   return {
     ...actualServer,
@@ -506,7 +506,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
           name: 'ext1',
           version: '1.0.0',
         },
-        contextFiles: ['/path/to/ext1/QWEN.md'],
+        contextFiles: ['/path/to/ext1/WREN.md'],
       },
       {
         config: {
@@ -533,7 +533,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
       false,
       expect.any(Object),
       [
-        '/path/to/ext1/QWEN.md',
+        '/path/to/ext1/WREN.md',
         '/path/to/ext3/context1.md',
         '/path/to/ext3/context2.md',
       ],
@@ -551,7 +551,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
   /*
   it('should correctly use mocked homedir for global path', async () => {
     const MOCK_GEMINI_DIR_LOCAL = path.join('/mock/home/user', '.qwen');
-    const MOCK_GLOBAL_PATH_LOCAL = path.join(MOCK_GEMINI_DIR_LOCAL, 'QWEN.md');
+    const MOCK_GLOBAL_PATH_LOCAL = path.join(MOCK_GEMINI_DIR_LOCAL, 'WREN.md');
     mockFs({
       [MOCK_GLOBAL_PATH_LOCAL]: { type: 'file', content: 'GlobalContentOnly' }
     });

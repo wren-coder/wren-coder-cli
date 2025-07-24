@@ -7,7 +7,7 @@
 import React from 'react';
 import { Box, Text } from 'ink';
 import { Colors } from '../colors.js';
-import { ApprovalMode } from '@cli-coder/cli-coder-core';
+import { ApprovalMode } from '@wren/wren-coder-core';
 
 interface AutoAcceptIndicatorProps {
   approvalMode: ApprovalMode;

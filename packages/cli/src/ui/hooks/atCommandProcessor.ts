@@ -12,7 +12,7 @@ import {
   getErrorMessage,
   isNodeError,
   unescapePath,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 import {
   HistoryItem,
   IndividualToolCallDisplay,

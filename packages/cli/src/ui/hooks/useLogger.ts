@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { sessionId, Logger } from '@cli-coder/cli-coder-core';
+import { sessionId, Logger } from '@wren/wren-coder-core';
 
 /**
  * Hook to manage the logger instance.

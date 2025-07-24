@@ -18,7 +18,7 @@ import { useCompletion } from '../hooks/useCompletion.js';
 import { useKeypress, Key } from '../hooks/useKeypress.js';
 import { isAtCommand, isSlashCommand } from '../utils/commandUtils.js';
 import { CommandContext, SlashCommand } from '../commands/types.js';
-import { Config } from '@cli-coder/cli-coder-core';
+import { Config } from '@wren/wren-coder-core';
 import {
   clipboardHasImage,
   saveClipboardImage,

@@ -57,7 +57,7 @@ import {
   EditorType,
   FlashFallbackEvent,
   logFlashFallback,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 import { validateAuthMethod } from '../config/auth.js';
 import { useLogger } from './hooks/useLogger.js';
 import { StreamingContext } from './contexts/StreamingContext.js';
@@ -74,7 +74,7 @@ import {
   isProQuotaExceededError,
   isGenericQuotaExceededError,
   UserTierId,
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 import { checkForUpdates } from './utils/updateCheck.js';
 import ansiEscapes from 'ansi-escapes';
 import { OverflowProvider } from './contexts/OverflowContext.js';
@@ -229,7 +229,7 @@ const App = ({ config, settings, startupWarnings = [], version }: AppProps) => {
     addItem(
       {
         type: MessageType.INFO,
-        text: 'Refreshing hierarchical memory (QWEN.md or other context files)...',
+        text: 'Refreshing hierarchical memory (WREN.md or other context files)...',
       },
       Date.now(),
     );

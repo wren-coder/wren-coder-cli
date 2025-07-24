@@ -7,7 +7,7 @@
 import { render } from 'ink-testing-library';
 import { InputPrompt, InputPromptProps } from './InputPrompt.js';
 import type { TextBuffer } from './shared/text-buffer.js';
-import { Config } from '@cli-coder/cli-coder-core';
+import { Config } from '@wren/wren-coder-core';
 import { CommandContext, SlashCommand } from '../commands/types.js';
 import { vi } from 'vitest';
 import { useShellHistory } from '../hooks/useShellHistory.js';

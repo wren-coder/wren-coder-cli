@@ -24,7 +24,7 @@ import {
   ToolCall, // Import from core
   Status as ToolCallStatusType,
   ApprovalMode, // Import from core
-} from '@cli-coder/cli-coder-core';
+} from '@wren/wren-coder-core';
 import {
   HistoryItemWithoutId,
   ToolCallStatus,
@@ -32,8 +32,8 @@ import {
 } from '../types.js';
 
 // Mocks
-vi.mock('@cli-coder/cli-coder-core', async () => {
-  const actual = await vi.importActual('@cli-coder/cli-coder-core');
+vi.mock('@wren/wren-coder-core', async () => {
+  const actual = await vi.importActual('@wren/wren-coder-core');
   return {
     ...actual,
     ToolRegistry: vi.fn(),

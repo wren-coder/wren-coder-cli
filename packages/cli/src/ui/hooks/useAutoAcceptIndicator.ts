@@ -6,7 +6,7 @@
 
 import { useState, useEffect } from 'react';
 import { useInput } from 'ink';
-import { ApprovalMode, type Config } from '@cli-coder/cli-coder-core';
+import { ApprovalMode, type Config } from '@wren/wren-coder-core';
 
 export interface UseAutoAcceptIndicatorArgs {
   config: Config;
