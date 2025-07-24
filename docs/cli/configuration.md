@@ -6,22 +6,22 @@ Gemini CLI offers several ways to configure its behavior, including environment 
 
 Configuration is applied in the following order of precedence (lower numbers are overridden by higher numbers):
 
-1.  **Default values:** Hardcoded defaults within the application.
-2.  **User settings file:** Global settings for the current user.
-3.  **Project settings file:** Project-specific settings.
-4.  **System settings file:** System-wide settings.
-5.  **Environment variables:** System-wide or session-specific variables, potentially loaded from `.env` files.
-6.  **Command-line arguments:** Values passed when launching the CLI.
+1. **Default values:** Hardcoded defaults within the application.
+2. **User settings file:** Global settings for the current user.
+3. **Project settings file:** Project-specific settings.
+4. **System settings file:** System-wide settings.
+5. **Environment variables:** System-wide or session-specific variables, potentially loaded from `.env` files.
+6. **Command-line arguments:** Values passed when launching the CLI.
 
 ## Settings files
 
 Gemini CLI uses `settings.json` files for persistent configuration. There are three locations for these files:
 
 - **User settings file:**
-  - **Location:** `~/.qwen/settings.json` (where `~` is your home directory).
+  - **Location:** `~/.wren/settings.json` (where `~` is your home directory).
   - **Scope:** Applies to all Gemini CLI sessions for the current user.
 - **Project settings file:**
-  - **Location:** `.qwen/settings.json` within your project's root directory.
+  - **Location:** `.wren/settings.json` within your project's root directory.
   - **Scope:** Applies only when running Gemini CLI from that specific project. Project settings override user settings.
 - **System settings file:**
   - **Location:** `/etc/gemini-cli/settings.json` (Linux), `C:\ProgramData\gemini-cli\settings.json` (Windows) or `/Library/Application Support/GeminiCli/settings.json` (macOS).
@@ -33,9 +33,9 @@ Gemini CLI uses `settings.json` files for persistent configuration. There are th
 
 In addition to a project settings file, a project's `.gemini` directory can contain other project-specific files related to Gemini CLI's operation, such as:
 
-- [Custom sandbox profiles](#sandboxing) (e.g., `.qwen/sandbox-macos-custom.sb`, `.qwen/sandbox.Dockerfile`).
+- [Custom sandbox profiles](#sandboxing) (e.g., `.wren/sandbox-macos-custom.sb`, `.wren/sandbox.Dockerfile`).
 
-### Available settings in `settings.json`:
+### Available settings in `settings.json`
 
 - **`contextFileName`** (string or array of strings):
   - **Description:** Specifies the filename for context files (e.g., `GEMINI.md`, `AGENTS.md`). Can be a single filename or a list of accepted filenames.
@@ -48,6 +48,7 @@ In addition to a project settings file, a project's `.gemini` directory can cont
   - **Properties:**
     - **`urlTemplate`** (string): A URL that can contain `{title}` and `{info}` placeholders.
   - **Example:**
+
     ```json
     "bugCommand": {
       "urlTemplate": "https://bug.example.com/new?title={title}&info={info}"
@@ -61,6 +62,7 @@ In addition to a project settings file, a project's `.gemini` directory can cont
     - **`respectGitIgnore`** (boolean): Whether to respect .gitignore patterns when discovering files. When set to `true`, git-ignored files (like `node_modules/`, `dist/`, `.env`) are automatically excluded from @ commands and file listing operations.
     - **`enableRecursiveFileSearch`** (boolean): Whether to enable searching recursively for filenames under the current tree when completing @ prefixes in the prompt.
   - **Example:**
+
     ```json
     "fileFiltering": {
       "respectGitIgnore": true,
@@ -121,6 +123,7 @@ In addition to a project settings file, a project's `.gemini` directory can cont
       - `timeout` (number, optional): Timeout in milliseconds for requests to this MCP server.
       - `trust` (boolean, optional): Trust this server and bypass all tool call confirmations.
   - **Example:**
+
     ```json
     "mcpServers": {
       "myPythonServer": {
@@ -164,6 +167,7 @@ In addition to a project settings file, a project's `.gemini` directory can cont
     - **`otlpEndpoint`** (string): The endpoint for the OTLP Exporter.
     - **`logPrompts`** (boolean): Whether or not to include the content of user prompts in the logs.
   - **Example:**
+
     ```json
     "telemetry": {
       "enabled": true,
@@ -172,10 +176,12 @@ In addition to a project settings file, a project's `.gemini` directory can cont
       "logPrompts": false
     }
     ```
+
 - **`usageStatisticsEnabled`** (boolean):
   - **Description:** Enables or disables the collection of usage statistics. See [Usage Statistics](#usage-statistics) for more information.
   - **Default:** `true`
   - **Example:**
+
     ```json
     "usageStatisticsEnabled": false
     ```
@@ -202,12 +208,13 @@ In addition to a project settings file, a project's `.gemini` directory can cont
   - **Description:** Sets the maximum number of turns for a session. If the session exceeds this limit, the CLI will stop processing and start a new chat.
   - **Default:** `-1` (unlimited)
   - **Example:**
+
     ```json
     "maxSessionTurns": 10
     ```
 
 - **`enableOpenAILogging`** (boolean):
-  - **Description:** Enables or disables logging of OpenAI API calls for debugging and analysis. When enabled, all requests and responses to the OpenAI API are logged to files in the `~/.qwen/logs/` directory.
+  - **Description:** Enables or disables logging of OpenAI API calls for debugging and analysis. When enabled, all requests and responses to the OpenAI API are logged to files in the `~/.wren/logs/` directory.
   - **Default:** `false`
   - **Example:**
 
@@ -215,7 +222,7 @@ In addition to a project settings file, a project's `.gemini` directory can cont
     "enableOpenAILogging": true
     ```
 
-### Example `settings.json`:
+### Example `settings.json`
 
 ```json
 {
@@ -250,7 +257,7 @@ In addition to a project settings file, a project's `.gemini` directory can cont
 
 The CLI keeps a history of shell commands you run. To avoid conflicts between different projects, this history is stored in a project-specific directory within your user's home folder.
 
-- **Location:** `~/.qwen/tmp/<project_hash>/shell_history`
+- **Location:** `~/.wren/tmp/<project_hash>/shell_history`
   - `<project_hash>` is a unique identifier generated from your project's root path.
   - The history is stored in a file named `shell_history`.
 
@@ -260,9 +267,9 @@ Environment variables are a common way to configure applications, especially for
 
 The CLI automatically loads environment variables from an `.env` file. The loading order is:
 
-1.  `.env` file in the current working directory.
-2.  If not found, it searches upwards in parent directories until it finds an `.env` file or reaches the project root (identified by a `.git` folder) or the home directory.
-3.  If still not found, it looks for `~/.env` (in the user's home directory).
+1. `.env` file in the current working directory.
+2. If not found, it searches upwards in parent directories until it finds an `.env` file or reaches the project root (identified by a `.git` folder) or the home directory.
+3. If still not found, it looks for `~/.env` (in the user's home directory).
 
 - **`GEMINI_API_KEY`** (Required):
   - Your API key for the Gemini API.
@@ -300,7 +307,7 @@ The CLI automatically loads environment variables from an `.env` file. The loadi
   - Switches the Seatbelt (`sandbox-exec`) profile on macOS.
   - `permissive-open`: (Default) Restricts writes to the project folder (and a few other folders, see `packages/cli/src/utils/sandbox-macos-permissive-open.sb`) but allows other operations.
   - `strict`: Uses a strict profile that declines operations by default.
-  - `<profile_name>`: Uses a custom profile. To define a custom profile, create a file named `sandbox-macos-<profile_name>.sb` in your project's `.qwen/` directory (e.g., `my-project/.qwen/sandbox-macos-custom.sb`).
+  - `<profile_name>`: Uses a custom profile. To define a custom profile, create a file named `sandbox-macos-<profile_name>.sb` in your project's `.wren/` directory (e.g., `my-project/.wren/sandbox-macos-custom.sb`).
 - **`DEBUG` or `DEBUG_MODE`** (often used by underlying libraries or the CLI itself):
   - Set to `true` or `1` to enable verbose debug logging, which can be helpful for troubleshooting.
 - **`NO_COLOR`**:
@@ -397,13 +404,13 @@ Here's a conceptual example of what a context file at the root of a TypeScript p
 This example demonstrates how you can provide general project context, specific coding conventions, and even notes about particular files or components. The more relevant and precise your context files are, the better the AI can assist you. Project-specific context files are highly encouraged to establish conventions and context.
 
 - **Hierarchical Loading and Precedence:** The CLI implements a sophisticated hierarchical memory system by loading context files (e.g., `GEMINI.md`) from several locations. Content from files lower in this list (more specific) typically overrides or supplements content from files higher up (more general). The exact concatenation order and final context can be inspected using the `/memory show` command. The typical loading order is:
-  1.  **Global Context File:**
-      - Location: `~/.qwen/<contextFileName>` (e.g., `~/.qwen/GEMINI.md` in your user home directory).
+  1. **Global Context File:**
+      - Location: `~/.wren/<contextFileName>` (e.g., `~/.wren/GEMINI.md` in your user home directory).
       - Scope: Provides default instructions for all your projects.
-  2.  **Project Root & Ancestors Context Files:**
+  2. **Project Root & Ancestors Context Files:**
       - Location: The CLI searches for the configured context file in the current working directory and then in each parent directory up to either the project root (identified by a `.git` folder) or your home directory.
       - Scope: Provides context relevant to the entire project or a significant portion of it.
-  3.  **Sub-directory Context Files (Contextual/Local):**
+  3. **Sub-directory Context Files (Contextual/Local):**
       - Location: The CLI also scans for the configured context file in subdirectories _below_ the current working directory (respecting common ignore patterns like `node_modules`, `.git`, etc.).
       - Scope: Allows for highly specific instructions relevant to a particular component, module, or subsection of your project.
 - **Concatenation & UI Indication:** The contents of all found context files are concatenated (with separators indicating their origin and path) and provided as part of the system prompt to the Gemini model. The CLI footer displays the count of loaded context files, giving you a quick visual cue about the active instructional context.
@@ -426,7 +433,7 @@ Sandboxing is disabled by default, but you can enable it in a few ways:
 
 By default, it uses a pre-built `gemini-cli-sandbox` Docker image.
 
-For project-specific sandboxing needs, you can create a custom Dockerfile at `.qwen/sandbox.Dockerfile` in your project's root directory. This Dockerfile can be based on the base sandbox image:
+For project-specific sandboxing needs, you can create a custom Dockerfile at `.wren/sandbox.Dockerfile` in your project's root directory. This Dockerfile can be based on the base sandbox image:
 
 ```dockerfile
 FROM gemini-cli-sandbox
@@ -437,7 +444,7 @@ FROM gemini-cli-sandbox
 # COPY ./my-config /app/my-config
 ```
 
-When `.qwen/sandbox.Dockerfile` exists, you can use `BUILD_SANDBOX` environment variable when running Gemini CLI to automatically build the custom sandbox image:
+When `.wren/sandbox.Dockerfile` exists, you can use `BUILD_SANDBOX` environment variable when running Gemini CLI to automatically build the custom sandbox image:
 
 ```bash
 BUILD_SANDBOX=1 gemini -s

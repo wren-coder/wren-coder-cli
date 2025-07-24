@@ -223,10 +223,10 @@ export const useSlashCommandProcessor = (
       // `/help` and `/clear` have been migrated and REMOVED from this list.
       {
         name: 'docs',
-        description: 'open full Qwen Code documentation in your browser',
+        description: 'open full Wren Code documentation in your browser',
         action: async (_mainCommand, _subCommand, _args) => {
           const docsUrl =
-            'https://github.com/QwenLM/Qwen3-Coder/blob/main/README.md';
+            'https://github.com/WrenLM/Wren3-Coder/blob/main/README.md';
           if (process.env.SANDBOX && process.env.SANDBOX !== 'sandbox-exec') {
             addMessage({
               type: MessageType.INFO,
@@ -507,7 +507,7 @@ export const useSlashCommandProcessor = (
       },
       {
         name: 'tools',
-        description: 'list available Qwen Code tools',
+        description: 'list available Wren Code tools',
         action: async (_mainCommand, _subCommand, _args) => {
           // Check if the _subCommand includes a specific flag to control description visibility
           let useShowDescriptions = showToolDescriptions;

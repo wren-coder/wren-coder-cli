@@ -15,8 +15,8 @@ import { DefaultLight } from './default-light.js';
 import { DefaultDark } from './default.js';
 import { ShadesOfPurple } from './shades-of-purple.js';
 import { XCode } from './xcode.js';
-import { QwenLight } from './qwen-light.js';
-import { QwenDark } from './qwen-dark.js';
+import { WrenLight } from './wren-light.js';
+import { WrenDark } from './wren-dark.js';
 import { Theme, ThemeType } from './theme.js';
 import { ANSI } from './ansi.js';
 import { ANSILight } from './ansi-light.js';
@@ -28,7 +28,7 @@ export interface ThemeDisplay {
   type: ThemeType;
 }
 
-export const DEFAULT_THEME: Theme = QwenDark;
+export const DEFAULT_THEME: Theme = WrenDark;
 
 class ThemeManager {
   private readonly availableThemes: Theme[];
@@ -45,8 +45,8 @@ class ThemeManager {
       GitHubDark,
       GitHubLight,
       GoogleCode,
-      QwenLight,
-      QwenDark,
+      WrenLight,
+      WrenDark,
       ShadesOfPurple,
       XCode,
       ANSI,
@@ -59,12 +59,12 @@ class ThemeManager {
    * Returns a list of available theme names.
    */
   getAvailableThemes(): ThemeDisplay[] {
-    // Separate Qwen themes
-    const qwenThemes = this.availableThemes.filter(
-      (theme) => theme.name === QwenLight.name || theme.name === QwenDark.name,
+    // Separate Wren themes
+    const wrenThemes = this.availableThemes.filter(
+      (theme) => theme.name === WrenLight.name || theme.name === WrenDark.name,
     );
     const otherThemes = this.availableThemes.filter(
-      (theme) => theme.name !== QwenLight.name && theme.name !== QwenDark.name,
+      (theme) => theme.name !== WrenLight.name && theme.name !== WrenDark.name,
     );
 
     // Sort other themes by type and then name
@@ -87,8 +87,8 @@ class ThemeManager {
       return a.name.localeCompare(b.name);
     });
 
-    // Combine Qwen themes first, then sorted others
-    const sortedThemes = [...qwenThemes, ...sortedOtherThemes];
+    // Combine Wren themes first, then sorted others
+    const sortedThemes = [...wrenThemes, ...sortedOtherThemes];
 
     return sortedThemes.map((theme) => ({
       name: theme.name,

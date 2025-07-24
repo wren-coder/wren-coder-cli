@@ -50,7 +50,7 @@ vi.mock('../tools/memoryTool', () => ({
   setGeminiMdFilename: vi.fn(),
   getCurrentGeminiMdFilename: vi.fn(() => 'WREN.md'), // Mock the original filename
   DEFAULT_CONTEXT_FILENAME: 'WREN.md',
-  GEMINI_CONFIG_DIR: '.qwen',
+  GEMINI_CONFIG_DIR: '.wren',
 }));
 
 vi.mock('../core/contentGenerator.js', async (importOriginal) => {

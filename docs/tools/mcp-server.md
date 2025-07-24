@@ -51,7 +51,7 @@ The Gemini CLI uses the `mcpServers` configuration in your `settings.json` file 
 
 ### Configure the MCP server in settings.json
 
-You can configure MCP servers at the global level in the `~/.qwen/settings.json` file or in your project's root directory, create or open the `.qwen/settings.json` file. Within the file, add the `mcpServers` configuration block.
+You can configure MCP servers at the global level in the `~/.wren/settings.json` file or in your project's root directory, create or open the `.wren/settings.json` file. Within the file, add the `mcpServers` configuration block.
 
 ### Configuration Structure
 

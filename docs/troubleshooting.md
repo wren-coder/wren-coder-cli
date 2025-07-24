@@ -19,7 +19,7 @@ This guide provides solutions to common issues and debugging tips.
   - A: If installed globally via npm, update Gemini CLI using the command `npm install -g @google/gemini-cli@latest`. If run from source, pull the latest changes from the repository and rebuild using `npm run build`.
 
 - **Q: Where are Gemini CLI configuration files stored?**
-  - A: The CLI configuration is stored within two `settings.json` files: one in your home directory and one in your project's root directory. In both locations, `settings.json` is found in the `.qwen/` folder. Refer to [CLI Configuration](./cli/configuration.md) for more details.
+  - A: The CLI configuration is stored within two `settings.json` files: one in your home directory and one in your project's root directory. In both locations, `settings.json` is found in the `.wren/` folder. Refer to [CLI Configuration](./cli/configuration.md) for more details.
 
 - **Q: Why don't I see cached token counts in my stats output?**
   - A: Cached token information is only displayed when cached tokens are being used. This feature is available for API key users (Gemini API key or Vertex AI) but not for OAuth users (Google Personal/Enterprise accounts) at this time, as the Code Assist API does not support cached content creation. You can still view your total token usage with the `/stats` command.
@@ -34,15 +34,15 @@ This guide provides solutions to common issues and debugging tips.
 - **Error: Command not found (when attempting to run Gemini CLI).**
   - **Cause:** Gemini CLI is not correctly installed or not in your system's PATH.
   - **Solution:**
-    1.  Ensure Gemini CLI installation was successful.
-    2.  If installed globally, check that your npm global binary directory is in your PATH.
-    3.  If running from source, ensure you are using the correct command to invoke it (e.g., `node packages/cli/dist/index.js ...`).
+    1. Ensure Gemini CLI installation was successful.
+    2. If installed globally, check that your npm global binary directory is in your PATH.
+    3. If running from source, ensure you are using the correct command to invoke it (e.g., `node packages/cli/dist/index.js ...`).
 
 - **Error: `MODULE_NOT_FOUND` or import errors.**
   - **Cause:** Dependencies are not installed correctly, or the project hasn't been built.
   - **Solution:**
-    1.  Run `npm install` to ensure all dependencies are present.
-    2.  Run `npm run build` to compile the project.
+    1. Run `npm install` to ensure all dependencies are present.
+    2. Run `npm run build` to compile the project.
 
 - **Error: "Operation not permitted", "Permission denied", or similar.**
   - **Cause:** If sandboxing is enabled, then the application is likely attempting an operation restricted by your sandbox, such as writing outside the project directory or system temp directory.

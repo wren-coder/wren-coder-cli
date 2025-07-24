@@ -213,7 +213,7 @@ describe('App UI', () => {
       settings: settings.user || {},
     };
     const workspaceSettingsFile: SettingsFile = {
-      path: '/workspace/.qwen/settings.json',
+      path: '/workspace/.wren/settings.json',
       settings: settings.workspace || {},
     };
     return new LoadedSettings(

@@ -162,11 +162,11 @@ export function AuthDialog({
         <Text color={Colors.AccentPurple}>(Use Enter to Set Auth)</Text>
       </Box>
       <Box marginTop={1}>
-        <Text>Terms of Services and Privacy Notice for Qwen Code</Text>
+        <Text>Terms of Services and Privacy Notice for Wren Code</Text>
       </Box>
       <Box marginTop={1}>
         <Text color={Colors.AccentBlue}>
-          {'https://github.com/QwenLM/Qwen3-Coder/blob/main/README.md'}
+          {'https://github.com/WrenLM/Wren3-Coder/blob/main/README.md'}
         </Text>
       </Box>
     </Box>

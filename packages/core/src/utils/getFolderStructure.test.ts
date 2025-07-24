@@ -295,7 +295,7 @@ describe('getFolderStructure gitignore', () => {
           createDirent('file1.txt', 'file'),
           createDirent('node_modules', 'dir'),
           createDirent('ignored.txt', 'file'),
-          createDirent('.qwen', 'dir'),
+          createDirent('.wren', 'dir'),
         ] as any;
       }
       if (path === '/test/project/node_modules') {
@@ -313,7 +313,7 @@ describe('getFolderStructure gitignore', () => {
     (fs.readFileSync as Mock).mockImplementation((p) => {
       const path = p.toString();
       if (path === '/test/project/.gitignore') {
-        return 'ignored.txt\nnode_modules/\n.qwen/\n!/.qwen/config.yaml';
+        return 'ignored.txt\nnode_modules/\n.wren/\n!/.wren/config.yaml';
       }
       return '';
     });

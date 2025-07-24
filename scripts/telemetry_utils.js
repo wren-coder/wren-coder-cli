@@ -24,11 +24,11 @@ const projectHash = crypto
   .digest('hex');
 
 // User-level .gemini directory in home
-const USER_GEMINI_DIR = path.join(os.homedir(), '.qwen');
+const USER_GEMINI_DIR = path.join(os.homedir(), '.wren');
 // Project-level .gemini directory in the workspace
-const WORKSPACE_GEMINI_DIR = path.join(projectRoot, '.qwen');
+const WORKSPACE_GEMINI_DIR = path.join(projectRoot, '.wren');
 
-// Telemetry artifacts are stored in a hashed directory under the user's ~/.qwen/tmp
+// Telemetry artifacts are stored in a hashed directory under the user's ~/.wren/tmp
 export const OTEL_DIR = path.join(USER_GEMINI_DIR, 'tmp', projectHash, 'otel');
 export const BIN_DIR = path.join(OTEL_DIR, 'bin');
 

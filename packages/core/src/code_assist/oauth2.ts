@@ -53,7 +53,7 @@ const SIGN_IN_SUCCESS_URL =
 const SIGN_IN_FAILURE_URL =
   'https://developers.google.com/gemini-code-assist/auth_failure_gemini';
 
-const GEMINI_DIR = '.qwen';
+const GEMINI_DIR = '.wren';
 const CREDENTIAL_FILENAME = 'oauth_creds.json';
 
 /**
@@ -139,8 +139,8 @@ export async function getOauthClient(
     // This does basically nothing, as it isn't show to the user.
     console.log(
       `\n\nCode Assist login required.\n` +
-        `Attempting to open authentication page in your browser.\n` +
-        `Otherwise navigate to:\n\n${webLogin.authUrl}\n\n`,
+      `Attempting to open authentication page in your browser.\n` +
+      `Otherwise navigate to:\n\n${webLogin.authUrl}\n\n`,
     );
     await open(webLogin.authUrl);
     console.log('Waiting for authentication...');

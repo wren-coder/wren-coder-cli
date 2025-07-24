@@ -44,5 +44,5 @@ packages/cli/src/generated/
 logs/
 
 
-# Qwen Code Configs
-.qwen/
+# Wren Code Configs
+.wren/

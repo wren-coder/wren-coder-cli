@@ -26,7 +26,7 @@ vi.mock('os', async (importOriginal) => {
 describe('user_account', () => {
   let tempHomeDir: string;
   const accountsFile = () =>
-    path.join(tempHomeDir, '.qwen', 'google_accounts.json');
+    path.join(tempHomeDir, '.wren', 'google_accounts.json');
   beforeEach(() => {
     tempHomeDir = fs.mkdtempSync(
       path.join(os.tmpdir(), 'gemini-cli-test-home-'),
@@ -101,7 +101,7 @@ describe('user_account', () => {
       fs.writeFileSync(accountsFile(), 'not valid json');
       const consoleDebugSpy = vi
         .spyOn(console, 'debug')
-        .mockImplementation(() => {});
+        .mockImplementation(() => { });
 
       await cacheGoogleAccount('test1@google.com');
 
@@ -141,7 +141,7 @@ describe('user_account', () => {
       fs.writeFileSync(accountsFile(), '{ "active": "test@google.com"'); // Invalid JSON
       const consoleDebugSpy = vi
         .spyOn(console, 'debug')
-        .mockImplementation(() => {});
+        .mockImplementation(() => { });
 
       const account = getCachedGoogleAccount();
 
@@ -195,7 +195,7 @@ describe('user_account', () => {
       fs.writeFileSync(accountsFile(), 'invalid json');
       const consoleDebugSpy = vi
         .spyOn(console, 'debug')
-        .mockImplementation(() => {});
+        .mockImplementation(() => { });
 
       expect(getLifetimeGoogleAccounts()).toBe(0);
       expect(consoleDebugSpy).toHaveBeenCalled();

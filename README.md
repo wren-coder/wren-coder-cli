@@ -1,11 +1,11 @@
-# Qwen Code
+# Wren Code
 
-![Qwen Code Screenshot](./docs/assets/qwen-screenshot.png)
+![Wren Code Screenshot](./docs/assets/wren-screenshot.png)
 
-Qwen Code is a command-line AI workflow tool adapted from [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) (Please refer to [this document](./README.gemini.md) for more details), optimized for [Qwen3-Coder](https://github.com/QwenLM/Qwen3-Coder) models with enhanced parser support & tool support.
+Wren Code is a command-line AI workflow tool adapted from [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) (Please refer to [this document](./README.gemini.md) for more details), optimized for [Wren3-Coder](https://github.com/WrenLM/Wren3-Coder) models with enhanced parser support & tool support.
 
 > [!WARNING]
-> Qwen Code may issue multiple API calls per cycle, resulting in higher token usage, similar to Claude Code. We’re actively working to enhance API efficiency and improve the overall developer experience.
+> Wren Code may issue multiple API calls per cycle, resulting in higher token usage, similar to Claude Code. We’re actively working to enhance API efficiency and improve the overall developer experience.
 
 ## Key Features
 
@@ -27,19 +27,19 @@ curl -qL https://www.npmjs.com/install.sh | sh
 
 ```bash
 npm install -g @wren/wren-coder
-qwen --version
+wren --version
 ```
 
 Then run from anywhere:
 
 ```bash
-qwen
+wren
 ```
 
 Or you can install it from source:
 
 ```bash
-git clone https://github.com/QwenLM/cli-coder.git
+git clone https://github.com/WrenLM/cli-coder.git
 cd cli-coder
 npm install
 npm install -g .
@@ -47,7 +47,7 @@ npm install -g .
 
 ### API Configuration
 
-Set your Qwen API key (In Qwen Code project, you can also set your API key in `.env` file). the `.env` file should be placed in the root directory of your current project.
+Set your Wren API key (In Wren Code project, you can also set your API key in `.env` file). the `.env` file should be placed in the root directory of your current project.
 
 > ⚠️ **Notice:** <br>
 > **If you are in mainland China, please go to <https://bailian.console.aliyun.com/> to apply for your API key** <br>
@@ -69,7 +69,7 @@ export OPENAI_MODEL="your_api_model_here"
 
 ```sh
 cd your-project/
-qwen
+wren
 > Describe the main pieces of this system's architecture
 ```
 
@@ -121,7 +121,7 @@ qwen
 
 | Agent     | Model              | Accuracy |
 | --------- | ------------------ | -------- |
-| Qwen Code | Qwen3-Coder-480A35 | 37.5     |
+| Wren Code | Wren3-Coder-480A35 | 37.5     |
 
 ## Project Structure
 
