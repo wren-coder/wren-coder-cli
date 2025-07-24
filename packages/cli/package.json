@@ -1,7 +1,7 @@
 {
   "name": "@wren/wren-coder",
   "version": "0.0.1-alpha.8",
-  "description": "Gemini CLI",
+  "description": "Wren Coder CLI",
   "repository": {
     "type": "git",
     "url": "git+http://gitlab.alibaba-inc.com/wren-coderr/wren-coder.git"

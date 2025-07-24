@@ -538,7 +538,7 @@ export const useSlashCommandProcessor = (
           // Filter out MCP tools by checking if they have a serverName property
           const geminiTools = tools.filter((tool) => !('serverName' in tool));
 
-          let message = 'Available Gemini CLI tools:\n\n';
+          let message = 'Available Wren Coder CLI tools:\n\n';
 
           if (geminiTools.length > 0) {
             geminiTools.forEach((tool) => {
@@ -600,9 +600,8 @@ export const useSlashCommandProcessor = (
           if (process.env.SANDBOX && process.env.SANDBOX !== 'sandbox-exec') {
             sandboxEnv = process.env.SANDBOX.replace(/^gemini-(?:code-)?/, '');
           } else if (process.env.SANDBOX === 'sandbox-exec') {
-            sandboxEnv = `sandbox-exec (${
-              process.env.SEATBELT_PROFILE || 'unknown'
-            })`;
+            sandboxEnv = `sandbox-exec (${process.env.SEATBELT_PROFILE || 'unknown'
+              })`;
           }
           const modelVersion = config?.getModel() || 'Unknown';
           const cliVersion = await getCliVersion();
@@ -1196,7 +1195,7 @@ export const useSlashCommandProcessor = (
         },
         completion: legacyCmd.completion
           ? async (_context: CommandContext, _partialArg: string) =>
-              legacyCmd.completion!()
+            legacyCmd.completion!()
           : undefined,
       }),
     );

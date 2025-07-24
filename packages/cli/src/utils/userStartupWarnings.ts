@@ -39,7 +39,7 @@ const nodeVersionCheck: WarningCheck = {
     const minMajor = 20;
     const major = semver.major(process.versions.node);
     if (major < minMajor) {
-      return `You are using Node.js v${process.versions.node}. Gemini CLI requires Node.js ${minMajor} or higher for best results.`;
+      return `You are using Node.js v${process.versions.node}. Wren Coder CLI requires Node.js ${minMajor} or higher for best results.`;
     }
     return null;
   },

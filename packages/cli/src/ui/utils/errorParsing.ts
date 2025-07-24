@@ -33,18 +33,18 @@ const getRateLimitErrorMessageGoogleGenericQuotaFree = () =>
 const getRateLimitErrorMessageGooglePaid = (
   fallbackModel: string = DEFAULT_THINKING_MODEL,
 ) =>
-  `\nPossible quota limitations in place or slow response times detected. Switching to the ${fallbackModel} model for the rest of this session. We appreciate you for choosing Gemini Code Assist and the Gemini CLI.`;
+  `\nPossible quota limitations in place or slow response times detected. Switching to the ${fallbackModel} model for the rest of this session. We appreciate you for choosing Gemini Code Assist and the Wren Coder CLI.`;
 
 const getRateLimitErrorMessageGoogleProQuotaPaid = (
   currentModel: string = DEFAULT_MODEL,
   fallbackModel: string = DEFAULT_THINKING_MODEL,
 ) =>
-  `\nYou have reached your daily ${currentModel} quota limit. You will be switched to the ${fallbackModel} model for the rest of this session. We appreciate you for choosing Gemini Code Assist and the Gemini CLI. To continue accessing the ${currentModel} model today, consider using /auth to switch to using a paid API key from AI Studio at https://aistudio.google.com/apikey`;
+  `\nYou have reached your daily ${currentModel} quota limit. You will be switched to the ${fallbackModel} model for the rest of this session. We appreciate you for choosing Gemini Code Assist and the Wren Coder CLI. To continue accessing the ${currentModel} model today, consider using /auth to switch to using a paid API key from AI Studio at https://aistudio.google.com/apikey`;
 
 const getRateLimitErrorMessageGoogleGenericQuotaPaid = (
   currentModel: string = DEFAULT_MODEL,
 ) =>
-  `\nYou have reached your daily quota limit. We appreciate you for choosing Gemini Code Assist and the Gemini CLI. To continue accessing the ${currentModel} model today, consider using /auth to switch to using a paid API key from AI Studio at https://aistudio.google.com/apikey`;
+  `\nYou have reached your daily quota limit. We appreciate you for choosing Gemini Code Assist and the Wren Coder CLI. To continue accessing the ${currentModel} model today, consider using /auth to switch to using a paid API key from AI Studio at https://aistudio.google.com/apikey`;
 const RATE_LIMIT_ERROR_MESSAGE_USE_GEMINI =
   '\nPlease wait and try again later. To increase your limits, request a quota increase through AI Studio, or switch to another /auth method';
 const RATE_LIMIT_ERROR_MESSAGE_VERTEX =
@@ -70,18 +70,18 @@ function getRateLimitMessage(
       if (isProQuotaExceededError(error)) {
         return isPaidTier
           ? getRateLimitErrorMessageGoogleProQuotaPaid(
-              currentModel || DEFAULT_MODEL,
-              fallbackModel,
-            )
+            currentModel || DEFAULT_MODEL,
+            fallbackModel,
+          )
           : getRateLimitErrorMessageGoogleProQuotaFree(
-              currentModel || DEFAULT_MODEL,
-              fallbackModel,
-            );
+            currentModel || DEFAULT_MODEL,
+            fallbackModel,
+          );
       } else if (isGenericQuotaExceededError(error)) {
         return isPaidTier
           ? getRateLimitErrorMessageGoogleGenericQuotaPaid(
-              currentModel || DEFAULT_MODEL,
-            )
+            currentModel || DEFAULT_MODEL,
+          )
           : getRateLimitErrorMessageGoogleGenericQuotaFree();
       } else {
         return isPaidTier

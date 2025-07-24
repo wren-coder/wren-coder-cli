@@ -731,8 +731,8 @@ describe('useSlashCommandProcessor', () => {
       expect(commandResult).toEqual({ type: 'handled' });
     });
 
-    it('should display only Gemini CLI tools (filtering out MCP tools)', async () => {
-      // Create mock tools - some with serverName property (MCP tools) and some without (Gemini CLI tools)
+    it('should display only Wren Coder CLI tools (filtering out MCP tools)', async () => {
+      // Create mock tools - some with serverName property (MCP tools) and some without (Wren Coder CLI tools)
       const mockTools = [
         { name: 'tool1', displayName: 'Tool1' },
         { name: 'tool2', displayName: 'Tool2' },
@@ -760,7 +760,7 @@ describe('useSlashCommandProcessor', () => {
       expect(commandResult).toEqual({ type: 'handled' });
     });
 
-    it('should display a message when no Gemini CLI tools are available', async () => {
+    it('should display a message when no Wren Coder CLI tools are available', async () => {
       // Only MCP tools available
       const mockTools = [
         { name: 'mcp_tool1', serverName: 'mcp-server1' },

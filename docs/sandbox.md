@@ -1,10 +1,10 @@
-# Sandboxing in the Gemini CLI
+# Sandboxing in the Wren Coder CLI
 
-This document provides a guide to sandboxing in the Gemini CLI, including prerequisites, quickstart, and configuration.
+This document provides a guide to sandboxing in the Wren Coder CLI, including prerequisites, quickstart, and configuration.
 
 ## Prerequisites
 
-Before using sandboxing, you need to install and set up the Gemini CLI:
+Before using sandboxing, you need to install and set up the Wren Coder CLI:
 
 ```bash
 npm install -g @google/gemini-cli

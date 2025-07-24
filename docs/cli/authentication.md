@@ -4,8 +4,8 @@ The Wren Coder CLI supports multiple authentication methods. On initial startup 
 
 1. **Login with Google (Gemini Code Assist):**
    - Use this option to log in with your google account.
-   - During initial startup, Gemini CLI will direct you to a webpage for authentication. Once authenticated, your credentials will be cached locally so the web login can be skipped on subsequent runs.
-   - Note that the web login must be done in a browser that can communicate with the machine Gemini CLI is being run from. (Specifically, the browser will be redirected to a localhost url that Gemini CLI will be listening on).
+   - During initial startup, Wren Coder CLI will direct you to a webpage for authentication. Once authenticated, your credentials will be cached locally so the web login can be skipped on subsequent runs.
+   - Note that the web login must be done in a browser that can communicate with the machine Wren Coder CLI is being run from. (Specifically, the browser will be redirected to a localhost url that Wren Coder CLI will be listening on).
    - <a id="workspace-gca">Users may have to specify a GOOGLE_CLOUD_PROJECT if:</a>
      1. You have a Google Workspace account. Google Workspace is a paid service for businesses and organizations that provides a suite of productivity tools, including a custom email domain (e.g. <your-name@your-company.com>), enhanced security features, and administrative controls. These accounts are often managed by an employer or school.
      1. You have received a free Code Assist license through the [Google Developer Program](https://developers.google.com/program/plans-and-pricing) (including qualified Google Developer Experts)
@@ -19,6 +19,7 @@ The Wren Coder CLI supports multiple authentication methods. On initial startup 
      ```bash
      export GOOGLE_CLOUD_PROJECT="YOUR_PROJECT_ID"
      ```
+
      - For repeated use, you can add the environment variable to your [.env file](#persisting-environment-variables-with-env-files) or your shell's configuration file (like `~/.bashrc`, `~/.zshrc`, or `~/.profile`). For example, the following command adds the environment variable to a `~/.bashrc` file:
 
      ```bash
@@ -92,7 +93,7 @@ The Wren Coder CLI supports multiple authentication methods. On initial startup 
 
 You can create a **`.wren/.env`** file in your project directory or in your home directory. Creating a plain **`.env`** file also works, but `.wren/.env` is recommended to keep Gemini variables isolated from other tools.
 
-Gemini CLI automatically loads environment variables from the **first** `.env` file it finds, using the following search order:
+Wren Coder CLI automatically loads environment variables from the **first** `.env` file it finds, using the following search order:
 
 1. Starting in the **current directory** and moving upward toward `/`, for each directory it checks:
    1. `.wren/.env`

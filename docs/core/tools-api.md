@@ -1,6 +1,6 @@
-# Gemini CLI Core: Tools API
+# Wren Coder CLI Core: Tools API
 
-The Gemini CLI core (`packages/core`) features a robust system for defining, registering, and executing tools. These tools extend the capabilities of the Gemini model, allowing it to interact with the local environment, fetch web content, and perform various actions beyond simple text generation.
+The Wren Coder CLI core (`packages/core`) features a robust system for defining, registering, and executing tools. These tools extend the capabilities of the Gemini model, allowing it to interact with the local environment, fetch web content, and perform various actions beyond simple text generation.
 
 ## Core Concepts
 
@@ -50,24 +50,24 @@ Each of these tools extends `BaseTool` and implements the required methods for i
 
 ## Tool Execution Flow
 
-1.  **Model Request:** The Gemini model, based on the user's prompt and the provided tool schemas, decides to use a tool and returns a `FunctionCall` part in its response, specifying the tool name and arguments.
-2.  **Core Receives Request:** The core parses this `FunctionCall`.
-3.  **Tool Retrieval:** It looks up the requested tool in the `ToolRegistry`.
-4.  **Parameter Validation:** The tool's `validateToolParams()` method is called.
-5.  **Confirmation (if needed):**
+1. **Model Request:** The Gemini model, based on the user's prompt and the provided tool schemas, decides to use a tool and returns a `FunctionCall` part in its response, specifying the tool name and arguments.
+2. **Core Receives Request:** The core parses this `FunctionCall`.
+3. **Tool Retrieval:** It looks up the requested tool in the `ToolRegistry`.
+4. **Parameter Validation:** The tool's `validateToolParams()` method is called.
+5. **Confirmation (if needed):**
     - The tool's `shouldConfirmExecute()` method is called.
     - If it returns details for confirmation, the core communicates this back to the CLI, which prompts the user.
     - The user's decision (e.g., proceed, cancel) is sent back to the core.
-6.  **Execution:** If validated and confirmed (or if no confirmation is needed), the core calls the tool's `execute()` method with the provided arguments and an `AbortSignal` (for potential cancellation).
-7.  **Result Processing:** The `ToolResult` from `execute()` is received by the core.
-8.  **Response to Model:** The `llmContent` from the `ToolResult` is packaged as a `FunctionResponse` and sent back to the Gemini model so it can continue generating a user-facing response.
-9.  **Display to User:** The `returnDisplay` from the `ToolResult` is sent to the CLI to show the user what the tool did.
+6. **Execution:** If validated and confirmed (or if no confirmation is needed), the core calls the tool's `execute()` method with the provided arguments and an `AbortSignal` (for potential cancellation).
+7. **Result Processing:** The `ToolResult` from `execute()` is received by the core.
+8. **Response to Model:** The `llmContent` from the `ToolResult` is packaged as a `FunctionResponse` and sent back to the Gemini model so it can continue generating a user-facing response.
+9. **Display to User:** The `returnDisplay` from the `ToolResult` is sent to the CLI to show the user what the tool did.
 
 ## Extending with Custom Tools
 
 While direct programmatic registration of new tools by users isn't explicitly detailed as a primary workflow in the provided files for typical end-users, the architecture supports extension through:
 
-- **Command-based Discovery:** Advanced users or project administrators can define a `toolDiscoveryCommand` in `settings.json`. This command, when run by the Gemini CLI core, should output a JSON array of `FunctionDeclaration` objects. The core will then make these available as `DiscoveredTool` instances. The corresponding `toolCallCommand` would then be responsible for actually executing these custom tools.
-- **MCP Server(s):** For more complex scenarios, one or more MCP servers can be set up and configured via the `mcpServers` setting in `settings.json`. The Gemini CLI core can then discover and use tools exposed by these servers. As mentioned, if you have multiple MCP servers, the tool names will be prefixed with the server name from your configuration (e.g., `serverAlias__actualToolName`).
+- **Command-based Discovery:** Advanced users or project administrators can define a `toolDiscoveryCommand` in `settings.json`. This command, when run by the Wren Coder CLI core, should output a JSON array of `FunctionDeclaration` objects. The core will then make these available as `DiscoveredTool` instances. The corresponding `toolCallCommand` would then be responsible for actually executing these custom tools.
+- **MCP Server(s):** For more complex scenarios, one or more MCP servers can be set up and configured via the `mcpServers` setting in `settings.json`. The Wren Coder CLI core can then discover and use tools exposed by these servers. As mentioned, if you have multiple MCP servers, the tool names will be prefixed with the server name from your configuration (e.g., `serverAlias__actualToolName`).
 
-This tool system provides a flexible and powerful way to augment the Gemini model's capabilities, making the Gemini CLI a versatile assistant for a wide range of tasks.
+This tool system provides a flexible and powerful way to augment the Gemini model's capabilities, making the Wren Coder CLI a versatile assistant for a wide range of tasks.

@@ -4,7 +4,7 @@ This monorepo contains two main packages: `@google/gemini-cli` and `@google/gemi
 
 ## `@google/gemini-cli`
 
-This is the main package for the Gemini CLI. It is responsible for the user interface, command parsing, and all other user-facing functionality.
+This is the main package for the Wren Coder CLI. It is responsible for the user interface, command parsing, and all other user-facing functionality.
 
 When this package is published, it is bundled into a single executable file. This bundle includes all of the package's dependencies, including `@google/gemini-cli-core`. This means that whether a user installs the package with `npm install -g @google/gemini-cli` or runs it directly with `npx @google/gemini-cli`, they are using this single, self-contained executable.
 
@@ -22,14 +22,14 @@ This project follows a structured release process to ensure that all packages ar
 
 Releases are managed through the [release.yml](https://github.com/google-gemini/gemini-cli/actions/workflows/release.yml) GitHub Actions workflow. To perform a manual release for a patch or hotfix:
 
-1.  Navigate to the **Actions** tab of the repository.
-2.  Select the **Release** workflow from the list.
-3.  Click the **Run workflow** dropdown button.
-4.  Fill in the required inputs:
+1. Navigate to the **Actions** tab of the repository.
+2. Select the **Release** workflow from the list.
+3. Click the **Run workflow** dropdown button.
+4. Fill in the required inputs:
     - **Version**: The exact version to release (e.g., `v0.2.1`).
     - **Ref**: The branch or commit SHA to release from (defaults to `main`).
     - **Dry Run**: Leave as `true` to test the workflow without publishing, or set to `false` to perform a live release.
-5.  Click **Run workflow**.
+5. Click **Run workflow**.
 
 ## Nightly Releases
 
@@ -39,12 +39,12 @@ In addition to manual releases, this project has an automated nightly release pr
 
 Every night at midnight UTC, the [Release workflow](https://github.com/google-gemini/gemini-cli/actions/workflows/release.yml) runs automatically on a schedule. It performs the following steps:
 
-1.  Checks out the latest code from the `main` branch.
-2.  Installs all dependencies.
-3.  Runs the full suite of `preflight` checks and integration tests.
-4.  If all tests succeed, it calculates the next nightly version number (e.g., `v0.2.1-nightly.20230101`).
-5.  It then builds and publishes the packages to npm with the `nightly` dist-tag.
-6.  Finally, it creates a GitHub Release for the nightly version.
+1. Checks out the latest code from the `main` branch.
+2. Installs all dependencies.
+3. Runs the full suite of `preflight` checks and integration tests.
+4. If all tests succeed, it calculates the next nightly version number (e.g., `v0.2.1-nightly.20230101`).
+5. It then builds and publishes the packages to npm with the `nightly` dist-tag.
+6. Finally, it creates a GitHub Release for the nightly version.
 
 ### Failure Handling
 
@@ -64,9 +64,9 @@ We also run a Google cloud build called [release-docker.yml](../.gcp/release-doc
 
 After the workflow has successfully completed, you can monitor its progress in the [GitHub Actions tab](https://github.com/google-gemini/gemini-cli/actions/workflows/release.yml). Once complete, you should:
 
-1.  Go to the [pull requests page](https://github.com/google-gemini/gemini-cli/pulls) of the repository.
-2.  Create a new pull request from the `release/vX.Y.Z` branch to `main`.
-3.  Review the pull request (it should only contain version updates in `package.json` files) and merge it. This keeps the version in `main` up-to-date.
+1. Go to the [pull requests page](https://github.com/google-gemini/gemini-cli/pulls) of the repository.
+2. Create a new pull request from the `release/vX.Y.Z` branch to `main`.
+3. Review the pull request (it should only contain version updates in `package.json` files) and merge it. This keeps the version in `main` up-to-date.
 
 ## Release Validation
 
@@ -81,10 +81,10 @@ After pushing a new release smoke testing should be performed to ensure that the
 
 The above pattern for creating patch or hotfix releases from current or older commits leaves the repository in the following state:
 
-1.  The Tag (`vX.Y.Z-patch.1`): This tag correctly points to the original commit on main
+1. The Tag (`vX.Y.Z-patch.1`): This tag correctly points to the original commit on main
     that contains the stable code you intended to release. This is crucial. Anyone checking
     out this tag gets the exact code that was published.
-2.  The Branch (`release-vX.Y.Z-patch.1`): This branch contains one new commit on top of the
+2. The Branch (`release-vX.Y.Z-patch.1`): This branch contains one new commit on top of the
     tagged commit. That new commit only contains the version number change in package.json
     (and other related files like package-lock.json).
 
@@ -126,10 +126,10 @@ You typically do not merge release branches for pre-releases back into `main`.
 
 If you need to test the release process without actually publishing to NPM or creating a public GitHub release, you can trigger the workflow manually from the GitHub UI.
 
-1.  Go to the [Actions tab](https://github.com/google-gemini/gemini-cli/actions/workflows/release.yml) of the repository.
-2.  Click on the "Run workflow" dropdown.
-3.  Leave the `dry_run` option checked (`true`).
-4.  Click the "Run workflow" button.
+1. Go to the [Actions tab](https://github.com/google-gemini/gemini-cli/actions/workflows/release.yml) of the repository.
+2. Click on the "Run workflow" dropdown.
+3. Leave the `dry_run` option checked (`true`).
+4. Click the "Run workflow" button.
 
 This will run the entire release process but will skip the `npm publish` and `gh release create` steps. You can inspect the workflow logs to ensure everything is working as expected.
 
@@ -143,10 +143,10 @@ npm_package_version=9.9.9 SANDBOX_IMAGE_REGISTRY="registry" SANDBOX_IMAGE_NAME="
 
 This command will do the following:
 
-1.  Build all the packages.
-2.  Run all the prepublish scripts.
-3.  Create the package tarballs that would be published to npm.
-4.  Print a summary of the packages that would be published.
+1. Build all the packages.
+2. Run all the prepublish scripts.
+3. Create the package tarballs that would be published to npm.
+4. Print a summary of the packages that would be published.
 
 You can then inspect the generated tarballs to ensure that they contain the correct files and that the `package.json` files have been updated correctly. The tarballs will be created in the root of each package's directory (e.g., `packages/cli/google-gemini-cli-0.1.6.tgz`).
 
@@ -182,7 +182,7 @@ Stage 3: Assembling the Final Publishable Package
 This is the most critical stage where files are moved and transformed into their final state for publishing. A temporary
 `bundle` folder is created at the project root to house the final package contents.
 
-1.  The `package.json` is Transformed:
+1. The `package.json` is Transformed:
     - What happens: The package.json from packages/cli/ is read, modified, and written into the root `bundle`/ directory.
     - File movement: packages/cli/package.json -> (in-memory transformation) -> `bundle`/package.json
     - Why: The final package.json must be different from the one used in development. Key changes include:
@@ -191,7 +191,7 @@ This is the most critical stage where files are moved and transformed into their
         bundled directly into the final JavaScript file.
       - Ensuring the bin, main, and files fields point to the correct locations within the final package structure.
 
-2.  The JavaScript Bundle is Created:
+2. The JavaScript Bundle is Created:
     - What happens: The built JavaScript from both packages/core/dist and packages/cli/dist are bundled into a single,
       executable JavaScript file.
     - File movement: packages/cli/dist/index.js + packages/core/dist/index.js -> (bundled by esbuild) -> `bundle`/gemini.js (or a
@@ -199,7 +199,7 @@ This is the most critical stage where files are moved and transformed into their
     - Why: This creates a single, optimized file that contains all the necessary application code. It simplifies the package
       by removing the need for the core package to be a separate dependency on NPM, as its code is now included directly.
 
-3.  Static and Supporting Files are Copied:
+3. Static and Supporting Files are Copied:
     - What happens: Essential files that are not part of the source code but are required for the package to work correctly
       or be well-described are copied into the `bundle` directory.
     - File movement:

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script creates an alias for the Gemini CLI
+# This script creates an alias for the Wren Coder CLI
 
 # Determine the project directory
 PROJECT_DIR=$(cd "$(dirname "$0")/.." && pwd)
