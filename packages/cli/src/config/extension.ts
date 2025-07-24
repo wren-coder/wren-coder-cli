@@ -10,7 +10,7 @@ import * as path from 'path';
 import * as os from 'os';
 
 export const EXTENSIONS_DIRECTORY_NAME = path.join('.wren', 'extensions');
-export const EXTENSIONS_CONFIG_FILENAME = 'gemini-extension.json';
+export const EXTENSIONS_CONFIG_FILENAME = 'wren-extension.json';
 
 export interface Extension {
   config: ExtensionConfig;
