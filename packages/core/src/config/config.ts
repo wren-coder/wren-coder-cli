@@ -22,11 +22,7 @@ import { ShellTool } from '../tools/shell.js';
 import { WriteFileTool } from '../tools/write-file.js';
 import { WebFetchTool } from '../tools/web-fetch.js';
 import { ReadManyFilesTool } from '../tools/read-many-files.js';
-import {
-  MemoryTool,
-  setGeminiMdFilename,
-  GEMINI_CONFIG_DIR as GEMINI_DIR,
-} from '../tools/memoryTool.js';
+import { MemoryTool, setMdFilename, CONFIG_DIR } from '../tools/memoryTool.js';
 import { GeminiClient } from '../core/client.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
 import { GitService } from '../services/gitService.js';
@@ -39,10 +35,7 @@ import {
   TelemetryTarget,
   StartSessionEvent,
 } from '../telemetry/index.js';
-import {
-  DEFAULT_EMBEDDING_MODEL,
-  DEFAULT_THINKING_MODEL,
-} from './models.js';
+import { DEFAULT_EMBEDDING_MODEL, DEFAULT_THINKING_MODEL } from './models.js';
 import { ClearcutLogger } from '../telemetry/clearcut-logger/clearcut-logger.js';
 
 export enum ApprovalMode {
@@ -92,7 +85,7 @@ export class MCPServerConfig {
     readonly description?: string,
     readonly includeTools?: string[],
     readonly excludeTools?: string[],
-  ) { }
+  ) {}
 }
 
 export interface SandboxConfig {
@@ -213,8 +206,7 @@ export class Config {
 
   constructor(params: ConfigParameters) {
     this.sessionId = params.sessionId;
-    this.embeddingModel =
-      params.embeddingModel ?? DEFAULT_EMBEDDING_MODEL;
+    this.embeddingModel = params.embeddingModel ?? DEFAULT_EMBEDDING_MODEL;
     this.sandbox = params.sandbox;
     this.targetDir = path.resolve(params.targetDir);
     this.debugMode = params.debugMode;
@@ -260,7 +252,7 @@ export class Config {
     this.sampling_params = params.sampling_params;
 
     if (params.contextFileName) {
-      setGeminiMdFilename(params.contextFileName);
+      setMdFilename(params.contextFileName);
     }
 
     if (this.telemetrySettings.enabled) {
@@ -421,11 +413,11 @@ export class Config {
     this.userMemory = newUserMemory;
   }
 
-  getGeminiMdFileCount(): number {
+  getMdFileCount(): number {
     return this.geminiMdFileCount;
   }
 
-  setGeminiMdFileCount(count: number): void {
+  setMdFileCount(count: number): void {
     this.geminiMdFileCount = count;
   }
 
@@ -466,7 +458,7 @@ export class Config {
   }
 
   getGeminiDir(): string {
-    return path.join(this.targetDir, GEMINI_DIR);
+    return path.join(this.targetDir, CONFIG_DIR);
   }
 
   getProjectTempDir(): string {
@@ -549,7 +541,7 @@ export class Config {
     );
 
     this.setUserMemory(memoryContent);
-    this.setGeminiMdFileCount(fileCount);
+    this.setMdFileCount(fileCount);
 
     return { memoryContent, fileCount };
   }

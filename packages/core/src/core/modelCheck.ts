@@ -4,10 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  DEFAULT_MODEL,
-  DEFAULT_THINKING_MODEL,
-} from '../config/models.js';
+import { DEFAULT_MODEL, DEFAULT_THINKING_MODEL } from '../config/models.js';
 
 /**
  * Checks if the default "pro" model is rate-limited and returns a fallback "flash"

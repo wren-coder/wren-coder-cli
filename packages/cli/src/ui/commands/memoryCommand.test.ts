@@ -39,19 +39,19 @@ describe('memoryCommand', () => {
   describe('/memory show', () => {
     let showCommand: SlashCommand;
     let mockGetUserMemory: Mock;
-    let mockGetGeminiMdFileCount: Mock;
+    let mockGetMdFileCount: Mock;
 
     beforeEach(() => {
       showCommand = getSubCommand('show');
 
       mockGetUserMemory = vi.fn();
-      mockGetGeminiMdFileCount = vi.fn();
+      mockGetMdFileCount = vi.fn();
 
       mockContext = createMockCommandContext({
         services: {
           config: {
             getUserMemory: mockGetUserMemory,
-            getGeminiMdFileCount: mockGetGeminiMdFileCount,
+            getMdFileCount: mockGetMdFileCount,
           },
         },
       });
@@ -61,7 +61,7 @@ describe('memoryCommand', () => {
       if (!showCommand.action) throw new Error('Command has no action');
 
       mockGetUserMemory.mockReturnValue('');
-      mockGetGeminiMdFileCount.mockReturnValue(0);
+      mockGetMdFileCount.mockReturnValue(0);
 
       await showCommand.action(mockContext, '');
 
@@ -80,7 +80,7 @@ describe('memoryCommand', () => {
       const memoryContent = 'This is a test memory.';
 
       mockGetUserMemory.mockReturnValue(memoryContent);
-      mockGetGeminiMdFileCount.mockReturnValue(1);
+      mockGetMdFileCount.mockReturnValue(1);
 
       await showCommand.action(mockContext, '');
 
