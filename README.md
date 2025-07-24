@@ -2,7 +2,7 @@
 
 ![Wren Code Screenshot](./docs/assets/wren-screenshot.png)
 
-Wren Code is a command-line AI workflow tool forked from [**Qwen CLI Coder**](https://github.com/QwenLM/Qwen-Coder), which was itself a fork of [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) (Please refer to [this document](./README.gemini.md) for more details). This version is currently optimized for deepseek models with enhanced parser support & tool support. With a goal to support local models.
+Wren Code is a command-line AI workflow tool forked from [**Qwen CLI Coder**](https://github.com/QwenLM/Qwen-Code), which was itself a fork of [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) (Please refer to [this document](./README.gemini.md) for more details). This version is currently optimized for deepseek models with enhanced parser support & tool support. With a goal to support local models.
 
 > [!WARNING]
 > Wren Code may issue multiple API calls per cycle, resulting in higher token usage, similar to Claude Code. We’re actively working to enhance API efficiency and improve the overall developer experience.
@@ -142,7 +142,7 @@ If you encounter issues, check the [troubleshooting guide](docs/troubleshooting.
 
 ## Acknowledgments
 
-This project is a fork of [Qwen CLI Coder](https://github.com/QwenLM/Qwen-Coder), which was originally forked from [Google Gemini CLI](https://github.com/google-gemini/gemini-cli). We acknowledge and appreciate the excellent work of both the Gemini CLI team and the Qwen team. Our main contribution focuses on adaptations to better support Wren3-Coder models with enhanced parser and tool support.
+This project is a fork of [Qwen CLI Coder](https://github.com/QwenLM/Qwen-Code), which was originally forked from [Google Gemini CLI](https://github.com/google-gemini/gemini-cli). We acknowledge and appreciate the excellent work of both the Gemini CLI team and the Qwen team. Our main contribution focuses on adaptations to better support Wren3-Coder models with enhanced parser and tool support.
 
 ## License
 
