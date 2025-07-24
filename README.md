@@ -121,7 +121,6 @@ wren
 
 | Agent     | Model              | Accuracy |
 | --------- | ------------------ | -------- |
-| Wren Code | Wren3-Coder-480A35 | 37.5     |
 
 ## Project Structure
 
