@@ -45,7 +45,7 @@ export function AuthDialog({
     initialErrorMessage || null,
   );
   const [showOpenAIKeyPrompt, setShowOpenAIKeyPrompt] = useState(false);
-  const items = [{ label: 'OpenAI', value: AuthType.USE_OPENAI }];
+  const items = [{ label: 'OpenAI Compatible', value: AuthType.USE_OPENAI_COMPATIBLE }];
 
   const initialAuthIndex = Math.max(
     0,
@@ -72,7 +72,7 @@ export function AuthDialog({
   const handleAuthSelect = (authMethod: AuthType) => {
     const error = validateAuthMethod(authMethod);
     if (error) {
-      if (authMethod === AuthType.USE_OPENAI && !process.env.OPENAI_API_KEY) {
+      if (authMethod === AuthType.USE_OPENAI_COMPATIBLE && !process.env.OPENAI_API_KEY) {
         setShowOpenAIKeyPrompt(true);
         setErrorMessage(null);
       } else {
@@ -93,7 +93,7 @@ export function AuthDialog({
     setOpenAIBaseUrl(baseUrl);
     setOpenAIModel(model);
     setShowOpenAIKeyPrompt(false);
-    onSelect(AuthType.USE_OPENAI, SettingScope.User);
+    onSelect(AuthType.USE_OPENAI_COMPATIBLE, SettingScope.User);
   };
 
   const handleOpenAIKeyCancel = () => {

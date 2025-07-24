@@ -43,7 +43,7 @@ export enum AuthType {
   USE_GEMINI = 'gemini-api-key',
   USE_VERTEX_AI = 'vertex-ai',
   CLOUD_SHELL = 'cloud-shell',
-  USE_OPENAI = 'openai',
+  USE_OPENAI_COMPATIBLE = 'openai-compatible',
 }
 
 export type ContentGeneratorConfig = {
@@ -114,7 +114,7 @@ export async function createContentGeneratorConfig(
     return contentGeneratorConfig;
   }
 
-  if (authType === AuthType.USE_OPENAI && openaiApiKey) {
+  if (authType === AuthType.USE_OPENAI_COMPATIBLE && openaiApiKey) {
     contentGeneratorConfig.apiKey = openaiApiKey;
     contentGeneratorConfig.model = process.env.OPENAI_MODEL || '';
 
@@ -160,7 +160,7 @@ export async function createContentGenerator(
     return googleGenAI.models;
   }
 
-  if (config.authType === AuthType.USE_OPENAI) {
+  if (config.authType === AuthType.USE_OPENAI_COMPATIBLE) {
     if (!config.apiKey) {
       throw new Error('OpenAI API key is required');
     }
