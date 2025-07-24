@@ -20,7 +20,7 @@ import { Config } from '../config/config.js';
 import {
   EVENT_API_REQUEST,
   EVENT_API_RESPONSE,
-  EVENT_CLI_CONFIG,
+  EVENT_WREN_CODER_CONFIG,
   EVENT_TOOL_CALL,
   EVENT_USER_PROMPT,
   EVENT_FLASH_FALLBACK,
@@ -103,7 +103,7 @@ describe('loggers', () => {
         body: 'CLI configuration loaded.',
         attributes: {
           'session.id': 'test-session-id',
-          'event.name': EVENT_CLI_CONFIG,
+          'event.name': EVENT_WREN_CODER_CONFIG,
           'event.timestamp': '2025-01-01T00:00:00.000Z',
           model: 'test-model',
           embedding_model: 'test-embedding-model',

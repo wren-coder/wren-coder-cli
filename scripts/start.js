@@ -60,14 +60,14 @@ nodeArgs.push(...process.argv.slice(2));
 
 const env = {
   ...process.env,
-  CLI_VERSION: pkg.version,
+  WREN_CODER_VERSION: pkg.version,
   DEV: 'true',
 };
 
 if (process.env.DEBUG) {
   // If this is not set, the debugger will pause on the outer process rather
   // than the relaunched process making it harder to debug.
-  env.GEMINI_CLI_NO_RELAUNCH = 'true';
+  env.WREN_CODER_NO_RELAUNCH = 'true';
 }
 const child = spawn('node', nodeArgs, { stdio: 'inherit', env });
 

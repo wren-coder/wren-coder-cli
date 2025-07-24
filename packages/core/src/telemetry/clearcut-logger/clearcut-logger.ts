@@ -77,13 +77,13 @@ export class ClearcutLogger {
     const email = getCachedGoogleAccount();
     const totalAccounts = getLifetimeGoogleAccounts();
     data.push({
-      gemini_cli_key: EventMetadataKey.GEMINI_CLI_GOOGLE_ACCOUNTS_COUNT,
+      gemini_cli_key: EventMetadataKey.WREN_CODER_GOOGLE_ACCOUNTS_COUNT,
       value: totalAccounts.toString(),
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const logEvent: any = {
-      console_type: 'GEMINI_CLI',
+      console_type: 'CLI',
       application: 102,
       event_name: name,
       event_metadata: [data] as object[],
@@ -207,63 +207,63 @@ export class ClearcutLogger {
   logStartSessionEvent(event: StartSessionEvent): void {
     const data = [
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_START_SESSION_MODEL,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_START_SESSION_MODEL,
         value: event.model,
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_START_SESSION_EMBEDDING_MODEL,
+          EventMetadataKey.WREN_CODER_START_SESSION_EMBEDDING_MODEL,
         value: event.embedding_model,
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_START_SESSION_SANDBOX,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_START_SESSION_SANDBOX,
         value: event.sandbox_enabled.toString(),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_START_SESSION_CORE_TOOLS,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_START_SESSION_CORE_TOOLS,
         value: event.core_tools_enabled,
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_START_SESSION_APPROVAL_MODE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_START_SESSION_APPROVAL_MODE,
         value: event.approval_mode,
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_START_SESSION_API_KEY_ENABLED,
+          EventMetadataKey.WREN_CODER_START_SESSION_API_KEY_ENABLED,
         value: event.api_key_enabled.toString(),
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_START_SESSION_VERTEX_API_ENABLED,
+          EventMetadataKey.WREN_CODER_START_SESSION_VERTEX_API_ENABLED,
         value: event.vertex_ai_enabled.toString(),
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_START_SESSION_DEBUG_MODE_ENABLED,
+          EventMetadataKey.WREN_CODER_START_SESSION_DEBUG_MODE_ENABLED,
         value: event.debug_enabled.toString(),
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_START_SESSION_VERTEX_API_ENABLED,
+          EventMetadataKey.WREN_CODER_START_SESSION_VERTEX_API_ENABLED,
         value: event.vertex_ai_enabled.toString(),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_START_SESSION_MCP_SERVERS,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_START_SESSION_MCP_SERVERS,
         value: event.mcp_servers,
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_START_SESSION_VERTEX_API_ENABLED,
+          EventMetadataKey.WREN_CODER_START_SESSION_VERTEX_API_ENABLED,
         value: event.vertex_ai_enabled.toString(),
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_START_SESSION_TELEMETRY_ENABLED,
+          EventMetadataKey.WREN_CODER_START_SESSION_TELEMETRY_ENABLED,
         value: event.telemetry_enabled.toString(),
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_START_SESSION_TELEMETRY_LOG_USER_PROMPTS_ENABLED,
+          EventMetadataKey.WREN_CODER_START_SESSION_TELEMETRY_LOG_USER_PROMPTS_ENABLED,
         value: event.telemetry_log_user_prompts_enabled.toString(),
       },
     ];
@@ -277,15 +277,15 @@ export class ClearcutLogger {
   logNewPromptEvent(event: UserPromptEvent): void {
     const data = [
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_USER_PROMPT_LENGTH,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_USER_PROMPT_LENGTH,
         value: JSON.stringify(event.prompt_length),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_PROMPT_ID,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_PROMPT_ID,
         value: JSON.stringify(event.prompt_id),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_AUTH_TYPE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_AUTH_TYPE,
         value: JSON.stringify(event.auth_type),
       },
     ];
@@ -297,31 +297,31 @@ export class ClearcutLogger {
   logToolCallEvent(event: ToolCallEvent): void {
     const data = [
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_TOOL_CALL_NAME,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_TOOL_CALL_NAME,
         value: JSON.stringify(event.function_name),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_PROMPT_ID,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_PROMPT_ID,
         value: JSON.stringify(event.prompt_id),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_TOOL_CALL_DECISION,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_TOOL_CALL_DECISION,
         value: JSON.stringify(event.decision),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_TOOL_CALL_SUCCESS,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_TOOL_CALL_SUCCESS,
         value: JSON.stringify(event.success),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_TOOL_CALL_DURATION_MS,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_TOOL_CALL_DURATION_MS,
         value: JSON.stringify(event.duration_ms),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_TOOL_ERROR_MESSAGE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_TOOL_ERROR_MESSAGE,
         value: JSON.stringify(event.error),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_TOOL_CALL_ERROR_TYPE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_TOOL_CALL_ERROR_TYPE,
         value: JSON.stringify(event.error_type),
       },
     ];
@@ -334,11 +334,11 @@ export class ClearcutLogger {
   logApiRequestEvent(event: ApiRequestEvent): void {
     const data = [
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_API_REQUEST_MODEL,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_API_REQUEST_MODEL,
         value: JSON.stringify(event.model),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_PROMPT_ID,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_PROMPT_ID,
         value: JSON.stringify(event.prompt_id),
       },
     ];
@@ -350,52 +350,52 @@ export class ClearcutLogger {
   logApiResponseEvent(event: ApiResponseEvent): void {
     const data = [
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_API_RESPONSE_MODEL,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_API_RESPONSE_MODEL,
         value: JSON.stringify(event.model),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_PROMPT_ID,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_PROMPT_ID,
         value: JSON.stringify(event.prompt_id),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_API_RESPONSE_STATUS_CODE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_API_RESPONSE_STATUS_CODE,
         value: JSON.stringify(event.status_code),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_API_RESPONSE_DURATION_MS,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_API_RESPONSE_DURATION_MS,
         value: JSON.stringify(event.duration_ms),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_API_ERROR_MESSAGE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_API_ERROR_MESSAGE,
         value: JSON.stringify(event.error),
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_API_RESPONSE_INPUT_TOKEN_COUNT,
+          EventMetadataKey.WREN_CODER_API_RESPONSE_INPUT_TOKEN_COUNT,
         value: JSON.stringify(event.input_token_count),
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_API_RESPONSE_OUTPUT_TOKEN_COUNT,
+          EventMetadataKey.WREN_CODER_API_RESPONSE_OUTPUT_TOKEN_COUNT,
         value: JSON.stringify(event.output_token_count),
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_API_RESPONSE_CACHED_TOKEN_COUNT,
+          EventMetadataKey.WREN_CODER_API_RESPONSE_CACHED_TOKEN_COUNT,
         value: JSON.stringify(event.cached_content_token_count),
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_API_RESPONSE_THINKING_TOKEN_COUNT,
+          EventMetadataKey.WREN_CODER_API_RESPONSE_THINKING_TOKEN_COUNT,
         value: JSON.stringify(event.thoughts_token_count),
       },
       {
         gemini_cli_key:
-          EventMetadataKey.GEMINI_CLI_API_RESPONSE_TOOL_TOKEN_COUNT,
+          EventMetadataKey.WREN_CODER_API_RESPONSE_TOOL_TOKEN_COUNT,
         value: JSON.stringify(event.tool_token_count),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_AUTH_TYPE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_AUTH_TYPE,
         value: JSON.stringify(event.auth_type),
       },
     ];
@@ -407,27 +407,27 @@ export class ClearcutLogger {
   logApiErrorEvent(event: ApiErrorEvent): void {
     const data = [
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_API_ERROR_MODEL,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_API_ERROR_MODEL,
         value: JSON.stringify(event.model),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_PROMPT_ID,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_PROMPT_ID,
         value: JSON.stringify(event.prompt_id),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_API_ERROR_TYPE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_API_ERROR_TYPE,
         value: JSON.stringify(event.error_type),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_API_ERROR_STATUS_CODE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_API_ERROR_STATUS_CODE,
         value: JSON.stringify(event.status_code),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_API_ERROR_DURATION_MS,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_API_ERROR_DURATION_MS,
         value: JSON.stringify(event.duration_ms),
       },
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_AUTH_TYPE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_AUTH_TYPE,
         value: JSON.stringify(event.auth_type),
       },
     ];
@@ -439,7 +439,7 @@ export class ClearcutLogger {
   logFlashFallbackEvent(event: FlashFallbackEvent): void {
     const data = [
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_AUTH_TYPE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_AUTH_TYPE,
         value: JSON.stringify(event.auth_type),
       },
     ];
@@ -453,7 +453,7 @@ export class ClearcutLogger {
   logLoopDetectedEvent(event: LoopDetectedEvent): void {
     const data = [
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_LOOP_DETECTED_TYPE,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_LOOP_DETECTED_TYPE,
         value: JSON.stringify(event.loop_type),
       },
     ];
@@ -465,7 +465,7 @@ export class ClearcutLogger {
   logEndSessionEvent(event: EndSessionEvent): void {
     const data = [
       {
-        gemini_cli_key: EventMetadataKey.GEMINI_CLI_END_SESSION_ID,
+        gemini_cli_key: EventMetadataKey.WREN_CODER_END_SESSION_ID,
         value: event?.session_id?.toString() ?? '',
       },
     ];

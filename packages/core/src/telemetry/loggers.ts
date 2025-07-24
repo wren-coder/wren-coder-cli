@@ -11,7 +11,7 @@ import {
   EVENT_API_ERROR,
   EVENT_API_REQUEST,
   EVENT_API_RESPONSE,
-  EVENT_CLI_CONFIG,
+  EVENT_WREN_CODER_CONFIG,
   EVENT_TOOL_CALL,
   EVENT_USER_PROMPT,
   EVENT_FLASH_FALLBACK,
@@ -56,7 +56,7 @@ export function logCliConfiguration(
 
   const attributes: LogAttributes = {
     ...getCommonAttributes(config),
-    'event.name': EVENT_CLI_CONFIG,
+    'event.name': EVENT_WREN_CODER_CONFIG,
     'event.timestamp': new Date().toISOString(),
     model: event.model,
     embedding_model: event.embedding_model,

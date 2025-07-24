@@ -42,7 +42,7 @@ describe('loadExtensions', () => {
     fs.rmSync(tempHomeDir, { recursive: true, force: true });
   });
 
-  it('should load context file path when GEMINI.md is present', () => {
+  it('should load context file path when WREN.md is present', () => {
     const workspaceExtensionsDir = path.join(
       tempWorkspaceDir,
       EXTENSIONS_DIRECTORY_NAME,
@@ -120,7 +120,7 @@ describe('filterActiveExtensions', () => {
   });
 
   it('should log an error for unknown extensions', () => {
-    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => { });
     filterActiveExtensions(extensions, ['ext4']);
     expect(consoleSpy).toHaveBeenCalledWith('Extension not found: ext4');
     consoleSpy.mockRestore();

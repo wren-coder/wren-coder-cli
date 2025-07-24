@@ -48,9 +48,8 @@ export function createShowMemoryAction(
       const name = allNamesTheSame ? contextFileNames[0] : 'context';
       addMessage({
         type: MessageType.INFO,
-        content: `Loaded memory from ${fileCount} ${name} file${
-          fileCount > 1 ? 's' : ''
-        }.`,
+        content: `Loaded memory from ${fileCount} ${name} file${fileCount > 1 ? 's' : ''
+          }.`,
         timestamp: new Date(),
       });
     }
@@ -66,8 +65,8 @@ export function createShowMemoryAction(
         type: MessageType.INFO,
         content:
           fileCount > 0
-            ? 'Hierarchical memory (GEMINI.md or other context files) is loaded but content is empty.'
-            : 'No hierarchical memory (GEMINI.md or other context files) is currently loaded.',
+            ? 'Hierarchical memory (WREN.md or other context files) is loaded but content is empty.'
+            : 'No hierarchical memory (WREN.md or other context files) is currently loaded.',
         timestamp: new Date(),
       });
     }

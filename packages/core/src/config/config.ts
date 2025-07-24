@@ -85,7 +85,7 @@ export class MCPServerConfig {
     readonly description?: string,
     readonly includeTools?: string[],
     readonly excludeTools?: string[],
-  ) {}
+  ) { }
 }
 
 export interface SandboxConfig {
@@ -114,7 +114,7 @@ export interface ConfigParameters {
   mcpServerCommand?: string;
   mcpServers?: Record<string, MCPServerConfig>;
   userMemory?: string;
-  geminiMdFileCount?: number;
+  WrenCoderMdFileCount?: number;
   approvalMode?: ApprovalMode;
   showMemoryUsage?: boolean;
   contextFileName?: string | string[];
@@ -166,7 +166,7 @@ export class Config {
   private readonly mcpServerCommand: string | undefined;
   private readonly mcpServers: Record<string, MCPServerConfig> | undefined;
   private userMemory: string;
-  private geminiMdFileCount: number;
+  private WrenCoderMdFileCount: number;
   private approvalMode: ApprovalMode;
   private readonly showMemoryUsage: boolean;
   private readonly accessibility: AccessibilitySettings;
@@ -219,7 +219,7 @@ export class Config {
     this.mcpServerCommand = params.mcpServerCommand;
     this.mcpServers = params.mcpServers;
     this.userMemory = params.userMemory ?? '';
-    this.geminiMdFileCount = params.geminiMdFileCount ?? 0;
+    this.WrenCoderMdFileCount = params.WrenCoderMdFileCount ?? 0;
     this.approvalMode = params.approvalMode ?? ApprovalMode.DEFAULT;
     this.showMemoryUsage = params.showMemoryUsage ?? false;
     this.accessibility = params.accessibility ?? {};
@@ -414,11 +414,11 @@ export class Config {
   }
 
   getMdFileCount(): number {
-    return this.geminiMdFileCount;
+    return this.WrenCoderMdFileCount;
   }
 
   setMdFileCount(count: number): void {
-    this.geminiMdFileCount = count;
+    this.WrenCoderMdFileCount = count;
   }
 
   getApprovalMode(): ApprovalMode {

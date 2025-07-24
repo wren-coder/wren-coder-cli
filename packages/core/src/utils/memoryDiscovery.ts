@@ -84,20 +84,20 @@ async function getMdFilePathsInternal(
   extensionContextFilePaths: string[] = [],
 ): Promise<string[]> {
   const allPaths = new Set<string>();
-  const geminiMdFilenames = getAllMdFilenames();
+  const WrenCoderMdFilenames = getAllMdFilenames();
 
-  for (const geminiMdFilename of geminiMdFilenames) {
+  for (const WrenCoderMdFilename of WrenCoderMdFilenames) {
     const resolvedCwd = path.resolve(currentWorkingDirectory);
     const resolvedHome = path.resolve(userHomePath);
     const globalMemoryPath = path.join(
       resolvedHome,
       CONFIG_DIR,
-      geminiMdFilename,
+      WrenCoderMdFilename,
     );
 
     if (debugMode)
       logger.debug(
-        `Searching for ${geminiMdFilename} starting from CWD: ${resolvedCwd}`,
+        `Searching for ${WrenCoderMdFilename} starting from CWD: ${resolvedCwd}`,
       );
     if (debugMode) logger.debug(`User home directory: ${resolvedHome}`);
 
@@ -106,12 +106,12 @@ async function getMdFilePathsInternal(
       allPaths.add(globalMemoryPath);
       if (debugMode)
         logger.debug(
-          `Found readable global ${geminiMdFilename}: ${globalMemoryPath}`,
+          `Found readable global ${WrenCoderMdFilename}: ${globalMemoryPath}`,
         );
     } catch {
       if (debugMode)
         logger.debug(
-          `Global ${geminiMdFilename} not found or not readable: ${globalMemoryPath}`,
+          `Global ${WrenCoderMdFilename} not found or not readable: ${globalMemoryPath}`,
         );
     }
 
@@ -130,7 +130,7 @@ async function getMdFilePathsInternal(
       // Loop until filesystem root or currentDir is empty
       if (debugMode) {
         logger.debug(
-          `Checking for ${geminiMdFilename} in (upward scan): ${currentDir}`,
+          `Checking for ${WrenCoderMdFilename} in (upward scan): ${currentDir}`,
         );
       }
 
@@ -145,7 +145,7 @@ async function getMdFilePathsInternal(
         break;
       }
 
-      const potentialPath = path.join(currentDir, geminiMdFilename);
+      const potentialPath = path.join(currentDir, WrenCoderMdFilename);
       try {
         await fs.access(potentialPath, fsSync.constants.R_OK);
         // Add to upwardPaths only if it's not the already added globalMemoryPath
@@ -153,14 +153,14 @@ async function getMdFilePathsInternal(
           upwardPaths.unshift(potentialPath);
           if (debugMode) {
             logger.debug(
-              `Found readable upward ${geminiMdFilename}: ${potentialPath}`,
+              `Found readable upward ${WrenCoderMdFilename}: ${potentialPath}`,
             );
           }
         }
       } catch {
         if (debugMode) {
           logger.debug(
-            `Upward ${geminiMdFilename} not found or not readable in: ${currentDir}`,
+            `Upward ${WrenCoderMdFilename} not found or not readable in: ${currentDir}`,
           );
         }
       }
@@ -179,7 +179,7 @@ async function getMdFilePathsInternal(
     upwardPaths.forEach((p) => allPaths.add(p));
 
     const downwardPaths = await bfsFileSearch(resolvedCwd, {
-      fileName: geminiMdFilename,
+      fileName: WrenCoderMdFilename,
       maxDirs: MAX_DIRECTORIES_TO_SCAN_FOR_MEMORY,
       debug: debugMode,
       fileService,
@@ -187,7 +187,7 @@ async function getMdFilePathsInternal(
     downwardPaths.sort(); // Sort for consistent ordering, though hierarchy might be more complex
     if (debugMode && downwardPaths.length > 0)
       logger.debug(
-        `Found downward ${geminiMdFilename} files (sorted): ${JSON.stringify(
+        `Found downward ${WrenCoderMdFilename} files (sorted): ${JSON.stringify(
           downwardPaths,
         )}`,
       );
@@ -271,7 +271,7 @@ function concatenateInstructions(
 }
 
 /**
- * Loads hierarchical GEMINI.md files and concatenates their content.
+ * Loads hierarchical WREN.md files and concatenates their content.
  * This function is intended for use by the server.
  */
 export async function loadServerHierarchicalMemory(
@@ -295,7 +295,7 @@ export async function loadServerHierarchicalMemory(
     extensionContextFilePaths,
   );
   if (filePaths.length === 0) {
-    if (debugMode) logger.debug('No GEMINI.md files found in hierarchy.');
+    if (debugMode) logger.debug('No WREN.md files found in hierarchy.');
     return { memoryContent: '', fileCount: 0 };
   }
   const contentsWithPaths = await readMdFiles(filePaths, debugMode);
