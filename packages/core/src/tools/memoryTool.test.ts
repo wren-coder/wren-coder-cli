@@ -185,8 +185,8 @@ describe('MemoryTool', () => {
       performAddMemoryEntrySpy = vi
         .spyOn(MemoryTool, 'performAddMemoryEntry')
         .mockResolvedValue(undefined) as Mock<
-          typeof MemoryTool.performAddMemoryEntry
-        >;
+        typeof MemoryTool.performAddMemoryEntry
+      >;
       // Cast needed as spyOn returns MockInstance
     });
 

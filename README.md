@@ -119,8 +119,8 @@ wren
 
 ### Terminal-Bench
 
-| Agent     | Model              | Accuracy |
-| --------- | ------------------ | -------- |
+| Agent | Model | Accuracy |
+| ----- | ----- | -------- |
 
 ## Project Structure
 

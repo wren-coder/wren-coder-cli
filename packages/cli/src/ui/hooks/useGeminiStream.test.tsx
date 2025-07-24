@@ -16,7 +16,12 @@ import {
   TrackedExecutingToolCall,
   TrackedCancelledToolCall,
 } from './useReactToolScheduler.js';
-import { Config, EditorType, AuthType, DEFAULT_THINKING_MODEL } from '@wren/wren-coder-core';
+import {
+  Config,
+  EditorType,
+  AuthType,
+  DEFAULT_THINKING_MODEL,
+} from '@wren/wren-coder-core';
 import { Part, PartListUnion } from '@google/genai';
 import { UseHistoryManagerReturn } from './useHistoryManager.js';
 import {

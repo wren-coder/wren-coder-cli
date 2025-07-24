@@ -166,7 +166,7 @@ describe('checkNextSpeaker', () => {
   it('should return null if geminiClient.generateJson throws an error', async () => {
     const consoleWarnSpy = vi
       .spyOn(console, 'warn')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
     (chatInstance.getHistory as Mock).mockReturnValue([
       { role: 'model', parts: [{ text: 'Some model output.' }] },
     ] as Content[]);

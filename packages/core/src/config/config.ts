@@ -22,11 +22,7 @@ import { ShellTool } from '../tools/shell.js';
 import { WriteFileTool } from '../tools/write-file.js';
 import { WebFetchTool } from '../tools/web-fetch.js';
 import { ReadManyFilesTool } from '../tools/read-many-files.js';
-import {
-  MemoryTool,
-  setMdFilename,
-  CONFIG_DIR,
-} from '../tools/memoryTool.js';
+import { MemoryTool, setMdFilename, CONFIG_DIR } from '../tools/memoryTool.js';
 import { GeminiClient } from '../core/client.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
 import { GitService } from '../services/gitService.js';
@@ -39,10 +35,7 @@ import {
   TelemetryTarget,
   StartSessionEvent,
 } from '../telemetry/index.js';
-import {
-  DEFAULT_EMBEDDING_MODEL,
-  DEFAULT_THINKING_MODEL,
-} from './models.js';
+import { DEFAULT_EMBEDDING_MODEL, DEFAULT_THINKING_MODEL } from './models.js';
 import { ClearcutLogger } from '../telemetry/clearcut-logger/clearcut-logger.js';
 
 export enum ApprovalMode {
@@ -92,7 +85,7 @@ export class MCPServerConfig {
     readonly description?: string,
     readonly includeTools?: string[],
     readonly excludeTools?: string[],
-  ) { }
+  ) {}
 }
 
 export interface SandboxConfig {
@@ -213,8 +206,7 @@ export class Config {
 
   constructor(params: ConfigParameters) {
     this.sessionId = params.sessionId;
-    this.embeddingModel =
-      params.embeddingModel ?? DEFAULT_EMBEDDING_MODEL;
+    this.embeddingModel = params.embeddingModel ?? DEFAULT_EMBEDDING_MODEL;
     this.sandbox = params.sandbox;
     this.targetDir = path.resolve(params.targetDir);
     this.debugMode = params.debugMode;

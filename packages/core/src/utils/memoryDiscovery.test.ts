@@ -78,10 +78,7 @@ describe('loadServerHierarchicalMemory', () => {
   });
 
   it('should load only the global context file if present and others are not (default filename)', async () => {
-    const globalDefaultFile = path.join(
-      GLOBAL__DIR,
-      DEFAULT_CONTEXT_FILENAME,
-    );
+    const globalDefaultFile = path.join(GLOBAL__DIR, DEFAULT_CONTEXT_FILENAME);
     mockFs.access.mockImplementation(async (p) => {
       if (p === globalDefaultFile) {
         return undefined;
@@ -252,10 +249,7 @@ describe('loadServerHierarchicalMemory', () => {
       PROJECT_ROOT,
       ORIGINAL__MD_FILENAME_CONST_FOR_TEST,
     );
-    const srcFile = path.join(
-      CWD,
-      ORIGINAL__MD_FILENAME_CONST_FOR_TEST,
-    );
+    const srcFile = path.join(CWD, ORIGINAL__MD_FILENAME_CONST_FOR_TEST);
 
     mockFs.stat.mockImplementation(async (p) => {
       if (p === path.join(PROJECT_ROOT, '.git')) {
@@ -292,23 +286,14 @@ describe('loadServerHierarchicalMemory', () => {
 
     expect(memoryContent).toBe(expectedContent);
     expect(fileCount).toBe(2);
-    expect(mockFs.readFile).toHaveBeenCalledWith(
-      projectRootFile,
-      'utf-8',
-    );
+    expect(mockFs.readFile).toHaveBeenCalledWith(projectRootFile, 'utf-8');
     expect(mockFs.readFile).toHaveBeenCalledWith(srcFile, 'utf-8');
   });
 
   it('should load ORIGINAL__MD_FILENAME files by downward traversal from CWD', async () => {
     const subDir = path.join(CWD, 'subdir');
-    const subDirFile = path.join(
-      subDir,
-      ORIGINAL__MD_FILENAME_CONST_FOR_TEST,
-    );
-    const cwdFile = path.join(
-      CWD,
-      ORIGINAL__MD_FILENAME_CONST_FOR_TEST,
-    );
+    const subDirFile = path.join(subDir, ORIGINAL__MD_FILENAME_CONST_FOR_TEST);
+    const cwdFile = path.join(CWD, ORIGINAL__MD_FILENAME_CONST_FOR_TEST);
 
     mockFs.access.mockImplementation(async (p) => {
       if (p === cwdFile || p === subDirFile) return undefined;
@@ -379,15 +364,9 @@ describe('loadServerHierarchicalMemory', () => {
       PROJECT_ROOT,
       ORIGINAL__MD_FILENAME_CONST_FOR_TEST,
     );
-    const cwdFile = path.join(
-      CWD,
-      ORIGINAL__MD_FILENAME_CONST_FOR_TEST,
-    );
+    const cwdFile = path.join(CWD, ORIGINAL__MD_FILENAME_CONST_FOR_TEST);
     const subDir = path.join(CWD, 'sub');
-    const subDirFile = path.join(
-      subDir,
-      ORIGINAL__MD_FILENAME_CONST_FOR_TEST,
-    );
+    const subDirFile = path.join(subDir, ORIGINAL__MD_FILENAME_CONST_FOR_TEST);
 
     mockFs.stat.mockImplementation(async (p) => {
       if (p === path.join(PROJECT_ROOT, '.git')) {
@@ -537,16 +516,13 @@ describe('loadServerHierarchicalMemory', () => {
 
     expect(memoryContent).toBe(expectedContent);
     expect(fileCount).toBe(1);
-    expect(mockFs.readFile).not.toHaveBeenCalledWith(
-      ignoredDirFile,
-      'utf-8',
-    );
+    expect(mockFs.readFile).not.toHaveBeenCalledWith(ignoredDirFile, 'utf-8');
   });
 
   it('should respect MAX_DIRECTORIES_TO_SCAN_FOR_MEMORY during downward scan', async () => {
     const consoleDebugSpy = vi
       .spyOn(console, 'debug')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     const dirNames: Dirent[] = [];
     for (let i = 0; i < 250; i++) {

@@ -33,7 +33,7 @@ describe('OpenAIContentGenerator Timeout Handling', () => {
   beforeEach(() => {
     // Reset mocks
     vi.clearAllMocks();
-    
+
     // Save and mock environment variables to ensure consistent test behavior
     originalEnv = { ...process.env };
     delete process.env.OPENAI_BASE_URL;
@@ -66,6 +66,8 @@ describe('OpenAIContentGenerator Timeout Handling', () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    // Restore original environment
+    process.env = originalEnv;
   });
 
   describe('timeout error identification through actual requests', () => {

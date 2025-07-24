@@ -295,13 +295,13 @@ Use this tool when the user's query implies needing the content of several files
 
       const filteredEntries = respectGitIgnore
         ? fileDiscovery
-          .filterFiles(
-            entries.map((p) => path.relative(this.config.getTargetDir(), p)),
-            {
-              respectGitIgnore,
-            },
-          )
-          .map((p) => path.resolve(this.config.getTargetDir(), p))
+            .filterFiles(
+              entries.map((p) => path.relative(this.config.getTargetDir(), p)),
+              {
+                respectGitIgnore,
+              },
+            )
+            .map((p) => path.resolve(this.config.getTargetDir(), p))
         : entries;
 
       let gitIgnoredCount = 0;
