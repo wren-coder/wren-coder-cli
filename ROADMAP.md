@@ -1,61 +1,90 @@
 # Wren CLI Roadmap
 
-Wren CLI is an open-source AI agent forked from Qwen CLI Coder (which was originally forked from Gemini CLI) that brings the power of Wren3-Coder models directly into your terminal. It provides lightweight access to Wren3-Coder models, giving you the most direct path from your prompt to our model.
+Wren CLI is an open-source, model-agnostic AI agent that brings powerful coding assistance and intelligent terminal workflows to your command line. Originally forked from Qwen CLI Coder (itself derived from Gemini CLI), Wren focuses on speed, simplicity, and broad model support — with zero vendor lock-in.
 
-This document outlines our approach to the Wren CLI roadmap. Here, you'll find our guiding principles and a breakdown of the key areas we are
-focused on for development. Our roadmap is not a static list but a dynamic set of priorities that are tracked live in our GitHub Issues.
+This document outlines our approach to Wren CLI's roadmap, including our core principles and key initiatives. Our roadmap evolves over time and is actively tracked via GitHub Issues and Discussions.
 
-As an [Apache 2.0 open source project](https://github.com/WrenLM/cli-coder?tab=Apache-2.0-1-ov-file#readme), we appreciate and welcome [public contributions](https://github.com/WrenLM/cli-coder/blob/main/CONTRIBUTING.md), and will give first priority to those contributions aligned with our roadmap. If you want to propose a new feature or change to our roadmap, please start by [opening an issue for discussion](https://github.com/WrenLM/cli-coder/issues/new/choose).
+As an Apache 2.0 open source project, we welcome and prioritize public contributions aligned with this roadmap. To propose a new direction, please open an issue.
 
-## Disclaimer
+## ⚠️ Disclaimer
 
-This roadmap represents our current thinking and is for informational purposes only. It is not a commitment or a guarantee of future delivery. The development, release, and timing of any features are subject to change, and we may update the roadmap based on community discussions as well as when our priorities evolve.
+This roadmap reflects our current thinking and is subject to change. Features, releases, and priorities may shift as the project and community evolve.
 
-## Guiding Principles
+## 🎯 Guiding Principles
 
-Our development is guided by the following principles:
+### Model Agnostic by Default
+Wren is not tied to a specific provider or architecture. We aim to support any LLM accessible via an API or open protocol.
 
-- **Power & Simplicity:** Deliver access to state-of-the-art Gemini models with an intuitive and easy-to-use lightweight command-line interface.
-- **Extensibility:** An adaptable agent to help you with a variety of use cases and environments along with the ability to run these agents anywhere.
-- **Intelligent:** Gemini CLI should be reliably ranked among the best agentic tools as measured by benchmarks like SWE Bench, Terminal Bench, and CSAT.
-- **Free and Open Source:** Foster a thriving open source community where cost isn’t a barrier to personal use, and PRs get merged quickly. This means resolving and closing issues, pull requests, and discussion posts quickly.
+### CLI First, But Not CLI Only
+While Wren is a CLI-native experience, it is built to serve as the foundation for other developer surfaces and SDKs.
 
-## How the Roadmap Works
+### Composable, Reusable Agents
+We prioritize modularity and extensibility to let you customize agents for specific workflows, automation, or integrations.
 
-Our roadmap is managed directly through Github Issues. See our entry point Roadmap Issue [here](https://github.com/google-gemini/gemini-cli/issues/4191). This approach allows for transparency and gives you a direct way to learn more or get involved with any specific initiative. All our roadmap items will be tagged as Type:`Feature` and Label:`maintainer` for features we are actively working on, or Type:`Task` and Label:`maintainer` for a more detailed list of tasks.
+### Hackable and Lightweight
+Designed for fast startup, local use, and low dependency overhead.
 
-Issues are organized to provide key information at a glance:
+### Community First
+Prioritize usability, speed, and support for real-world developer workflows. Merge good PRs quickly, maintain open discussions, and keep things unblocked.
 
-- **Target Quarter:** `Milestone` denotes the anticipated delivery timeline.
-- **Feature Area:** Labels such as `area/model` or `area/tooling` categorizes the work.
-- **Issue Type:** _Workstream_ => _Epics_ => _Features_ => _Tasks|Bugs_
+## 🗺️ Roadmap Overview
 
-To see what we're working on, you can filter our issues by these dimensions. See all our items [here](https://github.com/orgs/google-gemini/projects/11/views/19)
+We divide our roadmap into three major tracks: Model Integration, Agent Experience, and Developer Platform (SDK).
 
-## Focus Areas
+### 1. Model Integration
 
-To better organize our efforts, we categorize our work into several key feature areas. These labels are used on our GitHub Issues to help you filter and
-find initiatives that interest you.
+Goal: Support as many foundation models as possible via a modular adapter pattern.
 
-- **Authentication:** Secure user access via API keys, Gemini Code Assist login etc.
-- **Model:** Support new Gemini models, multi-modality, local execution, and performance tuning.
-- **User Experience:** Improve the CLI's usability, performance, interactive features, and documentation.
-- **Tooling:** Built-in tools and the MCP ecosystem.
-- **Core:** Core functionality of the CLI
-- **Extensibility:** Bringing Gemini CLI to other surfaces e.g. GitHub.
-- **Contribution:** Improve the contribution process via test automation and CI/CD pipeline enhancements.
-- **Platform:** Manage installation, OS support, and the underlying CLI framework.
-- **Quality:** Focus on testing, reliability, performance, and overall product quality.
-- **Background Agents:** Enable long-running, autonomous tasks and proactive assistance.
-- **Security and Privacy:** For all things related to security and privacy
+| Milestone | Description |
+|-----------|-------------|
+| ✅ openai adapter | Basic support for OpenAI-compatible APIs (e.g., GPT-4, Claude via AWS Bedrock) |
+| 🔲 ollama support | Local models with streaming (Mistral, Phi, etc.) |
+| 🔲 openrouter, together.ai, groq support | Community-supported fast inference endpoints |
+| 🔲 Multi-model fallback | Let users configure priority lists, e.g. "try Claude, fallback to GPT-3.5" |
+| 🔲 Model testing CLI | Benchmark model behavior against reproducible tasks |
 
-## How to Contribute
+### 2. Agent Experience
 
-Gemini CLI is an open-source project, and we welcome contributions from the community! Whether you're a developer, a designer, or just an enthusiastic user you can find our [Community Guidelines here](https://github.com/google-gemini/gemini-cli/blob/main/CONTRIBUTING.md) to learn how to get started. There are many ways to get involved:
+Goal: Make Wren an intelligent, productive CLI companion.
 
-- **Roadmap:** Please review and find areas in our [roadmap](https://github.com/google-gemini/gemini-cli/issues/4191) that you would like to contribute to. Contributions based on this will be easiest to integrate with.
-- **Report Bugs:** If you find an issue, please create a bug(https://github.com/google-gemini/gemini-cli/issues/new?template=bug_report.yml) with as much detail as possible. If you believe it is a critical breaking issue preventing direct CLI usage, please tag it as `priorty/p0`.
-- **Suggest Features:** Have a great idea? We'd love to hear it! Open a [feature request](https://github.com/google-gemini/gemini-cli/issues/new?template=feature_request.yml).
-- **Contribute Code:** Check out our [CONTRIBUTING.md](https://github.com/google-gemini/gemini-cli/blob/main/CONTRIBUTING.md) file for guidelines on how to submit pull requests. We have a list of "good first issues" for new contributors.
-- **Write Documentation:** Help us improve our documentation, tutorials, and examples.
-  We are excited about the future of Gemini CLI and look forward to building it with you!
+| Milestone | Description |
+|-----------|-------------|
+| ✅ Streaming + tool mode | Supports basic I/O and streaming output |
+| 🔲 REPL improvements | Inline history, undo/redo, scratchpad memory |
+| 🔲 File-aware workflows | Pass context-aware files automatically |
+| 🔲 Long-running agents | Background tasks with state (like `wren watch`, `wren plan`) |
+| 🔲 Autonomy primitives | Planning, retries, follow-ups |
+| 🔲 Prompt engineering UX | Aliases, macros, prompt editing commands |
+
+### 3. Developer Platform (SDK)
+
+Goal: Build an SDK on top of Wren that other apps and agents can reuse — like a Claude Code for all models.
+
+| Milestone | Description |
+|-----------|-------------|
+| 🔲 Agent SDK (alpha) | Extract reusable agent logic into a package (e.g. `@wren/sdk`) |
+| 🔲 Task tree / plan executor | Fork+join tasks, retry logic, conditional follow-ups |
+| 🔲 Agent adapters | Use Wren as a shell plugin, GitHub bot, or Slack command |
+| 🔲 Shared memory store | Bring-your-own-memory backend for session persistence |
+| 🔲 Web REPL & REST API | Lightweight headless server mode for agent endpoints |
+
+## 🗓️ Release Timeline (Tentative)
+
+| Quarter | Focus |
+|---------|-------|
+| Q3 2025 | v1.0: OpenAI support, CLI polish, REPL upgrade |
+| Q4 2025 | Plugins, background agents, local model adapters |
+| Q1 2026 | SDK stable, external integrations, long-running memory |
+| Q2 2026 | Hosted UI, REST endpoints, hosted SaaS fork (if applicable) |
+
+## 🤝 Contribution Guide
+
+You can help by:
+
+- Reporting bugs or broken behavior
+- Contributing code (see `good first issue` label)
+- Suggesting and testing new model adapters
+- Helping build SDK examples and demos
+- Improving docs and tutorials
+
+👉 See CONTRIBUTING.md for setup instructions and style guidelines.
