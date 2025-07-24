@@ -2,7 +2,7 @@
 
 ![Wren Code Screenshot](./docs/assets/wren-screenshot.png)
 
-Wren Code is a command-line AI workflow tool adapted from [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) (Please refer to [this document](./README.gemini.md) for more details), optimized for [Wren3-Coder](https://github.com/WrenLM/Wren3-Coder) models with enhanced parser support & tool support.
+Wren Code is a command-line AI workflow tool forked from [**Qwen CLI Coder**](https://github.com/QwenLM/Qwen-Coder), which was itself a fork of [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) (Please refer to [this document](./README.gemini.md) for more details). This version is currently optimized for deepseek models with enhanced parser support & tool support. With a goal to support local models.
 
 > [!WARNING]
 > Wren Code may issue multiple API calls per cycle, resulting in higher token usage, similar to Claude Code. We’re actively working to enhance API efficiency and improve the overall developer experience.
@@ -39,7 +39,7 @@ wren
 Or you can install it from source:
 
 ```bash
-git clone https://github.com/WrenLM/cli-coder.git
+git clone https://github.com/ryanrawlingswang/wren-coder.git
 cd cli-coder
 npm install
 npm install -g .
@@ -143,7 +143,7 @@ If you encounter issues, check the [troubleshooting guide](docs/troubleshooting.
 
 ## Acknowledgments
 
-This project is based on [Google Gemini CLI](https://github.com/google-gemini/gemini-cli). We acknowledge and appreciate the excellent work of the Gemini CLI team. Our main contribution focuses on parser-level adaptations to better support cli-coderr models.
+This project is a fork of [Qwen CLI Coder](https://github.com/QwenLM/Qwen-Coder), which was originally forked from [Google Gemini CLI](https://github.com/google-gemini/gemini-cli). We acknowledge and appreciate the excellent work of both the Gemini CLI team and the Qwen team. Our main contribution focuses on adaptations to better support Wren3-Coder models with enhanced parser and tool support.
 
 ## License
 
