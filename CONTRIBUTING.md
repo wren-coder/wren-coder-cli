@@ -99,7 +99,7 @@ To clone the repository:
 
 ```bash
 git clone https://github.com/ryanrawlingswang/wren-coder.git
-cd cli-coder
+cd wren-coder
 ```
 
 To install dependencies defined in `package.json` as well as root dependencies:
@@ -136,7 +136,7 @@ To start the Wren CLI from the source code (after building), run the following c
 npm start
 ```
 
-If you'd like to run the source build outside of the cli-coder folder you can utilize `npm link path/to/cli-coder/packages/cli` (see: [docs](https://docs.npmjs.com/cli/v9/commands/npm-link)) or `alias wren="node path/to/cli-coder/packages/cli"` to run with `wren`
+If you'd like to run the source build outside of the wren-coder folder you can utilize `npm link path/to/wren-coder/packages/cli` (see: [docs](https://docs.npmjs.com/cli/v9/commands/npm-link)) or `alias wren="node path/to/wren-coder/packages/cli"` to run with `wren`
 
 ### Running Tests
 

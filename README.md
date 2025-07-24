@@ -11,7 +11,7 @@ Wren Code is a command-line AI workflow tool forked from [**Qwen CLI Coder**](ht
 
 - **Code Understanding & Editing** - Query and edit large codebases beyond traditional context window limits
 - **Workflow Automation** - Automate operational tasks like handling pull requests and complex rebases
-- **Enhanced Parser** - Adapted parser specifically optimized for cli-coderr models
+- **Enhanced Parser** - Adapted parser specifically optimized for wren-coderr models
 
 ## Quick Start
 
@@ -40,7 +40,7 @@ Or you can install it from source:
 
 ```bash
 git clone https://github.com/ryanrawlingswang/wren-coder.git
-cd cli-coder
+cd wren-coder
 npm install
 npm install -g .
 ```
@@ -125,7 +125,7 @@ wren
 ## Project Structure
 
 ```
-cli-coder/
+wren-coder/
 ├── packages/           # Core packages
 ├── docs/              # Documentation
 ├── examples/          # Example code

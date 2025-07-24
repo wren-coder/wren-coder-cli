@@ -4,7 +4,7 @@
   "description": "Gemini CLI",
   "repository": {
     "type": "git",
-    "url": "git+http://gitlab.alibaba-inc.com/cli-coderr/cli-coder.git"
+    "url": "git+http://gitlab.alibaba-inc.com/wren-coderr/wren-coder.git"
   },
   "type": "module",
   "main": "dist/index.js",

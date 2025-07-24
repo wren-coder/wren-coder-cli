@@ -26,11 +26,11 @@ export const USER_SETTINGS_PATH = path.join(USER_SETTINGS_DIR, 'settings.json');
 
 function getSystemSettingsPath(): string {
   if (platform() === 'darwin') {
-    return '/Library/Application Support/WrenCode/settings.json';
+    return '/Library/Application Support/WrenCoder/settings.json';
   } else if (platform() === 'win32') {
-    return 'C:\\ProgramData\\cli-coder\\settings.json';
+    return 'C:\\ProgramData\\wren-coder\\settings.json';
   } else {
-    return '/etc/cli-coder/settings.json';
+    return '/etc/wren-coder/settings.json';
   }
 }
 
