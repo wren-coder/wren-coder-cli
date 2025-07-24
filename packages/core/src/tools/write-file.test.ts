@@ -193,6 +193,28 @@ describe('WriteFileTool', () => {
         `Path is a directory, not a file: ${dirAsFilePath}`,
       );
     });
+
+    it('should return error for missing file_path parameter', () => {
+      const params = { content: 'hello' } as WriteFileToolParams;
+      expect(tool.validateToolParams(params)).toMatch(
+        /params must have required property 'file_path'/,
+      );
+    });
+
+    it('should return error for missing content parameter', () => {
+      const params = { file_path: path.join(rootDir, 'test.txt') } as WriteFileToolParams;
+      expect(tool.validateToolParams(params)).toMatch(
+        /params must have required property 'content'/,
+      );
+    });
+
+    it('should return error for missing both required parameters', () => {
+      const params = {} as WriteFileToolParams;
+      const error = tool.validateToolParams(params);
+      expect(error).toMatch(/params must have required property/);
+      // Should mention at least one of the missing required properties
+      expect(error).toMatch(/file_path|content/);
+    });
   });
 
   describe('_getCorrectedFileContent', () => {
@@ -614,6 +636,47 @@ describe('WriteFileTool', () => {
       const result = await tool.execute(params, abortSignal);
 
       expect(result.llmContent).not.toMatch(/User modified the `content`/);
+    });
+  });
+
+  describe('getDescription', () => {
+    it('should return a proper description for valid parameters', () => {
+      const params = {
+        file_path: path.join(rootDir, 'test.txt'),
+        content: 'hello world',
+      };
+      const description = tool.getDescription(params);
+      expect(description).toBe('Writing to test.txt');
+    });
+
+    it('should return error message for missing file_path', () => {
+      const params = { content: 'hello' } as WriteFileToolParams;
+      const description = tool.getDescription(params);
+      expect(description).toBe('Model did not provide valid parameters for write file tool');
+    });
+
+    it('should return error message for missing content', () => {
+      const params = { file_path: path.join(rootDir, 'test.txt') } as WriteFileToolParams;
+      const description = tool.getDescription(params);
+      expect(description).toBe('Model did not provide valid parameters for write file tool');
+    });
+
+    it('should return error message for missing both parameters', () => {
+      const params = {} as WriteFileToolParams;
+      const description = tool.getDescription(params);
+      expect(description).toBe('Model did not provide valid parameters for write file tool');
+    });
+
+    it('should return error message for empty file_path', () => {
+      const params = { file_path: '', content: 'hello' };
+      const description = tool.getDescription(params);
+      expect(description).toBe('Model did not provide valid parameters for write file tool');
+    });
+
+    it('should return error message for empty content', () => {
+      const params = { file_path: path.join(rootDir, 'test.txt'), content: '' };
+      const description = tool.getDescription(params);
+      expect(description).toBe('Model did not provide valid parameters for write file tool');
     });
   });
 });
