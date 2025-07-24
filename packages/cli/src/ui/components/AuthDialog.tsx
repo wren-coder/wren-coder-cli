@@ -167,7 +167,7 @@ export function AuthDialog({
         <Text color={Colors.AccentPurple}>(Use Enter to Set Auth)</Text>
       </Box>
       <Box marginTop={1}>
-        <Text>Terms of Services and Privacy Notice for Wren Code</Text>
+        <Text>Terms of Services and Privacy Notice for Wren Coder</Text>
       </Box>
       <Box marginTop={1}>
         <Text color={Colors.AccentBlue}>

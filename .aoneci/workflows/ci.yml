@@ -1,6 +1,6 @@
 # .aoneci/workflows/ci.yml
 
-name: Wren Code CI
+name: Wren Coder CI
 
 triggers:
   push:

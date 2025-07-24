@@ -1,6 +1,6 @@
 # Authentication Setup
 
-The Wren Code CLI supports multiple authentication methods. On initial startup you'll need to configure **one** of the following authentication methods:
+The Wren Coder CLI supports multiple authentication methods. On initial startup you'll need to configure **one** of the following authentication methods:
 
 1. **Login with Google (Gemini Code Assist):**
    - Use this option to log in with your google account.
@@ -19,6 +19,7 @@ The Wren Code CLI supports multiple authentication methods. On initial startup y
      ```bash
      export GOOGLE_CLOUD_PROJECT="YOUR_PROJECT_ID"
      ```
+
      - For repeated use, you can add the environment variable to your [.env file](#persisting-environment-variables-with-env-files) or your shell's configuration file (like `~/.bashrc`, `~/.zshrc`, or `~/.profile`). For example, the following command adds the environment variable to a `~/.bashrc` file:
 
      ```bash

@@ -169,7 +169,7 @@ export class GeminiClient {
       fileService: this.config.getFileService(),
     });
     const context = `
-  This is the Wren Code. We are setting up the context for our chat.
+  This is the Wren Coder. We are setting up the context for our chat.
   Today's date is ${today}.
   My operating system is: ${platform}
   I'm currently working in the directory: ${cwd}
@@ -243,11 +243,11 @@ export class GeminiClient {
         this.config.getModel(),
       )
         ? {
-            ...this.generateContentConfig,
-            thinkingConfig: {
-              includeThoughts: true,
-            },
-          }
+          ...this.generateContentConfig,
+          thinkingConfig: {
+            includeThoughts: true,
+          },
+        }
         : this.generateContentConfig;
       return new GeminiChat(
         this.config,

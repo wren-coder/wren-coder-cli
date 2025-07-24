@@ -1,7 +1,7 @@
 {
   "name": "@wren/wren-coder-core",
   "version": "0.0.1-alpha.8",
-  "description": "Wren Code Core",
+  "description": "Wren Coder Core",
   "repository": {
     "type": "git",
     "url": "git+http://gitlab.alibaba-inc.com/wren-coderr/wren-coder.git"

@@ -66,7 +66,7 @@ export async function parseArguments(): Promise<CliArgs> {
     .scriptName('wren')
     .usage(
       '$0 [options]',
-      'Wren Code - Launch an interactive CLI, use -p/--prompt for non-interactive mode',
+      'Wren Coder - Launch an interactive CLI, use -p/--prompt for non-interactive mode',
     )
     .option('model', {
       alias: 'm',

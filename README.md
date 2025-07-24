@@ -1,11 +1,11 @@
-# Wren Code
+# Wren Coder
 
-![Wren Code Screenshot](./docs/assets/wren-screenshot.png)
+![Wren Coder Screenshot](./docs/assets/wren-screenshot.png)
 
-Wren Code is a command-line AI workflow tool forked from [**Qwen CLI Coder**](https://github.com/QwenLM/Qwen-Code), which was itself a fork of [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) (Please refer to [this document](./README.gemini.md) for more details). This version is currently optimized for deepseek models with enhanced parser support & tool support. With a goal to support local models.
+Wren Coder is a command-line AI workflow tool forked from [**Qwen CLI Coder**](https://github.com/QwenLM/Qwen-Code), which was itself a fork of [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) (Please refer to [this document](./README.gemini.md) for more details). This version is currently optimized for deepseek models with enhanced parser support & tool support. With a goal to support local models.
 
 > [!WARNING]
-> Wren Code may issue multiple API calls per cycle, resulting in higher token usage, similar to Claude Code. We’re actively working to enhance API efficiency and improve the overall developer experience.
+> Wren Coder may issue multiple API calls per cycle, resulting in higher token usage, similar to Claude Code. We’re actively working to enhance API efficiency and improve the overall developer experience.
 
 ## Key Features
 
@@ -47,7 +47,7 @@ npm install -g .
 
 ### API Configuration
 
-Set your Wren API key (In Wren Code project, you can also set your API key in `.env` file). the `.env` file should be placed in the root directory of your current project.
+Set your Wren API key (In Wren Coder project, you can also set your API key in `.env` file). the `.env` file should be placed in the root directory of your current project.
 
 > ⚠️ **Notice:** <br>
 > **If you are in mainland China, please go to <https://bailian.console.aliyun.com/> to apply for your API key** <br>

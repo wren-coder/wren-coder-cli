@@ -1,6 +1,6 @@
 # OpenAI Authentication
 
-Wren Code CLI supports OpenAI authentication for users who want to use OpenAI models instead of Google's Gemini models.
+Wren Coder CLI supports OpenAI authentication for users who want to use OpenAI models instead of Google's Gemini models.
 
 ## Authentication Methods
 

@@ -223,7 +223,7 @@ export const useSlashCommandProcessor = (
       // `/help` and `/clear` have been migrated and REMOVED from this list.
       {
         name: 'docs',
-        description: 'open full Wren Code documentation in your browser',
+        description: 'open full Wren Coder documentation in your browser',
         action: async (_mainCommand, _subCommand, _args) => {
           const docsUrl =
             'https://github.com/ryanrawlingswang/wren-coder/blob/main/README.md';
@@ -507,7 +507,7 @@ export const useSlashCommandProcessor = (
       },
       {
         name: 'tools',
-        description: 'list available Wren Code tools',
+        description: 'list available Wren Coder tools',
         action: async (_mainCommand, _subCommand, _args) => {
           // Check if the _subCommand includes a specific flag to control description visibility
           let useShowDescriptions = showToolDescriptions;
@@ -600,9 +600,8 @@ export const useSlashCommandProcessor = (
           if (process.env.SANDBOX && process.env.SANDBOX !== 'sandbox-exec') {
             sandboxEnv = process.env.SANDBOX.replace(/^gemini-(?:code-)?/, '');
           } else if (process.env.SANDBOX === 'sandbox-exec') {
-            sandboxEnv = `sandbox-exec (${
-              process.env.SEATBELT_PROFILE || 'unknown'
-            })`;
+            sandboxEnv = `sandbox-exec (${process.env.SEATBELT_PROFILE || 'unknown'
+              })`;
           }
           const modelVersion = config?.getModel() || 'Unknown';
           const cliVersion = await getCliVersion();
@@ -1196,7 +1195,7 @@ export const useSlashCommandProcessor = (
         },
         completion: legacyCmd.completion
           ? async (_context: CommandContext, _partialArg: string) =>
-              legacyCmd.completion!()
+            legacyCmd.completion!()
           : undefined,
       }),
     );

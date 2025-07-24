@@ -44,5 +44,5 @@ packages/cli/src/generated/
 logs/
 
 
-# Wren Code Configs
+# Wren Coder Configs
 .wren/

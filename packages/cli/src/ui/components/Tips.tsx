@@ -30,7 +30,7 @@ export const Tips: React.FC<TipsProps> = ({ config }) => {
           <Text bold color={Colors.AccentPurple}>
             WREN.md
           </Text>{' '}
-          files to customize your interactions with Wren Code.
+          files to customize your interactions with Wren Coder.
         </Text>
       )}
       <Text color={Colors.Foreground}>
