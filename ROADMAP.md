@@ -51,6 +51,7 @@ Goal: Make Wren an intelligent, productive CLI companion.
 |-----------|-------------|
 | ✅ Streaming + tool mode | Supports basic I/O and streaming output |
 | 🔲 REPL improvements | Inline history, undo/redo, scratchpad memory |
+| 🔲 CLI plugins support | Extensible plugin system for custom commands and workflows |
 | 🔲 File-aware workflows | Pass context-aware files automatically |
 | 🔲 Long-running agents | Background tasks with state (like `wren watch`, `wren plan`) |
 | 🔲 Autonomy primitives | Planning, retries, follow-ups |
