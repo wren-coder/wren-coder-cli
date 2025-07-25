@@ -185,8 +185,8 @@ describe('MemoryTool', () => {
       performAddMemoryEntrySpy = vi
         .spyOn(MemoryTool, 'performAddMemoryEntry')
         .mockResolvedValue(undefined) as Mock<
-        typeof MemoryTool.performAddMemoryEntry
-      >;
+          typeof MemoryTool.performAddMemoryEntry
+        >;
       // Cast needed as spyOn returns MockInstance
     });
 
@@ -208,7 +208,7 @@ describe('MemoryTool', () => {
       const expectedFilePath = path.join(
         '/mock/home',
         '.wren',
-        getCurrentMdFilename(), // This will be DEFAULT_CONTEXT_FILENAME unless changed by a test
+        'MEMORY.md'
       );
 
       // For this test, we expect the actual fs methods to be passed
