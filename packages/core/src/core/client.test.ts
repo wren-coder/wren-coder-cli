@@ -53,6 +53,10 @@ vi.mock('./turn', () => {
 
 vi.mock('../config/config.js');
 vi.mock('./prompts');
+vi.mock('../config/models.js', () => ({
+  DEFAULT_THINKING_MODEL: 'default-thinking-model',
+  getTokenLimit: vi.fn(),
+}));
 vi.mock('../utils/getFolderStructure', () => ({
   getFolderStructure: vi.fn().mockResolvedValue('Mock Folder Structure'),
 }));
