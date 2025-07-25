@@ -2,16 +2,17 @@
 
 ![Wren Coder Screenshot](./docs/assets/wren-screenshot.png)
 
-Wren Coder is a command-line AI workflow tool forked from [**Qwen CLI Coder**](https://github.com/QwenLM/Qwen-Code), which was itself a fork of [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) (Please refer to [this document](./README.gemini.md) for more details). This version is currently optimized for deepseek models with enhanced parser support & tool support. With a goal to support local models.
+Wren Coder is a model-agnostic command-line AI workflow tool forked from [**Qwen CLI Coder**](https://github.com/QwenLM/Qwen-Code), which was itself a fork of [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) (Please refer to [this document](./README.gemini.md) for more details). Currently supports OpenAI-compatible APIs, with plans to expand support to non-OpenAI-compatible models in the future.
 
 > [!WARNING]
 > Wren Coder may issue multiple API calls per cycle, resulting in higher token usage, similar to Claude Code. We’re actively working to enhance API efficiency and improve the overall developer experience.
 
 ## Key Features
 
+- **Model Agnostic** - Currently supports OpenAI-compatible APIs with plans for broader model support
 - **Code Understanding & Editing** - Query and edit large codebases beyond traditional context window limits
 - **Workflow Automation** - Automate operational tasks like handling pull requests and complex rebases
-- **Enhanced Parser** - Adapted parser specifically optimized for wren-coderr models
+- **Enhanced Tool Support** - Comprehensive tool ecosystem for file operations, shell commands, and web integration
 
 ## Quick Start
 
@@ -47,21 +48,27 @@ npm install -g .
 
 ### API Configuration
 
-Set your Wren API key (In Wren Coder project, you can also set your API key in `.env` file). the `.env` file should be placed in the root directory of your current project.
-
-> ⚠️ **Notice:** <br>
-> **If you are in mainland China, please go to <https://bailian.console.aliyun.com/> to apply for your API key** <br>
-> **If you are not in mainland China, please go to <https://modelstudio.console.alibabacloud.com/> to apply for your API key**
+Wren Coder currently works with OpenAI-compatible APIs. Configure your API settings using environment variables or a `.env` file in your project root.
 
 ```bash
-# If you are in mainland China, use the following URL:
-# https://dashscope.aliyuncs.com/compatible-mode/v1
-# If you are not in mainland China, use the following URL:
-# https://dashscope-intl.aliyuncs.com/compatible-mode/v1
 export OPENAI_API_KEY="your_api_key_here"
-export OPENAI_BASE_URL="your_api_base_url_here"
-export OPENAI_MODEL="your_api_model_here"
+export OPENAI_BASE_URL="your_api_base_url_here"  # e.g., https://api.openai.com/v1
+export OPENAI_MODEL="your_model_name_here"       # e.g., gpt-4, deepseek-coder, etc.
 ```
+
+**Currently Supported (OpenAI-Compatible):**
+- OpenAI (GPT-4, GPT-3.5)
+- DeepSeek (deepseek-coder, deepseek-chat)
+- Anthropic (via OpenAI-compatible proxy)
+- Local models (Ollama, vLLM, etc.)
+- Any OpenAI-compatible API endpoint
+
+**Future Support Planned:**
+- Native Ollama integration
+- Direct Anthropic API support
+- Additional model providers and protocols
+
+See our [ROADMAP.md](./ROADMAP.md) for detailed plans on expanding model support.
 
 ## Usage Examples
 
@@ -127,10 +134,15 @@ wren
 ```
 wren-coder/
 ├── packages/           # Core packages
+│   ├── cli/           # Command-line interface
+│   ├── core/          # Core functionality
+│   └── vscode-ide-companion/  # VS Code extension
 ├── docs/              # Documentation
 ├── examples/          # Example code
 └── tests/            # Test files
 ```
+
+For detailed development plans and upcoming features, see our [ROADMAP.md](./ROADMAP.md).
 
 ## Development & Contributing
 
@@ -142,7 +154,7 @@ If you encounter issues, check the [troubleshooting guide](docs/troubleshooting.
 
 ## Acknowledgments
 
-This project is a fork of [Qwen CLI Coder](https://github.com/QwenLM/Qwen-Code), which was originally forked from [Google Gemini CLI](https://github.com/google-gemini/gemini-cli). We acknowledge and appreciate the excellent work of both the Gemini CLI team and the Qwen team. Our main contribution focuses on adaptations to better support Wren3-Coder models with enhanced parser and tool support.
+This project is a fork of [Qwen CLI Coder](https://github.com/QwenLM/Qwen-Code), which was originally forked from [Google Gemini CLI](https://github.com/google-gemini/gemini-cli). We acknowledge and appreciate the excellent work of both the Gemini CLI team and the Qwen team. Our main contribution focuses on creating a model-agnostic solution with enhanced tool support and improved compatibility across different AI providers.
 
 ## License
 
