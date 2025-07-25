@@ -14,7 +14,7 @@ import {
   anthropicModels,
   llamaModels,
   mistralModels,
-  cohereModels
+  cohereModels,
 } from './providers/index.js';
 import { ModelNotFoundError } from './ModelNotFoundError.js';
 
@@ -36,10 +36,12 @@ const DEFAULT_MODELS: ModelConfig[] = [
 ];
 
 const DEFAULT_MODELS_MAP: Map<string, ModelConfig> = new Map(
-  DEFAULT_MODELS.map(model => [model.name, model])
+  DEFAULT_MODELS.map((model) => [model.name, model]),
 );
 
-const DEFAULT_PROVIDERS = new Set(DEFAULT_MODELS.map(model => model.provider));
+const DEFAULT_PROVIDERS = new Set(
+  DEFAULT_MODELS.map((model) => model.provider),
+);
 
 const customModels: ModelConfig[] = loadModels();
 
@@ -49,7 +51,9 @@ function getAllModelsMap(): Map<string, ModelConfig> {
   if (!allModelsMap) {
     allModelsMap = new Map([
       ...DEFAULT_MODELS_MAP,
-      ...customModels.map(model => [model.name, model] as [string, ModelConfig])
+      ...customModels.map(
+        (model) => [model.name, model] as [string, ModelConfig],
+      ),
     ]);
   }
   return allModelsMap;
@@ -76,37 +80,49 @@ function loadModels() {
     const config: ModelsConfigFile = JSON.parse(content);
 
     if (!config.models || !Array.isArray(config.models)) {
-      console.warn(`Invalid models config file format at ${CUSTOM_MODEL_CONFIG_PATH}. Expected { "models": [...] }`);
+      console.warn(
+        `Invalid models config file format at ${CUSTOM_MODEL_CONFIG_PATH}. Expected { "models": [...] }`,
+      );
       return models;
     }
 
     // Validate each model config
     models = config.models.filter((model): model is ModelConfig => {
       if (!model.name || typeof model.name !== 'string') {
-        console.warn(`Skipping model config with invalid name: ${JSON.stringify(model)}`);
+        console.warn(
+          `Skipping model config with invalid name: ${JSON.stringify(model)}`,
+        );
         return false;
       }
 
-      if (!model.tokenLimit || typeof model.tokenLimit !== 'number' || model.tokenLimit <= 0) {
-        console.warn(`Skipping model config "${model.name}" with invalid tokenLimit: ${model.tokenLimit}`);
+      if (
+        !model.tokenLimit ||
+        typeof model.tokenLimit !== 'number' ||
+        model.tokenLimit <= 0
+      ) {
+        console.warn(
+          `Skipping model config "${model.name}" with invalid tokenLimit: ${model.tokenLimit}`,
+        );
         return false;
       }
 
       return true;
     });
-
   } catch (error) {
-    console.warn(`Failed to load custom model configs from ${CUSTOM_MODEL_CONFIG_PATH}:`, error);
+    console.warn(
+      `Failed to load custom model configs from ${CUSTOM_MODEL_CONFIG_PATH}:`,
+      error,
+    );
     models = [];
   }
   return models;
-};
+}
 
 /**
  * Get all models (built-in + custom)
  */
 export function listModels(): ModelConfig[] {
-  return [...DEFAULT_MODELS, ...customModels]
+  return [...DEFAULT_MODELS, ...customModels];
 }
 
 /**
@@ -120,28 +136,32 @@ function getModel(modelName: string): ModelConfig | undefined {
  * Get models by provider
  */
 export function getModelsByProvider(providerName: string): ModelConfig[] {
-  return listModels().filter(model => model.provider === providerName);
+  return listModels().filter((model) => model.provider === providerName);
 }
 
 /**
  * Get models by capability
  */
-export function getModelsByCapability(capability: keyof ModelConfig['capabilities']): ModelConfig[] {
-  return listModels().filter(model => model.capabilities?.[capability] === true);
+export function getModelsByCapability(
+  capability: keyof ModelConfig['capabilities'],
+): ModelConfig[] {
+  return listModels().filter(
+    (model) => model.capabilities?.[capability] === true,
+  );
 }
 
 /**
  * Get available providers
  */
 export function listProviders(): string[] {
-  const customProviders = new Set(customModels.map(m => m.provider));
+  const customProviders = new Set(customModels.map((m) => m.provider));
   return [...Array.from(DEFAULT_PROVIDERS), ...Array.from(customProviders)];
 }
 
 export function getModelConfig(modelName: string): ModelConfig {
   const model = getModel(modelName);
   if (!model) {
-    throw new ModelNotFoundError(modelName)
+    throw new ModelNotFoundError(modelName);
   }
   return model;
 }

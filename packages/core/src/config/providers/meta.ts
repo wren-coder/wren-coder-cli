@@ -16,7 +16,7 @@ export const llamaModels: ModelConfig[] = [
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'llama-3.2-90b-instruct',
@@ -26,7 +26,7 @@ export const llamaModels: ModelConfig[] = [
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'llama-3.2-11b-vision-instruct',
@@ -37,7 +37,7 @@ export const llamaModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'llama-3.2-3b-instruct',
@@ -47,7 +47,7 @@ export const llamaModels: ModelConfig[] = [
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'llama-3.2-1b-instruct',
@@ -57,6 +57,6 @@ export const llamaModels: ModelConfig[] = [
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
-  }
+    },
+  },
 ];

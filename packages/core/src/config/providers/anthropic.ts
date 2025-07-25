@@ -18,7 +18,7 @@ export const anthropicModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'claude-3-5-haiku-20241022',
@@ -29,7 +29,7 @@ export const anthropicModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'claude-3-opus-20240229',
@@ -40,6 +40,6 @@ export const anthropicModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
-  }
+    },
+  },
 ];

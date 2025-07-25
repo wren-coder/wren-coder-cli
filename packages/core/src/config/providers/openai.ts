@@ -17,7 +17,7 @@ export const openaiModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'gpt-4o-mini',
@@ -28,7 +28,7 @@ export const openaiModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'gpt-4-turbo',
@@ -39,7 +39,7 @@ export const openaiModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'gpt-3.5-turbo',
@@ -49,7 +49,7 @@ export const openaiModels: ModelConfig[] = [
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'text-embedding-3-large',
@@ -58,7 +58,7 @@ export const openaiModels: ModelConfig[] = [
     provider: Providers.OPENAI,
     capabilities: {
       embedding: true,
-    }
+    },
   },
   {
     name: 'text-embedding-3-small',
@@ -67,6 +67,6 @@ export const openaiModels: ModelConfig[] = [
     provider: Providers.OPENAI,
     capabilities: {
       embedding: true,
-    }
-  }
+    },
+  },
 ];

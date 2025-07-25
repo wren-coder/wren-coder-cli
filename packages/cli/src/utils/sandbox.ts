@@ -321,7 +321,7 @@ export async function start_sandbox(
     if (!gcPath.includes('gemini-cli/packages/')) {
       console.error(
         'ERROR: cannot build sandbox using installed gemini binary; ' +
-        'run `npm link ./packages/cli` under gemini-cli repo to switch to linked binary.',
+          'run `npm link ./packages/cli` under gemini-cli repo to switch to linked binary.',
       );
       process.exit(1);
     } else {

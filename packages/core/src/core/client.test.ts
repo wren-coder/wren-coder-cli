@@ -63,8 +63,8 @@ vi.mock('../config/modelRegistry.js', () => ({
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
-  })
+    },
+  }),
 }));
 vi.mock('../utils/getFolderStructure', () => ({
   getFolderStructure: vi.fn().mockResolvedValue('Mock Folder Structure'),
@@ -485,7 +485,6 @@ describe('Gemini Client (client.ts)', () => {
     const mockGetHistory = vi.fn();
 
     beforeEach(() => {
-
       client['contentGenerator'] = {
         countTokens: mockCountTokens,
       } as unknown as ContentGenerator;
@@ -916,7 +915,7 @@ describe('Gemini Client (client.ts)', () => {
 
       console.log(
         `Infinite loop protection working: checkNextSpeaker called ${callCount} times, ` +
-        `${eventCount} events generated (properly bounded by MAX_TURNS)`,
+          `${eventCount} events generated (properly bounded by MAX_TURNS)`,
       );
     });
   });

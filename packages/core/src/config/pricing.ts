@@ -4,12 +4,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { modelsDevClient, ModelsDevPricing } from '../clients/modelsDevClient.js';
+import {
+  modelsDevClient,
+  ModelsDevPricing,
+} from '../clients/modelsDevClient.js';
 
 /**
  * Get pricing information for a model from models.dev
  */
-export async function getModelPricing(modelId: string): Promise<ModelsDevPricing | null> {
+export async function getModelPricing(
+  modelId: string,
+): Promise<ModelsDevPricing | null> {
   try {
     const model = await modelsDevClient.getModel(modelId);
     return model?.pricing || null;

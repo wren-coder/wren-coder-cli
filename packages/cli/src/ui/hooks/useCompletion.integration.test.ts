@@ -361,7 +361,7 @@ describe('useCompletion git-aware filtering integration', () => {
       { name: 'README.md', isDirectory: () => false },
     ] as unknown as Awaited<ReturnType<typeof fs.readdir>>);
 
-    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
+    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
     const { result } = renderHook(() =>
       useCompletion(

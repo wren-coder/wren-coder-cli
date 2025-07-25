@@ -90,7 +90,7 @@ export class MCPServerConfig {
     readonly description?: string,
     readonly includeTools?: string[],
     readonly excludeTools?: string[],
-  ) { }
+  ) {}
 }
 
 export interface SandboxConfig {

@@ -16,7 +16,7 @@ export const mistralModels: ModelConfig[] = [
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'mistral-small-2412',
@@ -26,7 +26,7 @@ export const mistralModels: ModelConfig[] = [
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'pixtral-12b-2409',
@@ -36,6 +36,6 @@ export const mistralModels: ModelConfig[] = [
     capabilities: {
       vision: true,
       streaming: true,
-    }
-  }
+    },
+  },
 ];
