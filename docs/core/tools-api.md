@@ -55,9 +55,9 @@ Each of these tools extends `BaseTool` and implements the required methods for i
 3. **Tool Retrieval:** It looks up the requested tool in the `ToolRegistry`.
 4. **Parameter Validation:** The tool's `validateToolParams()` method is called.
 5. **Confirmation (if needed):**
-    - The tool's `shouldConfirmExecute()` method is called.
-    - If it returns details for confirmation, the core communicates this back to the CLI, which prompts the user.
-    - The user's decision (e.g., proceed, cancel) is sent back to the core.
+   - The tool's `shouldConfirmExecute()` method is called.
+   - If it returns details for confirmation, the core communicates this back to the CLI, which prompts the user.
+   - The user's decision (e.g., proceed, cancel) is sent back to the core.
 6. **Execution:** If validated and confirmed (or if no confirmation is needed), the core calls the tool's `execute()` method with the provided arguments and an `AbortSignal` (for potential cancellation).
 7. **Result Processing:** The `ToolResult` from `execute()` is received by the core.
 8. **Response to Model:** The `llmContent` from the `ToolResult` is packaged as a `FunctionResponse` and sent back to the Gemini model so it can continue generating a user-facing response.

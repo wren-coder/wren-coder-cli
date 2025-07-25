@@ -19,10 +19,9 @@ import { GeminiChat } from './geminiChat.js';
 import { Config } from '../config/config.js';
 import { GeminiEventType, Turn } from './turn.js';
 import { getCoreSystemPrompt } from './prompts.js';
-import { DEFAULT_THINKING_MODEL } from '../config/models.js';
+import { DEFAULT_THINKING_MODEL, getTokenLimit } from '../config/models.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
 import { setSimulate429 } from '../utils/testUtils.js';
-import { tokenLimit } from './tokenLimits.js';
 
 // --- Mocks ---
 const mockChatCreateFn = vi.fn();
@@ -54,6 +53,10 @@ vi.mock('./turn', () => {
 
 vi.mock('../config/config.js');
 vi.mock('./prompts');
+vi.mock('../config/models.js', () => ({
+  DEFAULT_THINKING_MODEL: 'default-thinking-model',
+  getTokenLimit: vi.fn(),
+}));
 vi.mock('../utils/getFolderStructure', () => ({
   getFolderStructure: vi.fn().mockResolvedValue('Mock Folder Structure'),
 }));
@@ -473,9 +476,6 @@ describe('Gemini Client (client.ts)', () => {
     const mockGetHistory = vi.fn();
 
     beforeEach(() => {
-      vi.mock('./tokenLimits', () => ({
-        tokenLimit: vi.fn(),
-      }));
 
       client['contentGenerator'] = {
         countTokens: mockCountTokens,
@@ -491,7 +491,7 @@ describe('Gemini Client (client.ts)', () => {
 
     it('should not trigger summarization if token count is below threshold', async () => {
       const MOCKED_TOKEN_LIMIT = 1000;
-      vi.mocked(tokenLimit).mockReturnValue(MOCKED_TOKEN_LIMIT);
+      vi.mocked(getTokenLimit).mockReturnValue(MOCKED_TOKEN_LIMIT);
       mockGetHistory.mockReturnValue([
         { role: 'user', parts: [{ text: '...history...' }] },
       ]);
@@ -504,14 +504,14 @@ describe('Gemini Client (client.ts)', () => {
       const result = await client.tryCompressChat('prompt-id-2');
       const newChat = client.getChat();
 
-      expect(tokenLimit).toHaveBeenCalled();
+      expect(getTokenLimit).toHaveBeenCalled();
       expect(result).toBeNull();
       expect(newChat).toBe(initialChat);
     });
 
     it('should trigger summarization if token count is at threshold', async () => {
       const MOCKED_TOKEN_LIMIT = 1000;
-      vi.mocked(tokenLimit).mockReturnValue(MOCKED_TOKEN_LIMIT);
+      vi.mocked(getTokenLimit).mockReturnValue(MOCKED_TOKEN_LIMIT);
       mockGetHistory.mockReturnValue([
         { role: 'user', parts: [{ text: '...history...' }] },
       ]);
@@ -533,7 +533,7 @@ describe('Gemini Client (client.ts)', () => {
       const result = await client.tryCompressChat('prompt-id-3');
       const newChat = client.getChat();
 
-      expect(tokenLimit).toHaveBeenCalled();
+      expect(getTokenLimit).toHaveBeenCalled();
       expect(mockSendMessage).toHaveBeenCalled();
 
       // Assert that summarization happened and returned the correct stats
@@ -548,7 +548,7 @@ describe('Gemini Client (client.ts)', () => {
 
     it('should not compress across a function call response', async () => {
       const MOCKED_TOKEN_LIMIT = 1000;
-      vi.mocked(tokenLimit).mockReturnValue(MOCKED_TOKEN_LIMIT);
+      vi.mocked(getTokenLimit).mockReturnValue(MOCKED_TOKEN_LIMIT);
       mockGetHistory.mockReturnValue([
         { role: 'user', parts: [{ text: '...history 1...' }] },
         { role: 'model', parts: [{ text: '...history 2...' }] },
@@ -585,7 +585,7 @@ describe('Gemini Client (client.ts)', () => {
       const result = await client.tryCompressChat('prompt-id-3');
       const newChat = client.getChat();
 
-      expect(tokenLimit).toHaveBeenCalled();
+      expect(getTokenLimit).toHaveBeenCalled();
       expect(mockSendMessage).toHaveBeenCalled();
 
       // Assert that summarization happened and returned the correct stats
@@ -907,7 +907,7 @@ describe('Gemini Client (client.ts)', () => {
 
       console.log(
         `Infinite loop protection working: checkNextSpeaker called ${callCount} times, ` +
-          `${eventCount} events generated (properly bounded by MAX_TURNS)`,
+        `${eventCount} events generated (properly bounded by MAX_TURNS)`,
       );
     });
   });

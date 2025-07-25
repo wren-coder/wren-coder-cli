@@ -7,11 +7,12 @@
 import React from 'react';
 import { Box, Text } from 'ink';
 import { Colors } from '../colors.js';
-import { shortenPath, tildeifyPath, tokenLimit } from '@wren/wren-coder-core';
+import { shortenPath, tildeifyPath } from '@wren/wren-coder-core';
 import { ConsoleSummaryDisplay } from './ConsoleSummaryDisplay.js';
 import process from 'node:process';
 import Gradient from 'ink-gradient';
 import { MemoryUsageDisplay } from './MemoryUsageDisplay.js';
+import { getTokenLimit } from '@wren/wren-coder-core/src/config/models.js';
 
 interface FooterProps {
   model: string;
@@ -40,7 +41,7 @@ export const Footer: React.FC<FooterProps> = ({
   promptTokenCount,
   nightly,
 }) => {
-  const limit = tokenLimit(model);
+  const limit = getTokenLimit(model);
   const percentage = promptTokenCount / limit;
 
   return (
