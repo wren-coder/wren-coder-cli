@@ -15,7 +15,7 @@ import {
   getErrorMessage,
   Config,
   FileDiscoveryService,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 import {
   MAX_SUGGESTIONS_TO_SHOW,
   Suggestion,

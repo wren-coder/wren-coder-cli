@@ -57,7 +57,7 @@ import {
   EditorType,
   FlashFallbackEvent,
   logFlashFallback,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 import { validateAuthMethod } from '../config/auth.js';
 import { useLogger } from './hooks/useLogger.js';
 import { StreamingContext } from './contexts/StreamingContext.js';
@@ -74,7 +74,7 @@ import {
   isProQuotaExceededError,
   isGenericQuotaExceededError,
   UserTierId,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 import { checkForUpdates } from './utils/updateCheck.js';
 import ansiEscapes from 'ansi-escapes';
 import { OverflowProvider } from './contexts/OverflowContext.js';

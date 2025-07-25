@@ -1,5 +1,5 @@
 {
-  "name": "@wren/wren-coder-core",
+  "name": "@wren-coder/wren-coder-cli-core",
   "version": "0.0.1-alpha.8",
   "description": "Wren Coder Core",
   "repository": {

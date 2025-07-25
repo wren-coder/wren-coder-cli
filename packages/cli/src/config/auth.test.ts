@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AuthType } from '@wren/wren-coder-core';
+import { AuthType } from '@wren-coder/wren-coder-cli-core';
 import { vi } from 'vitest';
 import { validateAuthMethod } from './auth.js';
 
@@ -60,9 +60,9 @@ describe('validateAuthMethod', () => {
     it('should return an error message if no required environment variables are set', () => {
       expect(validateAuthMethod(AuthType.USE_VERTEX_AI)).toBe(
         'When using Vertex AI, you must specify either:\n' +
-          '• GOOGLE_CLOUD_PROJECT and GOOGLE_CLOUD_LOCATION environment variables.\n' +
-          '• GOOGLE_API_KEY environment variable (if using express mode).\n' +
-          'Update your environment and try again (no reload needed if using .env)!',
+        '• GOOGLE_CLOUD_PROJECT and GOOGLE_CLOUD_LOCATION environment variables.\n' +
+        '• GOOGLE_API_KEY environment variable (if using express mode).\n' +
+        'Update your environment and try again (no reload needed if using .env)!',
       );
     });
   });

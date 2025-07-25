@@ -21,7 +21,7 @@ import {
   ToolCall,
   Status as CoreStatus,
   EditorType,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 import { useCallback, useState, useMemo } from 'react';
 import {
   HistoryItemToolGroup,
@@ -83,7 +83,7 @@ export function useReactToolScheduler(
             ...prevItem,
             tools: prevItem.tools.map((toolDisplay) =>
               toolDisplay.callId === toolCallId &&
-              toolDisplay.status === ToolCallStatus.Executing
+                toolDisplay.status === ToolCallStatus.Executing
                 ? { ...toolDisplay, resultDisplay: outputChunk }
                 : toolDisplay,
             ),

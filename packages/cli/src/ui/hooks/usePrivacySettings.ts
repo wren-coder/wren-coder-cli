@@ -6,7 +6,7 @@
 
 import { GaxiosError } from 'gaxios';
 import { useState, useEffect, useCallback } from 'react';
-import { Config, CodeAssistServer, UserTierId } from '@wren/wren-coder-core';
+import { Config, CodeAssistServer, UserTierId } from '@wren-coder/wren-coder-cli-core';
 
 export interface PrivacyState {
   isLoading: boolean;

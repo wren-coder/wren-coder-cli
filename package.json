@@ -1,5 +1,5 @@
 {
-  "name": "@wren/wren-coder",
+  "name": "@wren-coder/wren-coder-cli",
   "version": "0.0.1-alpha.8",
   "engines": {
     "node": ">=20"
@@ -83,6 +83,9 @@
     "yargs": "^18.0.0"
   },
   "dependencies": {
-    "@wren/wren-coder": "^0.0.1-alpha.8"
+    "@wren-coder/wren-coder-cli": "^0.0.1-alpha.8"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

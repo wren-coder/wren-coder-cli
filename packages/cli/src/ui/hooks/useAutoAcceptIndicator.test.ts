@@ -20,14 +20,14 @@ import {
   Config,
   Config as ActualConfigType,
   ApprovalMode,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 import { useInput, type Key as InkKey } from 'ink';
 
 vi.mock('ink');
 
-vi.mock('@wren/wren-coder-core', async () => {
+vi.mock('@wren-coder/wren-coder-cli-core', async () => {
   const actualServerModule = (await vi.importActual(
-    '@wren/wren-coder-core',
+    '@wren-coder/wren-coder-cli-core',
   )) as Record<string, unknown>;
   return {
     ...actualServerModule,
@@ -102,8 +102,8 @@ describe('useAutoAcceptIndicator', () => {
         getToolRegistry: vi
           .fn()
           .mockReturnValue({ discoverTools: vi.fn() }) as Mock<
-          () => { discoverTools: Mock<() => void> }
-        >,
+            () => { discoverTools: Mock<() => void> }
+          >,
       };
       instanceSetApprovalModeMock.mockImplementation((value: ApprovalMode) => {
         instanceGetApprovalModeMock.mockReturnValue(value);

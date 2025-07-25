@@ -65,7 +65,7 @@ import {
   getMCPDiscoveryState,
   getMCPServerStatus,
   GeminiClient,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 import { useSessionStats } from '../contexts/SessionContext.js';
 import { LoadedSettings } from '../../config/settings.js';
 import * as ShowMemoryCommandModule from './useShowMemoryCommand.js';
@@ -88,8 +88,8 @@ vi.mock('open', () => ({
   default: vi.fn(),
 }));
 
-vi.mock('@wren/wren-coder-core', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@wren/wren-coder-core')>();
+vi.mock('@wren-coder/wren-coder-cli-core', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@wren-coder/wren-coder-cli-core')>();
   return {
     ...actual,
     getMCPServerStatus: vi.fn(),

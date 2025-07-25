@@ -7,12 +7,12 @@
 import React from 'react';
 import { Box, Text } from 'ink';
 import { Colors } from '../colors.js';
-import { shortenPath, tildeifyPath } from '@wren/wren-coder-core';
+import { shortenPath, tildeifyPath } from '@wren-coder/wren-coder-cli-core';
 import { ConsoleSummaryDisplay } from './ConsoleSummaryDisplay.js';
 import process from 'node:process';
 import Gradient from 'ink-gradient';
 import { MemoryUsageDisplay } from './MemoryUsageDisplay.js';
-import { getTokenLimit } from '@wren/wren-coder-core/src/config/models.js';
+import { getTokenLimit } from '@wren-coder/wren-coder-cli-core/src/config/models.js';
 
 interface FooterProps {
   model: string;

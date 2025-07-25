@@ -21,7 +21,7 @@ import {
   EditorType,
   AuthType,
   DEFAULT_THINKING_MODEL,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 import { Part, PartListUnion } from '@google/genai';
 import { UseHistoryManagerReturn } from './useHistoryManager.js';
 import {
@@ -52,7 +52,7 @@ const MockedUserPromptEvent = vi.hoisted(() =>
   vi.fn().mockImplementation(() => {}),
 );
 
-vi.mock('@wren/wren-coder-core', async (importOriginal) => {
+vi.mock('@wren-coder/wren-coder-cli-core', async (importOriginal) => {
   const actualCoreModule = (await importOriginal()) as any;
   return {
     ...actualCoreModule,

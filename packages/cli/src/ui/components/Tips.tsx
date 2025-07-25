@@ -7,7 +7,7 @@
 import React from 'react';
 import { Box, Text } from 'ink';
 import { Colors } from '../colors.js';
-import { type Config } from '@wren/wren-coder-core';
+import { type Config } from '@wren-coder/wren-coder-cli-core';
 
 interface TipsProps {
   config: Config;

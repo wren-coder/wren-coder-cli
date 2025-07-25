@@ -11,7 +11,7 @@ import {
   UserTierId,
   DEFAULT_THINKING_MODEL,
   isProQuotaExceededError,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 
 describe('parseAndFormatApiError', () => {
   const _enterpriseMessage =

@@ -22,10 +22,10 @@ import {
   type EditorType,
   checkHasEditorType,
   allowEditorTypeInSandbox,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 
-vi.mock('@wren/wren-coder-core', async () => {
-  const actual = await vi.importActual('@wren/wren-coder-core');
+vi.mock('@wren-coder/wren-coder-cli-core', async () => {
+  const actual = await vi.importActual('@wren-coder/wren-coder-cli-core');
   return {
     ...actual,
     checkHasEditorType: vi.fn(() => true),

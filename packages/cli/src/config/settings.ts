@@ -15,7 +15,7 @@ import {
   BugCommandSettings,
   TelemetrySettings,
   AuthType,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 import stripJsonComments from 'strip-json-comments';
 import { DefaultLight } from '../ui/themes/default-light.js';
 import { DefaultDark } from '../ui/themes/default.js';

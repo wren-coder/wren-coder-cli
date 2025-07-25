@@ -7,7 +7,7 @@
 import React from 'react';
 import { Text } from 'ink';
 import { Colors } from '../colors.js';
-import { type MCPServerConfig } from '@wren/wren-coder-core';
+import { type MCPServerConfig } from '@wren-coder/wren-coder-cli-core';
 
 interface ContextSummaryDisplayProps {
   wrenCoderMdFileCount: number;

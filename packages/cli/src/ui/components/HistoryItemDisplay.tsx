@@ -20,7 +20,7 @@ import { StatsDisplay } from './StatsDisplay.js';
 import { ModelStatsDisplay } from './ModelStatsDisplay.js';
 import { ToolStatsDisplay } from './ToolStatsDisplay.js';
 import { SessionSummaryDisplay } from './SessionSummaryDisplay.js';
-import { Config } from '@wren/wren-coder-core';
+import { Config } from '@wren-coder/wren-coder-cli-core';
 
 interface HistoryItemDisplayProps {
   item: HistoryItem;

@@ -11,7 +11,7 @@ import os from 'os';
 import pathMod from 'path';
 import { useState, useCallback, useEffect, useMemo, useReducer } from 'react';
 import stringWidth from 'string-width';
-import { unescapePath } from '@wren/wren-coder-core';
+import { unescapePath } from '@wren-coder/wren-coder-cli-core';
 import { toCodePoints, cpLen, cpSlice } from '../../utils/textUtils.js';
 
 export type Direction =
@@ -315,7 +315,7 @@ function calculateVisualLayout(
         // advance past this space as it acted as a delimiter for word wrapping.
         if (
           logicalStartOfThisChunk + numCodePointsInChunk <
-            codePointsInLogLine.length &&
+          codePointsInLogLine.length &&
           currentPosInLogLine < codePointsInLogLine.length && // Redundant if previous is true, but safe
           codePointsInLogLine[currentPosInLogLine] === ' '
         ) {
@@ -395,11 +395,11 @@ type TextBufferAction =
   | { type: 'insert'; payload: string }
   | { type: 'backspace' }
   | {
-      type: 'move';
-      payload: {
-        dir: Direction;
-      };
-    }
+    type: 'move';
+    payload: {
+      dir: Direction;
+    };
+  }
   | { type: 'delete' }
   | { type: 'delete_word_left' }
   | { type: 'delete_word_right' }
@@ -408,15 +408,15 @@ type TextBufferAction =
   | { type: 'undo' }
   | { type: 'redo' }
   | {
-      type: 'replace_range';
-      payload: {
-        startRow: number;
-        startCol: number;
-        endRow: number;
-        endCol: number;
-        text: string;
-      };
-    }
+    type: 'replace_range';
+    payload: {
+      startRow: number;
+      startCol: number;
+      endRow: number;
+      endCol: number;
+      text: string;
+    };
+  }
   | { type: 'move_to_offset'; payload: { offset: number } }
   | { type: 'create_undo_snapshot' }
   | { type: 'set_viewport_width'; payload: number };

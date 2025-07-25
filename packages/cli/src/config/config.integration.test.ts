@@ -12,7 +12,7 @@ import {
   Config,
   ConfigParameters,
   ContentGeneratorConfig,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 
 const TEST_CONTENT_GENERATOR_CONFIG: ContentGeneratorConfig = {
   apiKey: 'test-key',
@@ -21,8 +21,8 @@ const TEST_CONTENT_GENERATOR_CONFIG: ContentGeneratorConfig = {
 };
 
 // Mock file discovery service and tool registry
-vi.mock('@wren/wren-coder-core', async () => {
-  const actual = await vi.importActual('@wren/wren-coder-core');
+vi.mock('@wren-coder/wren-coder-cli-core', async () => {
+  const actual = await vi.importActual('@wren-coder/wren-coder-cli-core');
   return {
     ...actual,
     FileDiscoveryService: vi.fn().mockImplementation(() => ({

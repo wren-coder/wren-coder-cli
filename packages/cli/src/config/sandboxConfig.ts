@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { SandboxConfig } from '@wren/wren-coder-core';
+import { SandboxConfig } from '@wren-coder/wren-coder-cli-core';
 import commandExists from 'command-exists';
 import * as os from 'node:os';
 import { getPackageJson } from '../utils/package.js';
@@ -82,7 +82,7 @@ function getSandboxCommand(
   if (sandbox === true) {
     console.error(
       'ERROR: GEMINI_SANDBOX is true but failed to determine command for sandbox; ' +
-        'install docker or podman or specify command in GEMINI_SANDBOX',
+      'install docker or podman or specify command in GEMINI_SANDBOX',
     );
     process.exit(1);
   }

@@ -24,7 +24,7 @@ import {
   ToolCall, // Import from core
   Status as ToolCallStatusType,
   ApprovalMode, // Import from core
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 import {
   HistoryItemWithoutId,
   ToolCallStatus,
@@ -32,8 +32,8 @@ import {
 } from '../types.js';
 
 // Mocks
-vi.mock('@wren/wren-coder-core', async () => {
-  const actual = await vi.importActual('@wren/wren-coder-core');
+vi.mock('@wren-coder/wren-coder-cli-core', async () => {
+  const actual = await vi.importActual('@wren-coder/wren-coder-cli-core');
   return {
     ...actual,
     ToolRegistry: vi.fn(),
@@ -833,26 +833,26 @@ describe('mapToDisplay', () => {
   // This helps ensure that tool and confirmationDetails are only accessed when they are expected to exist.
   type MapToDisplayExtraProps =
     | {
-        tool?: Tool;
-        liveOutput?: string;
-        response?: ToolCallResponseInfo;
-        confirmationDetails?: ToolCallConfirmationDetails;
-      }
+      tool?: Tool;
+      liveOutput?: string;
+      response?: ToolCallResponseInfo;
+      confirmationDetails?: ToolCallConfirmationDetails;
+    }
     | {
-        tool: Tool;
-        response?: ToolCallResponseInfo;
-        confirmationDetails?: ToolCallConfirmationDetails;
-      }
+      tool: Tool;
+      response?: ToolCallResponseInfo;
+      confirmationDetails?: ToolCallConfirmationDetails;
+    }
     | {
-        response: ToolCallResponseInfo;
-        tool?: undefined;
-        confirmationDetails?: ToolCallConfirmationDetails;
-      }
+      response: ToolCallResponseInfo;
+      tool?: undefined;
+      confirmationDetails?: ToolCallConfirmationDetails;
+    }
     | {
-        confirmationDetails: ToolCallConfirmationDetails;
-        tool?: Tool;
-        response?: ToolCallResponseInfo;
-      };
+      confirmationDetails: ToolCallConfirmationDetails;
+      tool?: Tool;
+      response?: ToolCallResponseInfo;
+    };
 
   const testCases: Array<{
     name: string;
@@ -863,115 +863,115 @@ describe('mapToDisplay', () => {
     expectedName?: string;
     expectedDescription?: string;
   }> = [
-    {
-      name: 'validating',
-      status: 'validating',
-      extraProps: { tool: baseTool },
-      expectedStatus: ToolCallStatus.Executing,
-      expectedName: baseTool.displayName,
-      expectedDescription: baseTool.getDescription(baseRequest.args),
-    },
-    {
-      name: 'awaiting_approval',
-      status: 'awaiting_approval',
-      extraProps: {
-        tool: baseTool,
-        confirmationDetails: {
-          onConfirm: vi.fn(),
-          type: 'edit',
-          title: 'Test Tool Display',
-          serverName: 'testTool',
-          toolName: 'testTool',
-          toolDisplayName: 'Test Tool Display',
-          fileName: 'test.ts',
-          fileDiff: 'Test diff',
-        } as ToolCallConfirmationDetails,
+      {
+        name: 'validating',
+        status: 'validating',
+        extraProps: { tool: baseTool },
+        expectedStatus: ToolCallStatus.Executing,
+        expectedName: baseTool.displayName,
+        expectedDescription: baseTool.getDescription(baseRequest.args),
       },
-      expectedStatus: ToolCallStatus.Confirming,
-      expectedName: baseTool.displayName,
-      expectedDescription: baseTool.getDescription(baseRequest.args),
-    },
-    {
-      name: 'scheduled',
-      status: 'scheduled',
-      extraProps: { tool: baseTool },
-      expectedStatus: ToolCallStatus.Pending,
-      expectedName: baseTool.displayName,
-      expectedDescription: baseTool.getDescription(baseRequest.args),
-    },
-    {
-      name: 'executing no live output',
-      status: 'executing',
-      extraProps: { tool: baseTool },
-      expectedStatus: ToolCallStatus.Executing,
-      expectedName: baseTool.displayName,
-      expectedDescription: baseTool.getDescription(baseRequest.args),
-    },
-    {
-      name: 'executing with live output',
-      status: 'executing',
-      extraProps: { tool: baseTool, liveOutput: 'Live test output' },
-      expectedStatus: ToolCallStatus.Executing,
-      expectedResultDisplay: 'Live test output',
-      expectedName: baseTool.displayName,
-      expectedDescription: baseTool.getDescription(baseRequest.args),
-    },
-    {
-      name: 'success',
-      status: 'success',
-      extraProps: { tool: baseTool, response: baseResponse },
-      expectedStatus: ToolCallStatus.Success,
-      expectedResultDisplay: baseResponse.resultDisplay as any,
-      expectedName: baseTool.displayName,
-      expectedDescription: baseTool.getDescription(baseRequest.args),
-    },
-    {
-      name: 'error tool not found',
-      status: 'error',
-      extraProps: {
-        response: {
-          ...baseResponse,
-          error: new Error('Test error tool not found'),
-          resultDisplay: 'Error display tool not found',
+      {
+        name: 'awaiting_approval',
+        status: 'awaiting_approval',
+        extraProps: {
+          tool: baseTool,
+          confirmationDetails: {
+            onConfirm: vi.fn(),
+            type: 'edit',
+            title: 'Test Tool Display',
+            serverName: 'testTool',
+            toolName: 'testTool',
+            toolDisplayName: 'Test Tool Display',
+            fileName: 'test.ts',
+            fileDiff: 'Test diff',
+          } as ToolCallConfirmationDetails,
         },
+        expectedStatus: ToolCallStatus.Confirming,
+        expectedName: baseTool.displayName,
+        expectedDescription: baseTool.getDescription(baseRequest.args),
       },
-      expectedStatus: ToolCallStatus.Error,
-      expectedResultDisplay: 'Error display tool not found',
-      expectedName: baseRequest.name,
-      expectedDescription: JSON.stringify(baseRequest.args),
-    },
-    {
-      name: 'error tool execution failed',
-      status: 'error',
-      extraProps: {
-        tool: baseTool,
-        response: {
-          ...baseResponse,
-          error: new Error('Tool execution failed'),
-          resultDisplay: 'Execution failed display',
+      {
+        name: 'scheduled',
+        status: 'scheduled',
+        extraProps: { tool: baseTool },
+        expectedStatus: ToolCallStatus.Pending,
+        expectedName: baseTool.displayName,
+        expectedDescription: baseTool.getDescription(baseRequest.args),
+      },
+      {
+        name: 'executing no live output',
+        status: 'executing',
+        extraProps: { tool: baseTool },
+        expectedStatus: ToolCallStatus.Executing,
+        expectedName: baseTool.displayName,
+        expectedDescription: baseTool.getDescription(baseRequest.args),
+      },
+      {
+        name: 'executing with live output',
+        status: 'executing',
+        extraProps: { tool: baseTool, liveOutput: 'Live test output' },
+        expectedStatus: ToolCallStatus.Executing,
+        expectedResultDisplay: 'Live test output',
+        expectedName: baseTool.displayName,
+        expectedDescription: baseTool.getDescription(baseRequest.args),
+      },
+      {
+        name: 'success',
+        status: 'success',
+        extraProps: { tool: baseTool, response: baseResponse },
+        expectedStatus: ToolCallStatus.Success,
+        expectedResultDisplay: baseResponse.resultDisplay as any,
+        expectedName: baseTool.displayName,
+        expectedDescription: baseTool.getDescription(baseRequest.args),
+      },
+      {
+        name: 'error tool not found',
+        status: 'error',
+        extraProps: {
+          response: {
+            ...baseResponse,
+            error: new Error('Test error tool not found'),
+            resultDisplay: 'Error display tool not found',
+          },
         },
+        expectedStatus: ToolCallStatus.Error,
+        expectedResultDisplay: 'Error display tool not found',
+        expectedName: baseRequest.name,
+        expectedDescription: JSON.stringify(baseRequest.args),
       },
-      expectedStatus: ToolCallStatus.Error,
-      expectedResultDisplay: 'Execution failed display',
-      expectedName: baseTool.displayName, // Changed from baseTool.name
-      expectedDescription: baseTool.getDescription(baseRequest.args),
-    },
-    {
-      name: 'cancelled',
-      status: 'cancelled',
-      extraProps: {
-        tool: baseTool,
-        response: {
-          ...baseResponse,
-          resultDisplay: 'Cancelled display',
+      {
+        name: 'error tool execution failed',
+        status: 'error',
+        extraProps: {
+          tool: baseTool,
+          response: {
+            ...baseResponse,
+            error: new Error('Tool execution failed'),
+            resultDisplay: 'Execution failed display',
+          },
         },
+        expectedStatus: ToolCallStatus.Error,
+        expectedResultDisplay: 'Execution failed display',
+        expectedName: baseTool.displayName, // Changed from baseTool.name
+        expectedDescription: baseTool.getDescription(baseRequest.args),
       },
-      expectedStatus: ToolCallStatus.Canceled,
-      expectedResultDisplay: 'Cancelled display',
-      expectedName: baseTool.displayName,
-      expectedDescription: baseTool.getDescription(baseRequest.args),
-    },
-  ];
+      {
+        name: 'cancelled',
+        status: 'cancelled',
+        extraProps: {
+          tool: baseTool,
+          response: {
+            ...baseResponse,
+            resultDisplay: 'Cancelled display',
+          },
+        },
+        expectedStatus: ToolCallStatus.Canceled,
+        expectedResultDisplay: 'Cancelled display',
+        expectedName: baseTool.displayName,
+        expectedDescription: baseTool.getDescription(baseRequest.args),
+      },
+    ];
 
   testCases.forEach(
     ({

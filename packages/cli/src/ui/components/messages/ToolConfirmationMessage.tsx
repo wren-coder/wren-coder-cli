@@ -14,7 +14,7 @@ import {
   ToolExecuteConfirmationDetails,
   ToolMcpConfirmationDetails,
   Config,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 import {
   RadioButtonSelect,
   RadioSelectItem,

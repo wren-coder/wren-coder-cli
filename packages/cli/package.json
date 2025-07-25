@@ -1,5 +1,5 @@
 {
-  "name": "@wren/wren-coder",
+  "name": "@wren-coder/wren-coder-cli",
   "version": "0.0.1-alpha.8",
   "description": "Wren Coder CLI",
   "repository": {
@@ -28,7 +28,7 @@
     "sandboxImageUri": "us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.0.1-alpha.8"
   },
   "dependencies": {
-    "@wren/wren-coder-core": "file:../core",
+    "@wren-coder/wren-coder-cli-core": "file:../core",
     "@types/update-notifier": "^6.0.8",
     "command-exists": "^1.2.9",
     "diff": "^7.0.0",

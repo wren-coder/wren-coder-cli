@@ -13,7 +13,7 @@ import {
   isGenericQuotaExceededError,
   isApiError,
   isStructuredError,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 // Free Tier message functions
 const getRateLimitErrorMessageGoogleFree = (
   fallbackModel: string = DEFAULT_THINKING_MODEL,
@@ -70,18 +70,18 @@ function getRateLimitMessage(
       if (isProQuotaExceededError(error)) {
         return isPaidTier
           ? getRateLimitErrorMessageGoogleProQuotaPaid(
-              currentModel || DEFAULT_MODEL,
-              fallbackModel,
-            )
+            currentModel || DEFAULT_MODEL,
+            fallbackModel,
+          )
           : getRateLimitErrorMessageGoogleProQuotaFree(
-              currentModel || DEFAULT_MODEL,
-              fallbackModel,
-            );
+            currentModel || DEFAULT_MODEL,
+            fallbackModel,
+          );
       } else if (isGenericQuotaExceededError(error)) {
         return isPaidTier
           ? getRateLimitErrorMessageGoogleGenericQuotaPaid(
-              currentModel || DEFAULT_MODEL,
-            )
+            currentModel || DEFAULT_MODEL,
+          )
           : getRateLimitErrorMessageGoogleGenericQuotaFree();
       } else {
         return isPaidTier

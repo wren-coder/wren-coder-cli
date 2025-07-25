@@ -7,14 +7,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { runNonInteractive } from './nonInteractiveCli.js';
-import { Config, GeminiClient, ToolRegistry } from '@wren/wren-coder-core';
+import { Config, GeminiClient, ToolRegistry } from '@wren-coder/wren-coder-cli-core';
 import { GenerateContentResponse, Part, FunctionCall } from '@google/genai';
 
 // Mock dependencies
-vi.mock('@wren/wren-coder-core', async () => {
+vi.mock('@wren-coder/wren-coder-cli-core', async () => {
   const actualCore = await vi.importActual<
-    typeof import('@wren/wren-coder-core')
-  >('@wren/wren-coder-core');
+    typeof import('@wren-coder/wren-coder-cli-core')
+  >('@wren-coder/wren-coder-cli-core');
   return {
     ...actualCore,
     GeminiClient: vi.fn(),
@@ -114,7 +114,7 @@ describe('runNonInteractive', () => {
     };
 
     const { executeToolCall: mockCoreExecuteToolCall } = await import(
-      '@wren/wren-coder-core'
+      '@wren-coder/wren-coder-cli-core'
     );
     vi.mocked(mockCoreExecuteToolCall).mockResolvedValue({
       callId: 'fc1',
@@ -168,7 +168,7 @@ describe('runNonInteractive', () => {
     };
 
     const { executeToolCall: mockCoreExecuteToolCall } = await import(
-      '@wren/wren-coder-core'
+      '@wren-coder/wren-coder-cli-core'
     );
     vi.mocked(mockCoreExecuteToolCall).mockResolvedValue({
       callId: 'fcError',
@@ -193,7 +193,7 @@ describe('runNonInteractive', () => {
       .mockResolvedValueOnce(stream2);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await runNonInteractive(mockConfig, 'Trigger tool error', 'prompt-id-3');
 
@@ -217,7 +217,7 @@ describe('runNonInteractive', () => {
     mockChat.sendMessageStream.mockRejectedValue(apiError);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await runNonInteractive(mockConfig, 'Initial fail', 'prompt-id-4');
 
@@ -241,7 +241,7 @@ describe('runNonInteractive', () => {
     };
 
     const { executeToolCall: mockCoreExecuteToolCall } = await import(
-      '@wren/wren-coder-core'
+      '@wren-coder/wren-coder-cli-core'
     );
     vi.mocked(mockCoreExecuteToolCall).mockResolvedValue({
       callId: 'fcNotFound',
@@ -269,7 +269,7 @@ describe('runNonInteractive', () => {
       .mockResolvedValueOnce(stream2);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await runNonInteractive(
       mockConfig,
@@ -314,7 +314,7 @@ describe('runNonInteractive', () => {
     vi.mocked(mockConfig.getMaxSessionTurns).mockReturnValue(1);
 
     const { executeToolCall: mockCoreExecuteToolCall } = await import(
-      '@wren/wren-coder-core'
+      '@wren-coder/wren-coder-cli-core'
     );
     vi.mocked(mockCoreExecuteToolCall).mockResolvedValue({
       callId: 'fcLoop',
@@ -330,7 +330,7 @@ describe('runNonInteractive', () => {
     mockChat.sendMessageStream.mockResolvedValue(stream);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await runNonInteractive(mockConfig, 'Trigger loop');
 

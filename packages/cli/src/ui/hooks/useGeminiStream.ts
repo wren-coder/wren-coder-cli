@@ -25,7 +25,7 @@ import {
   UnauthorizedError,
   UserPromptEvent,
   DEFAULT_THINKING_MODEL,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 import { type Part, type PartListUnion } from '@google/genai';
 import {
   StreamingState,
@@ -375,8 +375,8 @@ export const useGeminiStream = (
           const updatedTools = pendingHistoryItemRef.current.tools.map(
             (tool) =>
               tool.status === ToolCallStatus.Pending ||
-              tool.status === ToolCallStatus.Confirming ||
-              tool.status === ToolCallStatus.Executing
+                tool.status === ToolCallStatus.Confirming ||
+                tool.status === ToolCallStatus.Executing
                 ? { ...tool, status: ToolCallStatus.Canceled }
                 : tool,
           );

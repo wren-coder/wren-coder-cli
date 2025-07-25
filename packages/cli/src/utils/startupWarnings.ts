@@ -7,7 +7,7 @@
 import fs from 'fs/promises';
 import os from 'os';
 import { join as pathJoin } from 'node:path';
-import { getErrorMessage } from '@wren/wren-coder-core';
+import { getErrorMessage } from '@wren-coder/wren-coder-cli-core';
 
 const warningsFilePath = pathJoin(os.tmpdir(), 'gemini-cli-warnings.txt');
 

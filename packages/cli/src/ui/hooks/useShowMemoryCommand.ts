@@ -5,7 +5,7 @@
  */
 
 import { Message, MessageType } from '../types.js';
-import { Config } from '@wren/wren-coder-core';
+import { Config } from '@wren-coder/wren-coder-cli-core';
 import { LoadedSettings } from '../../config/settings.js';
 
 export function createShowMemoryAction(
@@ -48,9 +48,8 @@ export function createShowMemoryAction(
       const name = allNamesTheSame ? contextFileNames[0] : 'context';
       addMessage({
         type: MessageType.INFO,
-        content: `Loaded memory from ${fileCount} ${name} file${
-          fileCount > 1 ? 's' : ''
-        }.`,
+        content: `Loaded memory from ${fileCount} ${name} file${fileCount > 1 ? 's' : ''
+          }.`,
         timestamp: new Date(),
       });
     }

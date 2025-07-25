@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { sessionId, Logger } from '@wren/wren-coder-core';
+import { sessionId, Logger } from '@wren-coder/wren-coder-cli-core';
 
 /**
  * Hook to manage the logger instance.
@@ -25,7 +25,7 @@ export const useLogger = () => {
       .then(() => {
         setLogger(newLogger);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   return logger;

@@ -9,12 +9,12 @@ import * as os from 'os';
 import { loadCliConfig, parseArguments } from './config.js';
 import { Settings } from './settings.js';
 import { Extension } from './extension.js';
-import * as ServerConfig from '@wren/wren-coder-core';
+import * as ServerConfig from '@wren-coder/wren-coder-cli-core';
 import {
   TelemetryTarget,
   ConfigParameters,
   DEFAULT_TELEMETRY_TARGET,
-} from '@wren/wren-coder-core';
+} from '@wren-coder/wren-coder-cli-core';
 
 vi.mock('os', async (importOriginal) => {
   const actualOs = await importOriginal<typeof os>();
@@ -34,9 +34,9 @@ vi.mock('read-package-up', () => ({
   ),
 }));
 
-vi.mock('@wren/wren-coder-core', async () => {
+vi.mock('@wren-coder/wren-coder-cli-core', async () => {
   const actualServer = await vi.importActual<typeof ServerConfig>(
-    '@wren/wren-coder-core',
+    '@wren-coder/wren-coder-cli-core',
   );
   return {
     ...actualServer,
@@ -125,7 +125,7 @@ describe('parseArguments', () => {
 
     const mockConsoleError = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await expect(parseArguments()).rejects.toThrow('process.exit called');
 
@@ -155,7 +155,7 @@ describe('parseArguments', () => {
 
     const mockConsoleError = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => {});
+      .mockImplementation(() => { });
 
     await expect(parseArguments()).rejects.toThrow('process.exit called');
 
