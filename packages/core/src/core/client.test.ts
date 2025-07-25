@@ -53,13 +53,6 @@ vi.mock('./turn', () => {
 
 vi.mock('../config/config.js');
 vi.mock('./prompts');
-vi.mock('../config/models', async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...actual,
-    getTokenLimit: vi.fn(),
-  };
-});
 vi.mock('../utils/getFolderStructure', () => ({
   getFolderStructure: vi.fn().mockResolvedValue('Mock Folder Structure'),
 }));
