@@ -36,8 +36,9 @@ import {
   StartSessionEvent,
 } from '../telemetry/index.js';
 import { ClearcutLogger } from '../telemetry/clearcut-logger/clearcut-logger.js';
+import { Models } from './models.js';
 
-export const DEFAULT_MODEL = 'deepseek-chat';
+export const DEFAULT_MODEL = Models.DEEPSEEK_CHAT;
 export const DEFAULT_THINKING_MODEL = 'deepseek-reasoner';
 export const DEFAULT_EMBEDDING_MODEL = 'gemini-embedding-001';
 export const DEFAULT_TOKEN_LIMIT = 128_000;

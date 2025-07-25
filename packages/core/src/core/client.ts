@@ -40,11 +40,11 @@ import {
 import { ProxyAgent, setGlobalDispatcher } from 'undici';
 import { DEFAULT_THINKING_MODEL } from '../config/config.js';
 import { LoopDetectionService } from '../services/loopDetectionService.js';
-import { getTokenLimit } from '../config/modelRegistry.js';
+import { getModelConfig, getTokenLimit } from '../config/modelRegistry.js';
 
 function isThinkingSupported(model: string) {
-  if (model.startsWith('deepseek-reasoner')) return true;
-  return false;
+  const config = getModelConfig(model);
+  return config?.capabilities?.reasoning ?? false
 }
 
 /**

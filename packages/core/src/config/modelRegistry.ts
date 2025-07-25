@@ -112,7 +112,7 @@ export function listModels(): ModelConfig[] {
 /**
  * Get model by name
  */
-export function getModel(modelName: string): ModelConfig | undefined {
+function getModel(modelName: string): ModelConfig | undefined {
   return getAllModelsMap().get(modelName);
 }
 
