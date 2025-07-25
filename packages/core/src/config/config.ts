@@ -35,8 +35,8 @@ import {
   TelemetryTarget,
   StartSessionEvent,
 } from '../telemetry/index.js';
-import { DEFAULT_EMBEDDING_MODEL, DEFAULT_THINKING_MODEL } from './models.js';
 import { ClearcutLogger } from '../telemetry/clearcut-logger/clearcut-logger.js';
+import { DEFAULT_EMBEDDING_MODEL, DEFAULT_THINKING_MODEL } from './modelRegistry.js';
 
 export enum ApprovalMode {
   DEFAULT = 'default',
@@ -85,7 +85,7 @@ export class MCPServerConfig {
     readonly description?: string,
     readonly includeTools?: string[],
     readonly excludeTools?: string[],
-  ) {}
+  ) { }
 }
 
 export interface SandboxConfig {
