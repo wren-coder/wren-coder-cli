@@ -13,6 +13,8 @@ export function tokenLimit(model: Model): TokenCount {
   // Add other models as they become relevant or if specified by config
   // Pulled from https://ai.google.dev/gemini-api/docs/models
   switch (model) {
+    case 'deepseek-chat':
+      return 128_000
     case 'gemini-1.5-pro':
       return 2_097_152;
     case 'gemini-1.5-flash':
