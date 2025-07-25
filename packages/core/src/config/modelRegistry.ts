@@ -43,6 +43,18 @@ const DEFAULT_PROVIDERS = new Set(DEFAULT_MODELS.map(model => model.provider));
 
 const customModels: ModelConfig[] = loadModels();
 
+let allModelsMap: Map<string, ModelConfig> | null = null;
+
+function getAllModelsMap(): Map<string, ModelConfig> {
+  if (!allModelsMap) {
+    allModelsMap = new Map([
+      ...DEFAULT_MODELS_MAP,
+      ...customModels.map(model => [model.name, model] as [string, ModelConfig])
+    ]);
+  }
+  return allModelsMap;
+}
+
 /**
  * Get all built-in models
  */
@@ -101,7 +113,7 @@ export function listModels(): ModelConfig[] {
  * Get model by name
  */
 export function getModel(modelName: string): ModelConfig | undefined {
-  return DEFAULT_MODELS_MAP.get(modelName);
+  return getAllModelsMap().get(modelName);
 }
 
 /**
@@ -118,7 +130,6 @@ export function getModelsByCapability(capability: keyof ModelConfig['capabilitie
   return listModels().filter(model => model.capabilities?.[capability] === true);
 }
 
-
 /**
  * Get available providers
  */
@@ -126,7 +137,6 @@ export function listProviders(): string[] {
   const customProviders = new Set(customModels.map(m => m.provider));
   return [...Array.from(DEFAULT_PROVIDERS), ...Array.from(customProviders)];
 }
-
 
 export function getModelConfig(modelName: string): ModelConfig {
   const model = getModel(modelName);
@@ -137,7 +147,7 @@ export function getModelConfig(modelName: string): ModelConfig {
 }
 
 export function isModelSupported(modelName: string): boolean {
-  return getModelConfig(modelName) !== undefined;
+  return getModel(modelName) !== undefined;
 }
 
 export function getTokenLimit(modelName: string): number {
