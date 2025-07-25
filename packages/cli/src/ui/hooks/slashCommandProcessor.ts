@@ -226,7 +226,7 @@ export const useSlashCommandProcessor = (
         description: 'open full Wren Coder documentation in your browser',
         action: async (_mainCommand, _subCommand, _args) => {
           const docsUrl =
-            'https://github.com/ryanrawlingswang/wren-coder/blob/main/README.md';
+            'https://github.com/wren-coder/wren-coder-cli/blob/main/README.md';
           if (process.env.SANDBOX && process.env.SANDBOX !== 'sandbox-exec') {
             addMessage({
               type: MessageType.INFO,

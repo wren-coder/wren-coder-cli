@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+http://github.com/ryanrawlingswang/wren-coder.git"
+    "url": "git+https://github.com/wren-coder/wren-coder-cli.git"
   },
   "config": {
     "sandboxImageUri": "us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.0.1-alpha.8"
