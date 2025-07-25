@@ -1,0 +1,34 @@
+{
+  "models": [
+    {
+      "name": "custom-llama-7b",
+      "tokenLimit": 4096,
+      "description": "Custom Llama 7B model",
+      "provider": "custom",
+      "capabilities": {}
+    },
+    {
+      "name": "custom-claude-3",
+      "tokenLimit": 200000,
+      "description": "Custom Claude 3 model with high context",
+      "provider": "anthropic",
+      "capabilities": {
+        "reasoning": true
+      }
+    },
+    {
+      "name": "deepseek-chat",
+      "tokenLimit": 256000,
+      "description": "Override built-in DeepSeek Chat with higher token limit",
+      "provider": "deepseek",
+      "capabilities": {}
+    },
+    {
+      "name": "gpt-4o",
+      "tokenLimit": 128000,
+      "description": "OpenAI GPT-4 Omni model",
+      "provider": "openai",
+      "capabilities": {}
+    }
+  ]
+}

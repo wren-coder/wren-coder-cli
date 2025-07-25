@@ -19,7 +19,7 @@ import { GeminiChat } from './geminiChat.js';
 import { Config } from '../config/config.js';
 import { GeminiEventType, Turn } from './turn.js';
 import { getCoreSystemPrompt } from './prompts.js';
-import { DEFAULT_THINKING_MODEL } from '../config/models.js';
+import { DEFAULT_THINKING_MODEL, getTokenLimit } from '../config/models.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
 import { setSimulate429 } from '../utils/testUtils.js';
 
