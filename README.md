@@ -15,7 +15,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/wren-coder/wren-coder-cli.svg)](https://github.com/wren-coder/wren-coder-cli/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/wren-coder/wren-coder-cli.svg)](https://github.com/wren-coder/wren-coder-cli/pulls)
 [![GitHub contributors](https://img.shields.io/github/contributors/wren-coder/wren-coder-cli.svg)](https://github.com/wren-coder/wren-coder-cli/graphs/contributors)
-[![Discord](https://img.shields.io/discord/1321569992885776386?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/aUnD2AQgHu)
+[![Discord](https://img.shields.io/discord/1398016183252418590?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/aUnD2AQgHu)
 
 ![Wren Coder Screenshot](./docs/assets/wren-screenshot.png)
 
