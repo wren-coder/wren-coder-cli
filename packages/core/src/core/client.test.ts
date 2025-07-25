@@ -21,6 +21,7 @@ import { GeminiEventType, Turn } from './turn.js';
 import { getCoreSystemPrompt } from './prompts.js';
 import { getTokenLimit } from '../config/modelRegistry.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
+import { Models } from '../config/models.js';
 import { setSimulate429 } from '../utils/testUtils.js';
 
 // --- Mocks ---
@@ -54,7 +55,16 @@ vi.mock('./turn', () => {
 vi.mock('../config/config.js');
 vi.mock('./prompts');
 vi.mock('../config/modelRegistry.js', () => ({
-  getTokenLimit: vi.fn()
+  getTokenLimit: vi.fn(),
+  getModelConfig: vi.fn().mockReturnValue({
+    name: 'deepseek-chat',
+    tokenLimit: 128000,
+    provider: 'deepseek',
+    capabilities: {
+      functionCalling: true,
+      streaming: true,
+    }
+  })
 }));
 vi.mock('../utils/getFolderStructure', () => ({
   getFolderStructure: vi.fn().mockResolvedValue('Mock Folder Structure'),
@@ -174,7 +184,7 @@ describe('Gemini Client (client.ts)', () => {
     const fileService = new FileDiscoveryService('/test/dir');
     const MockedConfig = vi.mocked(Config, true);
     const contentGeneratorConfig = {
-      model: 'test-model',
+      model: Models.DEEPSEEK_CHAT,
       apiKey: 'test-key',
       vertexai: false,
       authType: AuthType.USE_GEMINI,
@@ -185,8 +195,8 @@ describe('Gemini Client (client.ts)', () => {
           .fn()
           .mockReturnValue(contentGeneratorConfig),
         getToolRegistry: vi.fn().mockResolvedValue(mockToolRegistry),
-        getModel: vi.fn().mockReturnValue('test-model'),
-        getEmbeddingModel: vi.fn().mockReturnValue('test-embedding-model'),
+        getModel: vi.fn().mockReturnValue(Models.DEEPSEEK_CHAT),
+        getEmbeddingModel: vi.fn().mockReturnValue('gemini-embedding-001'),
         getApiKey: vi.fn().mockReturnValue('test-key'),
         getVertexAI: vi.fn().mockReturnValue(false),
         getUserAgent: vi.fn().mockReturnValue('test-agent'),
@@ -237,7 +247,7 @@ describe('Gemini Client (client.ts)', () => {
 
   describe('generateEmbedding', () => {
     const texts = ['hello world', 'goodbye world'];
-    const testEmbeddingModel = 'test-embedding-model';
+    const testEmbeddingModel = 'gemini-embedding-001';
 
     it('should call embedContent with correct parameters and return embeddings', async () => {
       const mockEmbeddings = [
@@ -345,7 +355,7 @@ describe('Gemini Client (client.ts)', () => {
       await client.generateContent(contents, generationConfig, abortSignal);
 
       expect(mockGenerateContentFn).toHaveBeenCalledWith({
-        model: 'test-model',
+        model: Models.DEEPSEEK_CHAT,
         config: {
           abortSignal,
           systemInstruction: getCoreSystemPrompt(''),
@@ -373,7 +383,7 @@ describe('Gemini Client (client.ts)', () => {
       await client.generateJson(contents, schema, abortSignal);
 
       expect(mockGenerateContentFn).toHaveBeenCalledWith({
-        model: 'test-model', // Should use current model from config
+        model: Models.DEEPSEEK_CHAT, // Should use current model from config
         config: {
           abortSignal,
           systemInstruction: getCoreSystemPrompt(''),
@@ -390,7 +400,7 @@ describe('Gemini Client (client.ts)', () => {
       const contents = [{ role: 'user', parts: [{ text: 'hello' }] }];
       const schema = { type: 'string' };
       const abortSignal = new AbortController().signal;
-      const customModel = 'custom-json-model';
+      const customModel = Models.CLAUDE_3_5_SONET_20241022;
       const customConfig = { temperature: 0.9, topK: 20 };
 
       const mockGenerator: Partial<ContentGenerator> = {
@@ -915,7 +925,7 @@ describe('Gemini Client (client.ts)', () => {
     it('should use current model from config for content generation', async () => {
       const initialModel = client['config'].getModel();
       const contents = [{ role: 'user', parts: [{ text: 'test' }] }];
-      const currentModel = initialModel + '-changed';
+      const currentModel = Models.CLAUDE_3_5_SONET_20241022;
 
       vi.spyOn(client['config'], 'getModel').mockReturnValueOnce(currentModel);
 
@@ -967,8 +977,8 @@ describe('Gemini Client (client.ts)', () => {
       };
 
       // mock the model has been changed between calls of `countTokens`
-      const firstCurrentModel = initialModel + '-changed-1';
-      const secondCurrentModel = initialModel + '-changed-2';
+      const firstCurrentModel = Models.DEEPSEEK_CODER;
+      const secondCurrentModel = Models.CLAUDE_3_5_SONET_20241022;
       vi.spyOn(client['config'], 'getModel')
         .mockReturnValueOnce(firstCurrentModel)
         .mockReturnValueOnce(secondCurrentModel);
@@ -1002,7 +1012,7 @@ describe('Gemini Client (client.ts)', () => {
       const fallbackModel = DEFAULT_THINKING_MODEL;
 
       // mock config been changed
-      const currentModel = initialModel + '-changed';
+      const currentModel = Models.CLAUDE_3_5_SONET_20241022;
       vi.spyOn(client['config'], 'getModel').mockReturnValueOnce(currentModel);
 
       const mockFallbackHandler = vi.fn().mockResolvedValue(true);
