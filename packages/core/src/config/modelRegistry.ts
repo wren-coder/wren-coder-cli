@@ -16,18 +16,16 @@ import {
   mistralModels,
   cohereModels
 } from './providers/index.js';
-
-export const DEFAULT_MODEL = 'deepseek-chat';
-export const DEFAULT_THINKING_MODEL = 'deepseek-reasoner';
-export const DEFAULT_EMBEDDING_MODEL = 'gemini-embedding-001';
-export const DEFAULT_TOKEN_LIMIT = 128_000;
+import { ModelNotFoundError } from './ModelNotFoundError.js';
 
 export interface ModelsConfigFile {
   models: ModelConfig[];
 }
 
+const CUSTOM_MODEL_CONFIG_PATH = path.join('.wren', 'models.json');
+
 // All built-in models from providers
-const BUILT_IN_MODELS: ModelConfig[] = [
+const DEFAULT_MODELS: ModelConfig[] = [
   ...deepseekModels,
   ...googleModels,
   ...openaiModels,
@@ -37,167 +35,112 @@ const BUILT_IN_MODELS: ModelConfig[] = [
   ...cohereModels,
 ];
 
+const DEFAULT_MODELS_MAP: Map<string, ModelConfig> = new Map(
+  DEFAULT_MODELS.map(model => [model.name, model])
+);
+
+const DEFAULT_PROVIDERS = new Set(DEFAULT_MODELS.map(model => model.provider));
+
+const customModels: ModelConfig[] = loadModels();
+
 /**
- * Central registry for all model configurations
+ * Get all built-in models
  */
-class ModelRegistry {
-  private customModels: ModelConfig[] = [];
-  private cachedAllModels: ModelConfig[] | null = null;
+export function listDefaultModels(): ModelConfig[] {
+  return DEFAULT_MODELS;
+}
 
-  /**
-   * Get all built-in models
-   */
-  getBuiltInModels(): ModelConfig[] {
-    return [...BUILT_IN_MODELS];
-  }
-
-  /**
-   * Load custom models from a config file
-   */
-  loadCustomModels(configPath: string): void {
-    try {
-      if (!fs.existsSync(configPath)) {
-        this.customModels = [];
-        return;
-      }
-
-      const content = fs.readFileSync(configPath, 'utf-8');
-      const config: ModelsConfigFile = JSON.parse(content);
-
-      if (!config.models || !Array.isArray(config.models)) {
-        console.warn(`Invalid models config file format at ${configPath}. Expected { "models": [...] }`);
-        this.customModels = [];
-        return;
-      }
-
-      // Validate each model config
-      this.customModels = config.models.filter((model): model is ModelConfig => {
-        if (!model.name || typeof model.name !== 'string') {
-          console.warn(`Skipping model config with invalid name: ${JSON.stringify(model)}`);
-          return false;
-        }
-
-        if (!model.tokenLimit || typeof model.tokenLimit !== 'number' || model.tokenLimit <= 0) {
-          console.warn(`Skipping model config "${model.name}" with invalid tokenLimit: ${model.tokenLimit}`);
-          return false;
-        }
-
-        return true;
-      });
-
-      // Clear cache when custom models are loaded
-      this.cachedAllModels = null;
-    } catch (error) {
-      console.warn(`Failed to load custom model configs from ${configPath}:`, error);
-      this.customModels = [];
-    }
-  }
-
-  /**
-   * Get all models (built-in + custom)
-   */
-  listModels(): ModelConfig[] {
-    if (this.cachedAllModels) {
-      return [...this.cachedAllModels];
+/**
+ * Load custom models from a config file
+ */
+function loadModels() {
+  let models: ModelConfig[] = [];
+  try {
+    if (fs.existsSync(CUSTOM_MODEL_CONFIG_PATH)) {
+      return models;
     }
 
-    const builtInModels = this.getBuiltInModels();
-    const configMap = new Map<string, ModelConfig>();
+    const content = fs.readFileSync(CUSTOM_MODEL_CONFIG_PATH, 'utf-8');
+    const config: ModelsConfigFile = JSON.parse(content);
 
-    // Add built-in models first
-    builtInModels.forEach(model => {
-      configMap.set(model.name, model);
+    if (!config.models || !Array.isArray(config.models)) {
+      console.warn(`Invalid models config file format at ${CUSTOM_MODEL_CONFIG_PATH}. Expected { "models": [...] }`);
+      return models;
+    }
+
+    // Validate each model config
+    models = config.models.filter((model): model is ModelConfig => {
+      if (!model.name || typeof model.name !== 'string') {
+        console.warn(`Skipping model config with invalid name: ${JSON.stringify(model)}`);
+        return false;
+      }
+
+      if (!model.tokenLimit || typeof model.tokenLimit !== 'number' || model.tokenLimit <= 0) {
+        console.warn(`Skipping model config "${model.name}" with invalid tokenLimit: ${model.tokenLimit}`);
+        return false;
+      }
+
+      return true;
     });
 
-    // Override with custom models
-    this.customModels.forEach(model => {
-      configMap.set(model.name, model);
-    });
-
-    this.cachedAllModels = Array.from(configMap.values());
-    return [...this.cachedAllModels];
+  } catch (error) {
+    console.warn(`Failed to load custom model configs from ${CUSTOM_MODEL_CONFIG_PATH}:`, error);
+    models = [];
   }
+  return models;
+};
 
-  /**
-   * Get model by name
-   */
-  getModel(modelName: string): ModelConfig | undefined {
-    return this.listModels().find(model => model.name === modelName);
-  }
-
-  /**
-   * Get models by provider
-   */
-  getModelsByProvider(providerName: string): ModelConfig[] {
-    return this.listModels().filter(model => model.provider === providerName);
-  }
-
-  /**
-   * Get models by capability
-   */
-  getModelsByCapability(capability: keyof ModelConfig['capabilities']): ModelConfig[] {
-    return this.listModels().filter(model => model.capabilities?.[capability] === true);
-  }
-
-  /**
-   * Search models by name or description
-   */
-  searchModels(query: string): ModelConfig[] {
-    const lowerQuery = query.toLowerCase();
-    return this.listModels().filter(model =>
-      model.name.toLowerCase().includes(lowerQuery) ||
-      model.description?.toLowerCase().includes(lowerQuery) ||
-      model.provider.toLowerCase().includes(lowerQuery)
-    );
-  }
-
-  /**
-   * Get available providers
-   */
-  getProviders(): string[] {
-    const providers = new Set(this.listModels().map(model => model.provider));
-    return Array.from(providers);
-  }
-
-  /**
-   * Clear all caches
-   */
-  clearCache(): void {
-    this.cachedAllModels = null;
-  }
+/**
+ * Get all models (built-in + custom)
+ */
+export function listModels(): ModelConfig[] {
+  return [...DEFAULT_MODELS, ...customModels]
 }
 
-// Export singleton instance
-export const modelRegistry = new ModelRegistry();
+/**
+ * Get model by name
+ */
+export function getModel(modelName: string): ModelConfig | undefined {
+  return DEFAULT_MODELS_MAP.get(modelName);
+}
 
-// Legacy API compatibility functions
-export function getAllModelConfigs(customConfigPath?: string): ModelConfig[] {
-  if (customConfigPath) {
-    modelRegistry.loadCustomModels(customConfigPath);
+/**
+ * Get models by provider
+ */
+export function getModelsByProvider(providerName: string): ModelConfig[] {
+  return listModels().filter(model => model.provider === providerName);
+}
+
+/**
+ * Get models by capability
+ */
+export function getModelsByCapability(capability: keyof ModelConfig['capabilities']): ModelConfig[] {
+  return listModels().filter(model => model.capabilities?.[capability] === true);
+}
+
+
+/**
+ * Get available providers
+ */
+export function listProviders(): string[] {
+  const customProviders = new Set(customModels.map(m => m.provider));
+  return [...Array.from(DEFAULT_PROVIDERS), ...Array.from(customProviders)];
+}
+
+
+export function getModelConfig(modelName: string): ModelConfig {
+  const model = getModel(modelName);
+  if (!model) {
+    throw new ModelNotFoundError(modelName)
   }
-  return modelRegistry.listModels();
+  return model;
 }
 
-export function getModelConfig(modelName: string, customConfigPath?: string): ModelConfig | undefined {
-  if (customConfigPath) {
-    modelRegistry.loadCustomModels(customConfigPath);
-  }
-  return modelRegistry.getModel(modelName);
+export function isModelSupported(modelName: string): boolean {
+  return getModelConfig(modelName) !== undefined;
 }
 
-export function isModelSupported(modelName: string, customConfigPath?: string): boolean {
-  return getModelConfig(modelName, customConfigPath) !== undefined;
-}
-
-export function getTokenLimit(modelName: string, customConfigPath?: string): number {
-  const config = getModelConfig(modelName, customConfigPath);
-  return config?.tokenLimit ?? DEFAULT_TOKEN_LIMIT;
-}
-
-export function clearModelConfigCache(): void {
-  modelRegistry.clearCache();
-}
-
-export function getDefaultModelsConfigPath(projectDir: string): string {
-  return path.join(projectDir, '.wren', 'models.json');
+export function getTokenLimit(modelName: string): number {
+  const config = getModelConfig(modelName);
+  return config.tokenLimit;
 }

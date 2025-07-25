@@ -17,7 +17,7 @@ import { ReadFileTool } from '../tools/read-file.js';
 import { ReadManyFilesTool } from '../tools/read-many-files.js';
 import { GrepTool } from '../tools/grep.js';
 import { LruCache } from './LruCache.js';
-import { DEFAULT_THINKING_MODEL } from '../config/models.js';
+import { DEFAULT_THINKING_MODEL } from '../config/config.js';
 import {
   isFunctionResponse,
   isFunctionCall,

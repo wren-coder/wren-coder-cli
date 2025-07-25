@@ -16,10 +16,10 @@ import {
 import { findIndexAfterFraction, GeminiClient } from './client.js';
 import { AuthType, ContentGenerator } from './contentGenerator.js';
 import { GeminiChat } from './geminiChat.js';
-import { Config } from '../config/config.js';
+import { Config, DEFAULT_THINKING_MODEL } from '../config/config.js';
 import { GeminiEventType, Turn } from './turn.js';
 import { getCoreSystemPrompt } from './prompts.js';
-import { DEFAULT_THINKING_MODEL, getTokenLimit } from '../config/models.js';
+import { getTokenLimit } from '../config/modelRegistry.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
 import { setSimulate429 } from '../utils/testUtils.js';
 

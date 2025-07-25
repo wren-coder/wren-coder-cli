@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { ModelsDevClient, modelsDevClient, ModelsDevResponse } from './modelsDevClient';
+import { ModelsDevClient, modelsDevClient, ModelsDevResponse } from './modelsDevClient.js';
 
 // Mock fetch
 global.fetch = vi.fn();

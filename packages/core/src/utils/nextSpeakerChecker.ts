@@ -5,7 +5,7 @@
  */
 
 import { Content, SchemaUnion, Type } from '@google/genai';
-import { DEFAULT_THINKING_MODEL } from '../config/models.js';
+import { DEFAULT_THINKING_MODEL } from '../config/config.js';
 import { GeminiClient } from '../core/client.js';
 import { GeminiChat } from '../core/geminiChat.js';
 import { isFunctionResponse } from './messageInspectors.js';

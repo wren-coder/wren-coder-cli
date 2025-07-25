@@ -31,7 +31,6 @@ import { GeminiChat } from './geminiChat.js';
 import { retryWithBackoff } from '../utils/retry.js';
 import { getErrorMessage } from '../utils/errors.js';
 import { isFunctionResponse } from '../utils/messageInspectors.js';
-import { getTokenLimit } from '../config/models.js';
 import {
   AuthType,
   ContentGenerator,
@@ -39,8 +38,9 @@ import {
   createContentGenerator,
 } from './contentGenerator.js';
 import { ProxyAgent, setGlobalDispatcher } from 'undici';
-import { DEFAULT_THINKING_MODEL } from '../config/models.js';
+import { DEFAULT_THINKING_MODEL } from '../config/config.js';
 import { LoopDetectionService } from '../services/loopDetectionService.js';
+import { getTokenLimit } from '../config/modelRegistry.js';
 
 function isThinkingSupported(model: string) {
   if (model.startsWith('deepseek-reasoner')) return true;
@@ -243,11 +243,11 @@ export class GeminiClient {
         this.config.getModel(),
       )
         ? {
-            ...this.generateContentConfig,
-            thinkingConfig: {
-              includeThoughts: true,
-            },
-          }
+          ...this.generateContentConfig,
+          thinkingConfig: {
+            includeThoughts: true,
+          },
+        }
         : this.generateContentConfig;
       return new GeminiChat(
         this.config,
@@ -572,7 +572,7 @@ export class GeminiClient {
     // Don't compress if not forced and we are under the limit.
     if (
       !force &&
-              originalTokenCount < this.COMPRESSION_TOKEN_THRESHOLD * getTokenLimit(model)
+      originalTokenCount < this.COMPRESSION_TOKEN_THRESHOLD * getTokenLimit(model)
     ) {
       return null;
     }
