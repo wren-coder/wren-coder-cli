@@ -56,7 +56,7 @@ export function listDefaultModels(): ModelConfig[] {
 function loadModels() {
   let models: ModelConfig[] = [];
   try {
-    if (fs.existsSync(CUSTOM_MODEL_CONFIG_PATH)) {
+    if (!fs.existsSync(CUSTOM_MODEL_CONFIG_PATH)) {
       return models;
     }
 
