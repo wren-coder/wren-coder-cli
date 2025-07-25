@@ -9,12 +9,7 @@ import { Config } from '../config/config.js';
 import { CompletedToolCall } from '../core/coreToolScheduler.js';
 import { ToolConfirmationOutcome } from '../tools/tools.js';
 import { AuthType } from '../core/contentGenerator.js';
-
-export enum ToolCallDecision {
-  ACCEPT = 'accept',
-  REJECT = 'reject',
-  MODIFY = 'modify',
-}
+import { ToolCallDecision } from './decisions.js';
 
 export function getDecisionFromOutcome(
   outcome: ToolConfirmationOutcome,

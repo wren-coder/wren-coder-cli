@@ -9,4 +9,4 @@ export {
   DEFAULT_MODEL,
   DEFAULT_THINKING_MODEL,
   DEFAULT_EMBEDDING_MODEL,
-} from './src/config/models.js';
+} from './src/config/config.js';

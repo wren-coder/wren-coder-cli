@@ -15,8 +15,8 @@ import {
   ApiErrorEvent,
   ApiResponseEvent,
   ToolCallEvent,
-  ToolCallDecision,
 } from './types.js';
+import { ToolCallDecision } from './decisions.js';
 
 export type UiEvent =
   | (ApiResponseEvent & { 'event.name': typeof EVENT_API_RESPONSE })

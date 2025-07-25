@@ -35,8 +35,13 @@ import {
   TelemetryTarget,
   StartSessionEvent,
 } from '../telemetry/index.js';
-import { DEFAULT_EMBEDDING_MODEL, DEFAULT_THINKING_MODEL } from './models.js';
 import { ClearcutLogger } from '../telemetry/clearcut-logger/clearcut-logger.js';
+import { Models } from './models.js';
+
+export const DEFAULT_MODEL = Models.DEEPSEEK_CHAT;
+export const DEFAULT_THINKING_MODEL = 'deepseek-reasoner';
+export const DEFAULT_EMBEDDING_MODEL = 'gemini-embedding-001';
+export const DEFAULT_TOKEN_LIMIT = 128_000;
 
 export enum ApprovalMode {
   DEFAULT = 'default',
@@ -85,7 +90,7 @@ export class MCPServerConfig {
     readonly description?: string,
     readonly includeTools?: string[],
     readonly excludeTools?: string[],
-  ) {}
+  ) { }
 }
 
 export interface SandboxConfig {
@@ -598,5 +603,3 @@ export class Config {
     return registry;
   }
 }
-// Export model constants for use in CLI
-export { DEFAULT_THINKING_MODEL };
