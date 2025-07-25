@@ -1,5 +1,22 @@
 # Wren Coder
 
+[![npm version](https://badge.fury.io/js/@wren-coder%2Fwren-coder-cli.svg)](https://badge.fury.io/js/@wren-coder%2Fwren-coder-cli)
+[![npm downloads](https://img.shields.io/npm/dm/@wren-coder/wren-coder-cli.svg)](https://www.npmjs.com/package/@wren-coder/wren-coder-cli)
+[![License](https://img.shields.io/github/license/wren-coder/wren-coder-cli.svg)](https://github.com/wren-coder/wren-coder-cli/blob/main/LICENSE)
+[![Node.js Version](https://img.shields.io/node/v/@wren-coder/wren-coder-cli.svg)](https://nodejs.org/)
+[![GitHub stars](https://img.shields.io/github/stars/wren-coder/wren-coder-cli.svg?style=social)](https://github.com/wren-coder/wren-coder-cli/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/wren-coder/wren-coder-cli.svg?style=social)](https://github.com/wren-coder/wren-coder-cli/network/members)
+
+[![CI](https://github.com/wren-coder/wren-coder-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/wren-coder/wren-coder-cli/actions/workflows/ci.yml)
+[![E2E Tests](https://github.com/wren-coder/wren-coder-cli/actions/workflows/e2e.yml/badge.svg)](https://github.com/wren-coder/wren-coder-cli/actions/workflows/e2e.yml)
+[![Release](https://github.com/wren-coder/wren-coder-cli/actions/workflows/release.yml/badge.svg)](https://github.com/wren-coder/wren-coder-cli/actions/workflows/release.yml)
+[![codecov](https://codecov.io/gh/wren-coder/wren-coder-cli/branch/main/graph/badge.svg)](https://codecov.io/gh/wren-coder/wren-coder-cli)
+
+[![GitHub issues](https://img.shields.io/github/issues/wren-coder/wren-coder-cli.svg)](https://github.com/wren-coder/wren-coder-cli/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/wren-coder/wren-coder-cli.svg)](https://github.com/wren-coder/wren-coder-cli/pulls)
+[![GitHub contributors](https://img.shields.io/github/contributors/wren-coder/wren-coder-cli.svg)](https://github.com/wren-coder/wren-coder-cli/graphs/contributors)
+[![Discord](https://img.shields.io/discord/1321569992885776386?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/aUnD2AQgHu)
+
 ![Wren Coder Screenshot](./docs/assets/wren-screenshot.png)
 
 Wren Coder is a model-agnostic command-line AI workflow tool forked from [**Qwen CLI Coder**](https://github.com/QwenLM/Qwen-Code), which was itself a fork of [**Gemini CLI**](https://github.com/google-gemini/gemini-cli) (Please refer to [this document](./README.gemini.md) for more details). Currently supports OpenAI-compatible APIs, with plans to expand support to non-OpenAI-compatible models in the future.
@@ -40,7 +57,7 @@ wren
 Or you can install it from source:
 
 ```bash
-git clone https://github.com/ryanrawlingswang/wren-coder.git
+git clone https://github.com/wren-coder/wren-coder-cli.git
 cd wren-coder
 npm install
 npm install -g .
@@ -57,6 +74,7 @@ export OPENAI_MODEL="your_model_name_here"       # e.g., gpt-4, deepseek-coder, 
 ```
 
 **Currently Supported (OpenAI-Compatible):**
+
 - OpenAI (GPT-4, GPT-3.5)
 - DeepSeek (deepseek-coder, deepseek-chat)
 - Anthropic (via OpenAI-compatible proxy)
@@ -64,6 +82,7 @@ export OPENAI_MODEL="your_model_name_here"       # e.g., gpt-4, deepseek-coder, 
 - Any OpenAI-compatible API endpoint
 
 **Future Support Planned:**
+
 - Native Ollama integration
 - Direct Anthropic API support
 - Additional model providers and protocols

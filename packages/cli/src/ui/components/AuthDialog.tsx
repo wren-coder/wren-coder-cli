@@ -171,7 +171,7 @@ export function AuthDialog({
       </Box>
       <Box marginTop={1}>
         <Text color={Colors.AccentBlue}>
-          {'https://github.com/ryanrawlingswang/wren-coder/blob/main/README.md'}
+          {'https://github.com/wren-coder/wren-coder-cli/blob/main/README.md'}
         </Text>
       </Box>
     </Box>

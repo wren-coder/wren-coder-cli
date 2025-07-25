@@ -98,7 +98,7 @@ This section guides contributors on how to build, modify, and understand the dev
 To clone the repository:
 
 ```bash
-git clone https://github.com/ryanrawlingswang/wren-coder.git
+git clone https://github.com/wren-coder/wren-coder-cli.git
 cd wren-coder
 ```
 
