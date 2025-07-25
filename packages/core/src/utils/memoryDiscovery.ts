@@ -9,7 +9,7 @@ import * as fsSync from 'fs';
 import * as path from 'path';
 import { homedir } from 'os';
 import { bfsFileSearch } from './bfsFileSearch.js';
-import { CONFIG_DIR, getAllMdFilenames } from '../tools/memoryTool.js';
+import { CONFIG_DIR, getAllMdFilenames, GLOBAL_MEMORY } from '../tools/memoryTool.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
 import { processImports } from './memoryImportProcessor.js';
 
@@ -85,6 +85,7 @@ async function getMdFilePathsInternal(
 ): Promise<string[]> {
   const allPaths = new Set<string>();
   const wrenCoderMdFilenames = getAllMdFilenames();
+  wrenCoderMdFilenames.push(GLOBAL_MEMORY);
 
   for (const wrenCoderMdFilename of wrenCoderMdFilenames) {
     const resolvedCwd = path.resolve(currentWorkingDirectory);
