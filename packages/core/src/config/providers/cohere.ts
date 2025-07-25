@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { Providers } from '../providers.js';
 import { ModelConfig } from './base.js';
 
 export const cohereModels: ModelConfig[] = [
@@ -11,7 +12,7 @@ export const cohereModels: ModelConfig[] = [
     name: 'command-r-plus-08-2024',
     tokenLimit: 128_000,
     description: 'Command R+ - Most capable model',
-    provider: 'cohere',
+    provider: Providers.COHERE,
     capabilities: {
       functionCalling: true,
       streaming: true,
@@ -21,7 +22,7 @@ export const cohereModels: ModelConfig[] = [
     name: 'command-r-08-2024',
     tokenLimit: 128_000,
     description: 'Command R - Balanced model',
-    provider: 'cohere',
+    provider: Providers.COHERE,
     capabilities: {
       functionCalling: true,
       streaming: true,
@@ -31,7 +32,7 @@ export const cohereModels: ModelConfig[] = [
     name: 'embed-english-v3.0',
     tokenLimit: 512,
     description: 'English embedding model',
-    provider: 'cohere',
+    provider: Providers.COHERE,
     capabilities: {
       embedding: true,
     }
@@ -40,7 +41,7 @@ export const cohereModels: ModelConfig[] = [
     name: 'embed-multilingual-v3.0',
     tokenLimit: 512,
     description: 'Multilingual embedding model',
-    provider: 'cohere',
+    provider: Providers.COHERE,
     capabilities: {
       embedding: true,
     }

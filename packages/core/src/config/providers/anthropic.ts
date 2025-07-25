@@ -4,14 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { Models } from '../models.js';
+import { Providers } from '../providers.js';
 import { ModelConfig } from './base.js';
 
 export const anthropicModels: ModelConfig[] = [
   {
-    name: 'claude-3-5-sonnet-20241022',
+    name: Models.CLAUDE_3_5_SONET_20241022,
     tokenLimit: 200_000,
     description: 'Claude 3.5 Sonnet - Most intelligent model',
-    provider: 'anthropic',
+    provider: Providers.ANTHROPIC,
     capabilities: {
       vision: true,
       functionCalling: true,
@@ -22,7 +24,7 @@ export const anthropicModels: ModelConfig[] = [
     name: 'claude-3-5-haiku-20241022',
     tokenLimit: 200_000,
     description: 'Claude 3.5 Haiku - Fast and cost-effective',
-    provider: 'anthropic',
+    provider: Providers.ANTHROPIC,
     capabilities: {
       vision: true,
       functionCalling: true,
@@ -33,7 +35,7 @@ export const anthropicModels: ModelConfig[] = [
     name: 'claude-3-opus-20240229',
     tokenLimit: 200_000,
     description: 'Claude 3 Opus - Most powerful model for complex tasks',
-    provider: 'anthropic',
+    provider: Providers.ANTHROPIC,
     capabilities: {
       vision: true,
       functionCalling: true,

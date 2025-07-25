@@ -10,24 +10,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { Models } from '../models.js';
+import { Providers } from '../providers.js';
 import { ModelConfig } from './base.js';
 
 export const deepseekModels: ModelConfig[] = [
   {
-    name: 'deepseek-chat',
+    name: Models.DEEPSEEK_CHAT,
     tokenLimit: 128_000,
     description: 'DeepSeek Chat model for general conversation',
-    provider: 'deepseek',
+    provider: Providers.DEEPSEEK,
     capabilities: {
       functionCalling: true,
       streaming: true,
     }
   },
   {
-    name: 'deepseek-reasoner',
+    name: Models.DEEPSEEK_REASONER,
     tokenLimit: 128_000,
     description: 'DeepSeek Reasoner model with advanced reasoning capabilities',
-    provider: 'deepseek',
+    provider: Providers.DEEPSEEK,
     capabilities: {
       reasoning: true,
       functionCalling: true,
@@ -35,10 +37,10 @@ export const deepseekModels: ModelConfig[] = [
     }
   },
   {
-    name: 'deepseek-coder',
+    name: Models.DEEPSEEK_CODER,
     tokenLimit: 128_000,
     description: 'DeepSeek Coder model optimized for code generation',
-    provider: 'deepseek',
+    provider: Providers.DEEPSEEK,
     capabilities: {
       functionCalling: true,
       streaming: true,
