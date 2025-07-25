@@ -21,6 +21,7 @@ import process from 'node:process';
 import { useGeminiStream } from './hooks/useGeminiStream.js';
 import { StreamingState } from './types.js';
 import { Tips } from './components/Tips.js';
+import { Models } from '@wren-coder/wren-coder-cli-core/src/config/models.js';
 
 // Define a more complete mock server config based on actual Config
 interface MockServerConfig {
@@ -85,7 +86,7 @@ vi.mock('@wren-coder/wren-coder-cli-core', async (importOriginal) => {
       // Basic mock structure, will be extended by the instance in tests
       return {
         apiKey: opts.apiKey || 'test-key',
-        model: opts.model || 'test-model-in-mock-factory',
+        model: opts.model || Models.DEEPSEEK_CHAT,
         sandbox: opts.sandbox,
         targetDir: opts.targetDir || '/test/dir',
         debugMode: opts.debugMode || false,
@@ -106,7 +107,7 @@ vi.mock('@wren-coder/wren-coder-cli-core', async (importOriginal) => {
         embeddingModel: opts.embeddingModel || 'test-embedding-model',
 
         getApiKey: vi.fn(() => opts.apiKey || 'test-key'),
-        getModel: vi.fn(() => opts.model || 'test-model-in-mock-factory'),
+        getModel: vi.fn(() => opts.model || Models.DEEPSEEK_CHAT),
         getSandbox: vi.fn(() => opts.sandbox),
         getTargetDir: vi.fn(() => opts.targetDir || '/test/dir'),
         getToolRegistry: vi.fn(() => ({}) as ToolRegistry), // Simple mock
@@ -236,7 +237,7 @@ describe('App UI', () => {
       showMemoryUsage: false,
       sessionId: 'test-session-id',
       cwd: '/tmp',
-      model: 'model',
+      model: Models.DEEPSEEK_CHAT,
     }) as unknown as MockServerConfig;
     mockVersion = '0.0.0-test';
 
