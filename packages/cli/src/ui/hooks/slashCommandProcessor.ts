@@ -600,8 +600,9 @@ export const useSlashCommandProcessor = (
           if (process.env.SANDBOX && process.env.SANDBOX !== 'sandbox-exec') {
             sandboxEnv = process.env.SANDBOX.replace(/^gemini-(?:code-)?/, '');
           } else if (process.env.SANDBOX === 'sandbox-exec') {
-            sandboxEnv = `sandbox-exec (${process.env.SEATBELT_PROFILE || 'unknown'
-              })`;
+            sandboxEnv = `sandbox-exec (${
+              process.env.SEATBELT_PROFILE || 'unknown'
+            })`;
           }
           const modelVersion = config?.getModel() || 'Unknown';
           const cliVersion = await getCliVersion();
@@ -1195,7 +1196,7 @@ export const useSlashCommandProcessor = (
         },
         completion: legacyCmd.completion
           ? async (_context: CommandContext, _partialArg: string) =>
-            legacyCmd.completion!()
+              legacyCmd.completion!()
           : undefined,
       }),
     );

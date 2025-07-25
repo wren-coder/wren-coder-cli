@@ -26,9 +26,9 @@ Releases are managed through the [release.yml](https://github.com/google-gemini/
 2. Select the **Release** workflow from the list.
 3. Click the **Run workflow** dropdown button.
 4. Fill in the required inputs:
-    - **Version**: The exact version to release (e.g., `v0.2.1`).
-    - **Ref**: The branch or commit SHA to release from (defaults to `main`).
-    - **Dry Run**: Leave as `true` to test the workflow without publishing, or set to `false` to perform a live release.
+   - **Version**: The exact version to release (e.g., `v0.2.1`).
+   - **Ref**: The branch or commit SHA to release from (defaults to `main`).
+   - **Dry Run**: Leave as `true` to test the workflow without publishing, or set to `false` to perform a live release.
 5. Click **Run workflow**.
 
 ## Nightly Releases
@@ -82,11 +82,11 @@ After pushing a new release smoke testing should be performed to ensure that the
 The above pattern for creating patch or hotfix releases from current or older commits leaves the repository in the following state:
 
 1. The Tag (`vX.Y.Z-patch.1`): This tag correctly points to the original commit on main
-    that contains the stable code you intended to release. This is crucial. Anyone checking
-    out this tag gets the exact code that was published.
+   that contains the stable code you intended to release. This is crucial. Anyone checking
+   out this tag gets the exact code that was published.
 2. The Branch (`release-vX.Y.Z-patch.1`): This branch contains one new commit on top of the
-    tagged commit. That new commit only contains the version number change in package.json
-    (and other related files like package-lock.json).
+   tagged commit. That new commit only contains the version number change in package.json
+   (and other related files like package-lock.json).
 
 This separation is good. It keeps your main branch history clean of release-specific
 version bumps until you decide to merge them.
@@ -183,33 +183,33 @@ This is the most critical stage where files are moved and transformed into their
 `bundle` folder is created at the project root to house the final package contents.
 
 1. The `package.json` is Transformed:
-    - What happens: The package.json from packages/cli/ is read, modified, and written into the root `bundle`/ directory.
-    - File movement: packages/cli/package.json -> (in-memory transformation) -> `bundle`/package.json
-    - Why: The final package.json must be different from the one used in development. Key changes include:
-      - Removing devDependencies.
-      - Removing workspace-specific "dependencies": { "@gemini-cli/core": "workspace:\*" } and ensuring the core code is
-        bundled directly into the final JavaScript file.
-      - Ensuring the bin, main, and files fields point to the correct locations within the final package structure.
+   - What happens: The package.json from packages/cli/ is read, modified, and written into the root `bundle`/ directory.
+   - File movement: packages/cli/package.json -> (in-memory transformation) -> `bundle`/package.json
+   - Why: The final package.json must be different from the one used in development. Key changes include:
+     - Removing devDependencies.
+     - Removing workspace-specific "dependencies": { "@gemini-cli/core": "workspace:\*" } and ensuring the core code is
+       bundled directly into the final JavaScript file.
+     - Ensuring the bin, main, and files fields point to the correct locations within the final package structure.
 
 2. The JavaScript Bundle is Created:
-    - What happens: The built JavaScript from both packages/core/dist and packages/cli/dist are bundled into a single,
-      executable JavaScript file.
-    - File movement: packages/cli/dist/index.js + packages/core/dist/index.js -> (bundled by esbuild) -> `bundle`/wrenCoder.js (or a
-      similar name).
-    - Why: This creates a single, optimized file that contains all the necessary application code. It simplifies the package
-      by removing the need for the core package to be a separate dependency on NPM, as its code is now included directly.
+   - What happens: The built JavaScript from both packages/core/dist and packages/cli/dist are bundled into a single,
+     executable JavaScript file.
+   - File movement: packages/cli/dist/index.js + packages/core/dist/index.js -> (bundled by esbuild) -> `bundle`/wrenCoder.js (or a
+     similar name).
+   - Why: This creates a single, optimized file that contains all the necessary application code. It simplifies the package
+     by removing the need for the core package to be a separate dependency on NPM, as its code is now included directly.
 
 3. Static and Supporting Files are Copied:
-    - What happens: Essential files that are not part of the source code but are required for the package to work correctly
-      or be well-described are copied into the `bundle` directory.
-    - File movement:
-      - README.md -> `bundle`/README.md
-      - LICENSE -> `bundle`/LICENSE
-      - packages/cli/src/utils/\*.sb (sandbox profiles) -> `bundle`/
-    - Why:
-      - The README.md and LICENSE are standard files that should be included in any NPM package.
-      - The sandbox profiles (.sb files) are critical runtime assets required for the CLI's sandboxing feature to
-        function. They must be located next to the final executable.
+   - What happens: Essential files that are not part of the source code but are required for the package to work correctly
+     or be well-described are copied into the `bundle` directory.
+   - File movement:
+     - README.md -> `bundle`/README.md
+     - LICENSE -> `bundle`/LICENSE
+     - packages/cli/src/utils/\*.sb (sandbox profiles) -> `bundle`/
+   - Why:
+     - The README.md and LICENSE are standard files that should be included in any NPM package.
+     - The sandbox profiles (.sb files) are critical runtime assets required for the CLI's sandboxing feature to
+       function. They must be located next to the final executable.
 
 Stage 4: Publishing to NPM
 

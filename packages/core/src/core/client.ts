@@ -31,7 +31,7 @@ import { GeminiChat } from './geminiChat.js';
 import { retryWithBackoff } from '../utils/retry.js';
 import { getErrorMessage } from '../utils/errors.js';
 import { isFunctionResponse } from '../utils/messageInspectors.js';
-import { tokenLimit } from './tokenLimits.js';
+import { getTokenLimit } from '../config/models.js';
 import {
   AuthType,
   ContentGenerator,
@@ -572,7 +572,7 @@ export class GeminiClient {
     // Don't compress if not forced and we are under the limit.
     if (
       !force &&
-      originalTokenCount < this.COMPRESSION_TOKEN_THRESHOLD * tokenLimit(model)
+              originalTokenCount < this.COMPRESSION_TOKEN_THRESHOLD * getTokenLimit(model)
     ) {
       return null;
     }
