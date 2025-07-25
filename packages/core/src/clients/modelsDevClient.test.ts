@@ -5,7 +5,11 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { ModelsDevClient, modelsDevClient, ModelsDevResponse } from './modelsDevClient.js';
+import {
+  ModelsDevClient,
+  modelsDevClient,
+  ModelsDevResponse,
+} from './modelsDevClient.js';
 
 // Mock fetch
 global.fetch = vi.fn();
@@ -32,15 +36,15 @@ describe('ModelsDevClient', () => {
         description: 'Most advanced multimodal model',
         context_length: 128000,
         pricing: {
-          prompt: 2.50,
-          completion: 10.00,
-          currency: 'USD'
+          prompt: 2.5,
+          completion: 10.0,
+          currency: 'USD',
         },
         capabilities: {
           vision: true,
           function_calling: true,
-          reasoning: false
-        }
+          reasoning: false,
+        },
       },
       {
         id: 'claude-3-5-sonnet-20241022',
@@ -49,15 +53,15 @@ describe('ModelsDevClient', () => {
         description: 'Most intelligent model',
         context_length: 200000,
         pricing: {
-          prompt: 3.00,
-          completion: 15.00,
-          currency: 'USD'
+          prompt: 3.0,
+          completion: 15.0,
+          currency: 'USD',
         },
         capabilities: {
           vision: true,
           function_calling: true,
-          reasoning: false
-        }
+          reasoning: false,
+        },
       },
       {
         id: 'deepseek-reasoner',
@@ -68,15 +72,15 @@ describe('ModelsDevClient', () => {
         pricing: {
           prompt: 0.55,
           completion: 2.19,
-          currency: 'USD'
+          currency: 'USD',
         },
         capabilities: {
           reasoning: true,
-          function_calling: true
-        }
-      }
+          function_calling: true,
+        },
+      },
     ],
-    last_updated: '2025-01-25T12:00:00Z'
+    last_updated: '2025-01-25T12:00:00Z',
   };
 
   describe('fetchModels', () => {
@@ -93,7 +97,7 @@ describe('ModelsDevClient', () => {
     });
 
     it('should handle API errors gracefully', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
 
       mockFetch.mockResolvedValueOnce({
         ok: false,
@@ -107,14 +111,14 @@ describe('ModelsDevClient', () => {
       expect(result.last_updated).toBeTruthy();
       expect(consoleSpy).toHaveBeenCalledWith(
         'Failed to fetch models from models.dev:',
-        expect.any(Error)
+        expect.any(Error),
       );
 
       consoleSpy.mockRestore();
     });
 
     it('should handle network errors gracefully', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
 
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
@@ -124,14 +128,14 @@ describe('ModelsDevClient', () => {
       expect(result.last_updated).toBeTruthy();
       expect(consoleSpy).toHaveBeenCalledWith(
         'Failed to fetch models from models.dev:',
-        expect.any(Error)
+        expect.any(Error),
       );
 
       consoleSpy.mockRestore();
     });
 
     it('should use cached data when API fails', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
 
       // First successful call to populate cache
       mockFetch.mockResolvedValueOnce({
@@ -180,14 +184,17 @@ describe('ModelsDevClient', () => {
         } as Response)
         .mockResolvedValueOnce({
           ok: true,
-          json: async () => ({ ...mockModelsDevResponse, last_updated: '2025-01-25T13:00:00Z' }),
+          json: async () => ({
+            ...mockModelsDevResponse,
+            last_updated: '2025-01-25T13:00:00Z',
+          }),
         } as Response);
 
       await client.getModels();
-      
+
       // Wait for cache to expire
-      await new Promise(resolve => setTimeout(resolve, 2));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2));
+
       await client.getModels();
 
       expect(mockFetch).toHaveBeenCalledTimes(2);
@@ -207,7 +214,7 @@ describe('ModelsDevClient', () => {
 
     it('should find model by ID', async () => {
       const model = await client.getModel('gpt-4o');
-      
+
       expect(model).toBeDefined();
       expect(model?.id).toBe('gpt-4o');
       expect(model?.name).toBe('GPT-4o');
@@ -215,7 +222,7 @@ describe('ModelsDevClient', () => {
 
     it('should find model by name', async () => {
       const model = await client.getModel('Claude 3.5 Sonnet');
-      
+
       expect(model).toBeDefined();
       expect(model?.id).toBe('claude-3-5-sonnet-20241022');
       expect(model?.name).toBe('Claude 3.5 Sonnet');
@@ -227,12 +234,12 @@ describe('ModelsDevClient', () => {
     });
 
     it('should handle errors gracefully', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-      
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
+
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
       const model = await client.getModel('gpt-4o');
-      
+
       expect(model).toBeNull();
       expect(consoleSpy).toHaveBeenCalled();
 
@@ -250,28 +257,28 @@ describe('ModelsDevClient', () => {
 
     it('should search by model ID', async () => {
       const results = await client.searchModels('gpt');
-      
+
       expect(results).toHaveLength(1);
       expect(results[0].id).toBe('gpt-4o');
     });
 
     it('should search by model name', async () => {
       const results = await client.searchModels('Claude');
-      
+
       expect(results).toHaveLength(1);
       expect(results[0].name).toBe('Claude 3.5 Sonnet');
     });
 
     it('should search by provider', async () => {
       const results = await client.searchModels('anthropic');
-      
+
       expect(results).toHaveLength(1);
       expect(results[0].provider).toBe('anthropic');
     });
 
     it('should search by description', async () => {
       const results = await client.searchModels('reasoning');
-      
+
       expect(results).toHaveLength(1);
       expect(results[0].id).toBe('deepseek-reasoner');
     });
@@ -282,12 +289,12 @@ describe('ModelsDevClient', () => {
     });
 
     it('should handle errors gracefully', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-      
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
+
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
       const results = await client.searchModels('gpt');
-      
+
       expect(results).toEqual([]);
       expect(consoleSpy).toHaveBeenCalled();
 
@@ -305,14 +312,14 @@ describe('ModelsDevClient', () => {
 
     it('should filter models by provider', async () => {
       const openaiModels = await client.getModelsByProvider('openai');
-      
+
       expect(openaiModels).toHaveLength(1);
       expect(openaiModels[0].provider).toBe('openai');
     });
 
     it('should be case insensitive', async () => {
       const anthropicModels = await client.getModelsByProvider('ANTHROPIC');
-      
+
       expect(anthropicModels).toHaveLength(1);
       expect(anthropicModels[0].provider).toBe('anthropic');
     });
@@ -326,7 +333,7 @@ describe('ModelsDevClient', () => {
   describe('Cache Management', () => {
     it('should provide cache status', () => {
       const status = client.getCacheStatus();
-      
+
       expect(status.cached).toBe(false);
       expect(status.age).toBe(0);
       expect(status.lastUpdated).toBeUndefined();
@@ -339,9 +346,9 @@ describe('ModelsDevClient', () => {
       } as Response);
 
       await client.fetchModels();
-      
+
       const status = client.getCacheStatus();
-      
+
       expect(status.cached).toBe(true);
       expect(status.age).toBeGreaterThanOrEqual(0);
       expect(status.lastUpdated).toBe(mockModelsDevResponse.last_updated);
@@ -354,12 +361,12 @@ describe('ModelsDevClient', () => {
       } as Response);
 
       await client.fetchModels();
-      
+
       let status = client.getCacheStatus();
       expect(status.cached).toBe(true);
-      
+
       client.clearCache();
-      
+
       status = client.getCacheStatus();
       expect(status.cached).toBe(false);
       expect(status.age).toBe(0);

@@ -74,7 +74,11 @@ See `examples/models-config-example.json` for a complete example that shows:
 The models configuration is automatically loaded when you use the token limit functions:
 
 ```typescript
-import { getTokenLimit, getModelConfig, isModelSupported } from '@wren-coder/wren-coder-cli-core';
+import {
+  getTokenLimit,
+  getModelConfig,
+  isModelSupported,
+} from '@wren-coder/wren-coder-cli-core';
 
 // Get token limit (uses default config location)
 const limit = getTokenLimit('custom-model');

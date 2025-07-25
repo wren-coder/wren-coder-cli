@@ -17,7 +17,7 @@ export const googleModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'gemini-1.5-flash',
@@ -28,7 +28,7 @@ export const googleModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'gemini-2.5-pro',
@@ -39,7 +39,7 @@ export const googleModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'gemini-2.5-flash',
@@ -50,7 +50,7 @@ export const googleModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'gemini-2.0-flash',
@@ -61,7 +61,7 @@ export const googleModels: ModelConfig[] = [
       vision: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'gemini-2.0-flash-preview-image-generation',
@@ -72,7 +72,7 @@ export const googleModels: ModelConfig[] = [
       imageGeneration: true,
       vision: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'gemini-embedding-001',
@@ -81,6 +81,6 @@ export const googleModels: ModelConfig[] = [
     provider: Providers.GOOGLE,
     capabilities: {
       embedding: true,
-    }
-  }
+    },
+  },
 ];

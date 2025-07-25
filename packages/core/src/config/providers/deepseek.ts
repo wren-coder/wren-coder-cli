@@ -23,7 +23,7 @@ export const deepseekModels: ModelConfig[] = [
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: Models.DEEPSEEK_REASONER,
@@ -34,7 +34,7 @@ export const deepseekModels: ModelConfig[] = [
       reasoning: true,
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: Models.DEEPSEEK_CODER,
@@ -44,6 +44,6 @@ export const deepseekModels: ModelConfig[] = [
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
-  }
+    },
+  },
 ];

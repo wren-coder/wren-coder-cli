@@ -44,7 +44,7 @@ import { getModelConfig, getTokenLimit } from '../config/modelRegistry.js';
 
 function isThinkingSupported(model: string) {
   const config = getModelConfig(model);
-  return config?.capabilities?.reasoning ?? false
+  return config?.capabilities?.reasoning ?? false;
 }
 
 /**
@@ -243,11 +243,11 @@ export class GeminiClient {
         this.config.getModel(),
       )
         ? {
-          ...this.generateContentConfig,
-          thinkingConfig: {
-            includeThoughts: true,
-          },
-        }
+            ...this.generateContentConfig,
+            thinkingConfig: {
+              includeThoughts: true,
+            },
+          }
         : this.generateContentConfig;
       return new GeminiChat(
         this.config,
@@ -572,7 +572,8 @@ export class GeminiClient {
     // Don't compress if not forced and we are under the limit.
     if (
       !force &&
-      originalTokenCount < this.COMPRESSION_TOKEN_THRESHOLD * getTokenLimit(model)
+      originalTokenCount <
+        this.COMPRESSION_TOKEN_THRESHOLD * getTokenLimit(model)
     ) {
       return null;
     }

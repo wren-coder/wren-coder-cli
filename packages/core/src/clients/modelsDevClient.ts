@@ -39,7 +39,7 @@ export interface ModelsDevResponse {
 export class ModelsDevClient {
   private static readonly API_URL = 'https://models.dev/api.json';
   private static readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
-  
+
   private cache: ModelsDevResponse | null = null;
   private cacheTimestamp: number = 0;
 
@@ -52,27 +52,27 @@ export class ModelsDevClient {
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
+
       const data: ModelsDevResponse = await response.json();
-      
+
       // Update cache
       this.cache = data;
       this.cacheTimestamp = Date.now();
-      
+
       return data;
     } catch (error) {
       console.warn('Failed to fetch models from models.dev:', error);
-      
+
       // Return cached data if available
       if (this.cache) {
         console.warn('Using cached model data');
         return this.cache;
       }
-      
+
       // Return empty response as fallback
       return {
         models: [],
-        last_updated: new Date().toISOString()
+        last_updated: new Date().toISOString(),
       };
     }
   }
@@ -82,12 +82,13 @@ export class ModelsDevClient {
    */
   async getModels(): Promise<ModelsDevResponse> {
     const now = Date.now();
-    const isCacheValid = this.cache && (now - this.cacheTimestamp < ModelsDevClient.CACHE_DURATION);
-    
+    const isCacheValid =
+      this.cache && now - this.cacheTimestamp < ModelsDevClient.CACHE_DURATION;
+
     if (isCacheValid) {
       return this.cache!;
     }
-    
+
     return this.fetchModels();
   }
 
@@ -97,7 +98,9 @@ export class ModelsDevClient {
   async getModel(modelId: string): Promise<ModelsDevModel | null> {
     try {
       const data = await this.getModels();
-      return data.models.find(m => m.id === modelId || m.name === modelId) || null;
+      return (
+        data.models.find((m) => m.id === modelId || m.name === modelId) || null
+      );
     } catch (error) {
       console.warn(`Failed to get model ${modelId}:`, error);
       return null;
@@ -111,12 +114,13 @@ export class ModelsDevClient {
     try {
       const data = await this.getModels();
       const lowerQuery = query.toLowerCase();
-      
-      return data.models.filter(model => 
-        model.id.toLowerCase().includes(lowerQuery) ||
-        model.name.toLowerCase().includes(lowerQuery) ||
-        model.provider.toLowerCase().includes(lowerQuery) ||
-        model.description?.toLowerCase().includes(lowerQuery)
+
+      return data.models.filter(
+        (model) =>
+          model.id.toLowerCase().includes(lowerQuery) ||
+          model.name.toLowerCase().includes(lowerQuery) ||
+          model.provider.toLowerCase().includes(lowerQuery) ||
+          model.description?.toLowerCase().includes(lowerQuery),
       );
     } catch (error) {
       console.warn('Failed to search models:', error);
@@ -130,8 +134,8 @@ export class ModelsDevClient {
   async getModelsByProvider(provider: string): Promise<ModelsDevModel[]> {
     try {
       const data = await this.getModels();
-      return data.models.filter(model => 
-        model.provider.toLowerCase() === provider.toLowerCase()
+      return data.models.filter(
+        (model) => model.provider.toLowerCase() === provider.toLowerCase(),
       );
     } catch (error) {
       console.warn(`Failed to get models for provider ${provider}:`, error);
@@ -155,7 +159,7 @@ export class ModelsDevClient {
     return {
       cached: !!this.cache,
       age,
-      lastUpdated: this.cache?.last_updated
+      lastUpdated: this.cache?.last_updated,
     };
   }
 }

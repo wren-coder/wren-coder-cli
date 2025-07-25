@@ -6,11 +6,7 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { UiTelemetryService } from './uiTelemetry.js';
-import {
-  ApiErrorEvent,
-  ApiResponseEvent,
-  ToolCallEvent,
-} from './types.js';
+import { ApiErrorEvent, ApiResponseEvent, ToolCallEvent } from './types.js';
 import {
   EVENT_API_ERROR,
   EVENT_API_RESPONSE,

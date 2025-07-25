@@ -5,11 +5,12 @@
  */
 
 const MODEL_NOT_FOUND_ERROR = 'ModelNotFoundError';
-const MODEL_NOT_FOUND_ERROR_MESSAGE = (modelName: string) => `Model ${modelName} not found.`;
+const MODEL_NOT_FOUND_ERROR_MESSAGE = (modelName: string) =>
+  `Model ${modelName} not found.`;
 
 export class ModelNotFoundError extends Error {
-    constructor(modelName: string) {
-        super(MODEL_NOT_FOUND_ERROR_MESSAGE(modelName));
-        this.name = MODEL_NOT_FOUND_ERROR;
-    }
+  constructor(modelName: string) {
+    super(MODEL_NOT_FOUND_ERROR_MESSAGE(modelName));
+    this.name = MODEL_NOT_FOUND_ERROR;
+  }
 }

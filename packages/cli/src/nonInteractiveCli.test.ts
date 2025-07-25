@@ -7,7 +7,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { runNonInteractive } from './nonInteractiveCli.js';
-import { Config, GeminiClient, ToolRegistry } from '@wren-coder/wren-coder-cli-core';
+import {
+  Config,
+  GeminiClient,
+  ToolRegistry,
+} from '@wren-coder/wren-coder-cli-core';
 import { GenerateContentResponse, Part, FunctionCall } from '@google/genai';
 
 // Mock dependencies
@@ -193,7 +197,7 @@ describe('runNonInteractive', () => {
       .mockResolvedValueOnce(stream2);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     await runNonInteractive(mockConfig, 'Trigger tool error', 'prompt-id-3');
 
@@ -217,7 +221,7 @@ describe('runNonInteractive', () => {
     mockChat.sendMessageStream.mockRejectedValue(apiError);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     await runNonInteractive(mockConfig, 'Initial fail', 'prompt-id-4');
 
@@ -269,7 +273,7 @@ describe('runNonInteractive', () => {
       .mockResolvedValueOnce(stream2);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     await runNonInteractive(
       mockConfig,
@@ -330,7 +334,7 @@ describe('runNonInteractive', () => {
     mockChat.sendMessageStream.mockResolvedValue(stream);
     const consoleErrorSpy = vi
       .spyOn(console, 'error')
-      .mockImplementation(() => { });
+      .mockImplementation(() => {});
 
     await runNonInteractive(mockConfig, 'Trigger loop');
 

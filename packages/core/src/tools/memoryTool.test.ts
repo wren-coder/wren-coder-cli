@@ -185,8 +185,8 @@ describe('MemoryTool', () => {
       performAddMemoryEntrySpy = vi
         .spyOn(MemoryTool, 'performAddMemoryEntry')
         .mockResolvedValue(undefined) as Mock<
-          typeof MemoryTool.performAddMemoryEntry
-        >;
+        typeof MemoryTool.performAddMemoryEntry
+      >;
       // Cast needed as spyOn returns MockInstance
     });
 
@@ -205,11 +205,7 @@ describe('MemoryTool', () => {
       const params = { fact: 'The sky is blue' };
       const result = await memoryTool.execute(params, mockAbortSignal);
       // Use getCurrentMdFilename for the default expectation before any setMdFilename calls in a test
-      const expectedFilePath = path.join(
-        '/mock/home',
-        '.wren',
-        'MEMORY.md'
-      );
+      const expectedFilePath = path.join('/mock/home', '.wren', 'MEMORY.md');
 
       // For this test, we expect the actual fs methods to be passed
       const expectedFsArgument = {

@@ -16,7 +16,7 @@ export const cohereModels: ModelConfig[] = [
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'command-r-08-2024',
@@ -26,7 +26,7 @@ export const cohereModels: ModelConfig[] = [
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
+    },
   },
   {
     name: 'embed-english-v3.0',
@@ -35,7 +35,7 @@ export const cohereModels: ModelConfig[] = [
     provider: Providers.COHERE,
     capabilities: {
       embedding: true,
-    }
+    },
   },
   {
     name: 'embed-multilingual-v3.0',
@@ -44,6 +44,6 @@ export const cohereModels: ModelConfig[] = [
     provider: Providers.COHERE,
     capabilities: {
       embedding: true,
-    }
-  }
+    },
+  },
 ];

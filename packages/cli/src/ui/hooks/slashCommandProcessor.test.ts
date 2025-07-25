@@ -89,7 +89,8 @@ vi.mock('open', () => ({
 }));
 
 vi.mock('@wren-coder/wren-coder-cli-core', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@wren-coder/wren-coder-cli-core')>();
+  const actual =
+    await importOriginal<typeof import('@wren-coder/wren-coder-cli-core')>();
   return {
     ...actual,
     getMCPServerStatus: vi.fn(),

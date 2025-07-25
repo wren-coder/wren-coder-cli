@@ -63,8 +63,8 @@ vi.mock('../config/modelRegistry.js', () => ({
     capabilities: {
       functionCalling: true,
       streaming: true,
-    }
-  })
+    },
+  }),
 }));
 vi.mock('../utils/getFolderStructure', () => ({
   getFolderStructure: vi.fn().mockResolvedValue('Mock Folder Structure'),
@@ -485,7 +485,6 @@ describe('Gemini Client (client.ts)', () => {
     const mockGetHistory = vi.fn();
 
     beforeEach(() => {
-
       client['contentGenerator'] = {
         countTokens: mockCountTokens,
       } as unknown as ContentGenerator;
@@ -952,8 +951,6 @@ describe('Gemini Client (client.ts)', () => {
 
   describe('tryCompressChat', () => {
     it('should use current model from config for token counting after sendMessage', async () => {
-      const initialModel = client['config'].getModel();
-
       const mockCountTokens = vi
         .fn()
         .mockResolvedValueOnce({ totalTokens: 100000 })
@@ -1008,7 +1005,6 @@ describe('Gemini Client (client.ts)', () => {
 
   describe('handleFlashFallback', () => {
     it('should use current model from config when checking for fallback', async () => {
-      const initialModel = client['config'].getModel();
       const fallbackModel = DEFAULT_THINKING_MODEL;
 
       // mock config been changed
