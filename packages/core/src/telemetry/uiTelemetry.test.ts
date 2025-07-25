@@ -10,7 +10,6 @@ import {
   ApiErrorEvent,
   ApiResponseEvent,
   ToolCallEvent,
-  ToolCallDecision,
 } from './types.js';
 import {
   EVENT_API_ERROR,
@@ -23,6 +22,7 @@ import {
   SuccessfulToolCall,
 } from '../core/coreToolScheduler.js';
 import { Tool, ToolConfirmationOutcome } from '../tools/tools.js';
+import { ToolCallDecision } from './decisions.js';
 
 const createFakeCompletedToolCall = (
   name: string,
