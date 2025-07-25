@@ -915,7 +915,7 @@ describe('Gemini Client (client.ts)', () => {
 
       console.log(
         `Infinite loop protection working: checkNextSpeaker called ${callCount} times, ` +
-          `${eventCount} events generated (properly bounded by MAX_TURNS)`,
+        `${eventCount} events generated (properly bounded by MAX_TURNS)`,
       );
     });
   });
@@ -951,8 +951,6 @@ describe('Gemini Client (client.ts)', () => {
 
   describe('tryCompressChat', () => {
     it('should use current model from config for token counting after sendMessage', async () => {
-      const initialModel = client['config'].getModel();
-
       const mockCountTokens = vi
         .fn()
         .mockResolvedValueOnce({ totalTokens: 100000 })
@@ -1007,7 +1005,6 @@ describe('Gemini Client (client.ts)', () => {
 
   describe('handleFlashFallback', () => {
     it('should use current model from config when checking for fallback', async () => {
-      const initialModel = client['config'].getModel();
       const fallbackModel = DEFAULT_THINKING_MODEL;
 
       // mock config been changed
