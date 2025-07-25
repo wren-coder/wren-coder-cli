@@ -7,7 +7,7 @@
 import { Providers } from '../providers.js';
 import { ModelConfig } from './base.js';
 
-export const LLAMAModels: ModelConfig[] = [
+export const llamaModels: ModelConfig[] = [
   {
     name: 'llama-3.3-70b-instruct',
     tokenLimit: 128_000,

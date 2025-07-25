@@ -12,7 +12,7 @@ import {
   googleModels,
   openaiModels,
   anthropicModels,
-  metaModels,
+  llamaModels,
   mistralModels,
   cohereModels
 } from './providers/index.js';
@@ -30,7 +30,7 @@ const DEFAULT_MODELS: ModelConfig[] = [
   ...googleModels,
   ...openaiModels,
   ...anthropicModels,
-  ...metaModels,
+  ...llamaModels,
   ...mistralModels,
   ...cohereModels,
 ];
