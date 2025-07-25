@@ -50,7 +50,7 @@ export const CONFIG_DIR = '.wren';
 export const DEFAULT_CONTEXT_FILENAME = 'WREN.md';
 export const MEMORY_SECTION_HEADER = '## Added Memories';
 
-const GLOBAL_MEMORY = 'MEMORY.md';
+export const GLOBAL_MEMORY = 'MEMORY.md';
 
 // This variable will hold the currently configured filename for .md context files.
 // It defaults to DEFAULT_CONTEXT_FILENAME but can be overridden by setMdFilename.

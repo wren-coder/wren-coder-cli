@@ -2,7 +2,7 @@
   "name": "@wren-coder/wren-coder-cli-vscode-ide-companion",
   "displayName": "Wren Coder VSCode IDE Companion",
   "description": "",
-  "version": "0.0.1-alpha.9",
+  "version": "0.0.1-alpha.10",
   "engines": {
     "vscode": "^1.101.0"
   },
