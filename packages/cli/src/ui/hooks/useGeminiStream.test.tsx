@@ -632,7 +632,7 @@ describe('useGeminiStream', () => {
     await waitFor(() => {
       expect(mockMarkToolsAsSubmitted).toHaveBeenCalledWith(['1']);
       expect(client.addHistory).toHaveBeenCalledWith({
-        role: 'user',
+        role: 'function',
         parts: [{ text: 'cancelled' }],
       });
       // Ensure we do NOT call back to the API
@@ -738,7 +738,7 @@ describe('useGeminiStream', () => {
 
       // And that single call should contain BOTH function responses
       expect(client.addHistory).toHaveBeenCalledWith({
-        role: 'user',
+        role: 'function',
         parts: [
           ...(cancelledToolCall1.response.responseParts as Part[]),
           ...(cancelledToolCall2.response.responseParts as Part[]),

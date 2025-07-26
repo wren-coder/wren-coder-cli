@@ -272,10 +272,10 @@ export class OpenAIContentGenerator implements ContentGenerator {
       if (isTimeoutError) {
         throw new Error(
           `${errorMessage}\n\nTroubleshooting tips:\n` +
-            `- Reduce input length or complexity\n` +
-            `- Increase timeout in config: contentGenerator.timeout\n` +
-            `- Check network connectivity\n` +
-            `- Consider using streaming mode for long responses`,
+          `- Reduce input length or complexity\n` +
+          `- Increase timeout in config: contentGenerator.timeout\n` +
+          `- Check network connectivity\n` +
+          `- Consider using streaming mode for long responses`,
         );
       }
 
@@ -419,10 +419,10 @@ export class OpenAIContentGenerator implements ContentGenerator {
           if (isTimeoutError) {
             throw new Error(
               `${errorMessage}\n\nStreaming timeout troubleshooting:\n` +
-                `- Reduce input length or complexity\n` +
-                `- Increase timeout in config: contentGenerator.timeout\n` +
-                `- Check network stability for streaming connections\n` +
-                `- Consider using non-streaming mode for very long inputs`,
+              `- Reduce input length or complexity\n` +
+              `- Increase timeout in config: contentGenerator.timeout\n` +
+              `- Check network stability for streaming connections\n` +
+              `- Consider using non-streaming mode for very long inputs`,
             );
           }
 
@@ -483,10 +483,10 @@ export class OpenAIContentGenerator implements ContentGenerator {
       if (isTimeoutError) {
         throw new Error(
           `${errorMessage}\n\nStreaming setup timeout troubleshooting:\n` +
-            `- Reduce input length or complexity\n` +
-            `- Increase timeout in config: contentGenerator.timeout\n` +
-            `- Check network connectivity and firewall settings\n` +
-            `- Consider using non-streaming mode for very long inputs`,
+          `- Reduce input length or complexity\n` +
+          `- Increase timeout in config: contentGenerator.timeout\n` +
+          `- Check network connectivity and firewall settings\n` +
+          `- Consider using non-streaming mode for very long inputs`,
         );
       }
 
@@ -850,10 +850,15 @@ export class OpenAIContentGenerator implements ContentGenerator {
           }
           // Handle regular text messages
           else {
-            const role =
-              content.role === 'model'
-                ? ('assistant' as const)
-                : ('user' as const);
+            let role: 'assistant' | 'user' | 'system';
+            if (content.role === 'model') {
+              role = 'assistant' as const;
+            } else if (content.role === 'user') {
+              role = 'user' as const;
+            } else {
+              // For any other role (e.g., system, unknown), use system to avoid confusion
+              role = 'system' as const;
+            }
             const text = textParts.join('\n');
             if (text) {
               messages.push({ role, content: text });
@@ -1491,7 +1496,8 @@ export class OpenAIContentGenerator implements ContentGenerator {
         messages.push({ role: 'user', content: request.contents });
       } else if ('role' in request.contents && 'parts' in request.contents) {
         const content = request.contents;
-        const role = content.role === 'model' ? 'assistant' : 'user';
+        const role = content.role === 'model' ? 'assistant' :
+          content.role === 'user' ? 'user' : 'system';
         const text =
           content.parts
             ?.map((p: Part) =>
