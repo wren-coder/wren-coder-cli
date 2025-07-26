@@ -17,7 +17,7 @@ import {
   FileDiscoveryService,
   TelemetryTarget,
   MCPServerConfig,
-  DEFAULT_CONTEXT_FILENAME,
+  getCurrentMdFilename,
 } from '@wren-coder/wren-coder-cli-core';
 import { Settings } from './settings.js';
 
@@ -280,7 +280,7 @@ export async function loadCliConfig(
     setServerMdFilename(settings.contextFileName);
   } else {
     // Reset to default if not provided in settings.
-    setServerMdFilename(DEFAULT_CONTEXT_FILENAME);
+    setServerMdFilename(getCurrentMdFilename());
   }
 
   const extensionContextFilePaths = activeExtensions.flatMap(

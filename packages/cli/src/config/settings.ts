@@ -10,11 +10,11 @@ import { homedir, platform } from 'os';
 import * as dotenv from 'dotenv';
 import {
   MCPServerConfig,
-  CONFIG_DIR,
   getErrorMessage,
   BugCommandSettings,
   TelemetrySettings,
   AuthType,
+  CONFIG_DIR,
 } from '@wren-coder/wren-coder-cli-core';
 import stripJsonComments from 'strip-json-comments';
 import { DefaultLight } from '../ui/themes/default-light.js';

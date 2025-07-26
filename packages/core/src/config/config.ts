@@ -37,8 +37,9 @@ import {
 } from '../telemetry/index.js';
 import { ClearcutLogger } from '../telemetry/clearcut-logger/clearcut-logger.js';
 import { Models } from './models.js';
-import { WebSearchTool } from '../tools/web-search.js';
 import { SubAgentTool } from '../tools/subAgentTool.js';
+import { UpdateTaskContextTool } from '../tools/updateTaskContext.js';
+import { ReadTaskContextTool } from '../tools/readTaskContext.js';
 
 export const DEFAULT_MODEL = Models.DEEPSEEK_CHAT;
 export const DEFAULT_THINKING_MODEL = 'deepseek-reasoner';
@@ -599,9 +600,11 @@ export class Config {
     registerCoreTool(ReadManyFilesTool, this);
     registerCoreTool(ShellTool, this);
     registerCoreTool(MemoryTool);
-    registerCoreTool(WebSearchTool, this);
+    // registerCoreTool(WebSearchTool, this);
     registerCoreTool(SubAgentTool, this);
-
+    // registerCoreTool(ContextTool, this);
+    registerCoreTool(ReadTaskContextTool, this);
+    registerCoreTool(UpdateTaskContextTool, this);
     await registry.discoverTools();
     return registry;
   }
