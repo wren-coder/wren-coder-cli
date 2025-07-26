@@ -97,7 +97,7 @@ describe('ModelsDevClient', () => {
     });
 
     it('should handle API errors gracefully', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       mockFetch.mockResolvedValueOnce({
         ok: false,
@@ -118,7 +118,7 @@ describe('ModelsDevClient', () => {
     });
 
     it('should handle network errors gracefully', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
@@ -135,7 +135,7 @@ describe('ModelsDevClient', () => {
     });
 
     it('should use cached data when API fails', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       // First successful call to populate cache
       mockFetch.mockResolvedValueOnce({
@@ -234,7 +234,7 @@ describe('ModelsDevClient', () => {
     });
 
     it('should handle errors gracefully', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
@@ -289,7 +289,7 @@ describe('ModelsDevClient', () => {
     });
 
     it('should handle errors gracefully', async () => {
-      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
+      const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
       mockFetch.mockRejectedValueOnce(new Error('Network error'));
 

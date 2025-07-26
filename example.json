@@ -1,67 +1,59 @@
 {
-    "objective": "Refactor authentication system from JWT to PASETO",
-    "context": {
-        "codebase": {
-            "root_path": "/absolute/path/to/project",
-            "tech_stack": [
-                "TypeScript",
-                "Node.js",
-                "Express"
-            ],
-            "testing": {
-                "framework": "jest",
-                "command": "npm test"
-            }
-        },
-        "constraints": [
-            "Must maintain backward compatibility during migration",
-            "All changes must pass existing test suite"
-        ]
+  "objective": "Refactor authentication system from JWT to PASETO",
+  "context": {
+    "codebase": {
+      "root_path": "/absolute/path/to/project",
+      "tech_stack": ["TypeScript", "Node.js", "Express"],
+      "testing": {
+        "framework": "jest",
+        "command": "npm test"
+      }
     },
-    "tasks": [
+    "constraints": [
+      "Must maintain backward compatibility during migration",
+      "All changes must pass existing test suite"
+    ]
+  },
+  "tasks": [
+    {
+      "id": "auth-001",
+      "description": "Analyze current JWT implementation",
+      "status": "pending",
+      "acceptance": [
         {
-            "id": "auth-001",
-            "description": "Analyze current JWT implementation",
-            "status": "pending",
-            "acceptance": [
-                {
-                    "description": "Identify all files using JWT",
-                    "verification": "grep_results",
-                    "completed": false
-                },
-                {
-                    "description": "Document current token flow",
-                    "verification": "architecture_diagram",
-                    "completed": false
-                }
-            ],
-            "output_artifacts": [
-                "jwt_usage_report.md"
-            ]
+          "description": "Identify all files using JWT",
+          "verification": "grep_results",
+          "completed": false
         },
         {
-            "id": "auth-002",
-            "description": "Implement PASETO core functionality",
-            "status": "blocked",
-            "dependencies": [
-                "auth-001"
-            ],
-            "acceptance": [
-                {
-                    "description": "New token generation matches spec",
-                    "verification": "unit_test",
-                    "completed": false
-                },
-                {
-                    "description": "All tests pass",
-                    "verification": "test_suite",
-                    "completed": false
-                }
-            ],
-            "context": {
-                "reference": "https://paseto.io/rfc/draft-00",
-                "example_impl": "/absolute/path/to/project/docs/auth/examples/paseto.js"
-            }
+          "description": "Document current token flow",
+          "verification": "architecture_diagram",
+          "completed": false
         }
-    ]
+      ],
+      "output_artifacts": ["jwt_usage_report.md"]
+    },
+    {
+      "id": "auth-002",
+      "description": "Implement PASETO core functionality",
+      "status": "blocked",
+      "dependencies": ["auth-001"],
+      "acceptance": [
+        {
+          "description": "New token generation matches spec",
+          "verification": "unit_test",
+          "completed": false
+        },
+        {
+          "description": "All tests pass",
+          "verification": "test_suite",
+          "completed": false
+        }
+      ],
+      "context": {
+        "reference": "https://paseto.io/rfc/draft-00",
+        "example_impl": "/absolute/path/to/project/docs/auth/examples/paseto.js"
+      }
+    }
+  ]
 }

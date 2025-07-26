@@ -5,8 +5,8 @@
  */
 
 import { ShellTool, ShellToolParams } from './shell.js';
-import { BaseTool, ToolResult } from './tools.js'
-import { Type } from '@google/genai';;
+import { BaseTool, ToolResult } from './tools.js';
+import { Type } from '@google/genai';
 import { Config } from '../config/config.js';
 
 export interface SubAgentToolParams {

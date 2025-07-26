@@ -48,7 +48,7 @@
     "clean": "node scripts/clean.js"
   },
   "bin": {
-    "wren": "bundle/wrenCoder.js"
+    "wren-test": "bundle/wrenCoder.js"
   },
   "files": [
     "bundle/",

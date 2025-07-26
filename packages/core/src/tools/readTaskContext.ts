@@ -15,7 +15,8 @@ import { getErrorMessage } from '../utils/errors.js';
  * Parameters for ReadTaskContextTool
  */
 export interface ReadTaskContextToolParams {
-    sessionId: string;
+  sessionId: string;
+  taskId?: string; // New optional parameter
 }
 
 /**
@@ -39,65 +40,92 @@ export interface ReadTaskContextToolParams {
 // };
 
 export class ReadTaskContextTool extends BaseTool<
-    ReadTaskContextToolParams,
-    ToolResult
+  ReadTaskContextToolParams,
+  ToolResult
 > {
-    static readonly Name = 'read_task_context';
+  static readonly Name = 'read_task_context';
 
-    constructor(private config: Config) {
-        super(
-            ReadTaskContextTool.Name,
-            'ReadTaskContext',
-            'Reads and validates the task context from a session-specific JSON file.',
-            {
-                properties: {
-                    sessionId: {
-                        type: Type.STRING,
-                        description: 'Unique session identifier.',
-                    },
-                },
-                required: ['sessionId'],
-                type: Type.OBJECT,
-            }
-        );
-    }
+  constructor(private config: Config) {
+    super(
+      ReadTaskContextTool.Name,
+      'ReadTaskContext',
+      'Reads and validates the task context from a session-specific JSON file.',
+      {
+        properties: {
+          sessionId: {
+            type: Type.STRING,
+            description: 'Unique session identifier.',
+          },
+          taskId: {
+            type: Type.STRING,
+            description: 'Optional ID of the task to read.',
+          },
+        },
+        required: ['sessionId'],
+        type: Type.OBJECT,
+      },
+    );
+  }
 
-    async execute(
-        params: ReadTaskContextToolParams,
-        abortSignal: AbortSignal
-    ): Promise<ToolResult> {
-        const filePath = `${this.config.getTargetDir()}/.wren/session/${params.sessionId}/agent-context.json`;
-        const readFileTool = new ReadFileTool(this.config);
+  async execute(
+    params: ReadTaskContextToolParams,
+    abortSignal: AbortSignal,
+  ): Promise<ToolResult> {
+    const filePath = `${this.config.getTargetDir()}/.wren/session/${params.sessionId}/agent-context.json`;
+    const readFileTool = new ReadFileTool(this.config);
 
-        try {
-            const result = await readFileTool.execute(
-                { absolute_path: filePath },
-                abortSignal
-            );
+    try {
+      const result = await readFileTool.execute(
+        { absolute_path: filePath },
+        abortSignal,
+      );
 
-            if (result.llmContent instanceof Error) {
-                throw result.llmContent;
-            }
+      if (result.llmContent instanceof Error) {
+        throw result.llmContent;
+      }
 
-            const content = JSON.parse(result.llmContent as string);
-            // const validationError = SchemaValidator.validate(TASK_CONTEXT_SCHEMA, content);
+      interface Task {
+        id: string;
+      }
 
-            // if (validationError) {
-            //     return {
-            //         llmContent: `Task context validation failed: ${validationError}`,
-            //         returnDisplay: `Invalid task context: ${validationError}`,
-            //     };
-            // }
+      interface TaskContext {
+        tasks?: Task[];
+      }
 
-            return {
-                llmContent: content,
-                returnDisplay: 'Task context loaded successfully.',
-            };
-        } catch (error) {
-            return {
-                llmContent: `Error reading task context: ${getErrorMessage(error)}`,
-                returnDisplay: `Failed to read task context: ${getErrorMessage(error)}`,
-            };
+      const content: TaskContext = JSON.parse(
+        result.llmContent as string,
+      ) as TaskContext;
+      // const validationError = SchemaValidator.validate(TASK_CONTEXT_SCHEMA, content);
+
+      // if (validationError) {
+      //     return {
+      //         llmContent: `Task context validation failed: ${validationError}`,
+      //         returnDisplay: `Invalid task context: ${validationError}`,
+      //     };
+      // }
+
+      // If taskId is provided, find and return just that task
+      if (params.taskId) {
+        const task = content.tasks?.find((t) => t.id === params.taskId);
+        if (!task) {
+          throw new Error(`Task with ID ${params.taskId} not found`);
         }
+        return {
+          llmContent: JSON.stringify(task),
+          returnDisplay: `Task ${params.taskId} context loaded successfully.`,
+        };
+      }
+
+      // Otherwise return full context
+      return {
+        llmContent: JSON.stringify(content),
+        returnDisplay: 'Task context loaded successfully.',
+      };
+    } catch (error) {
+      return {
+        llmContent: `Error reading task context: ${getErrorMessage(error)}`,
+        returnDisplay: `Failed to read task context: ${getErrorMessage(error)}`,
+      };
     }
+  }
 }
