@@ -915,7 +915,7 @@ describe('Gemini Client (client.ts)', () => {
 
       console.log(
         `Infinite loop protection working: checkNextSpeaker called ${callCount} times, ` +
-        `${eventCount} events generated (properly bounded by MAX_TURNS)`,
+          `${eventCount} events generated (properly bounded by MAX_TURNS)`,
       );
     });
   });
