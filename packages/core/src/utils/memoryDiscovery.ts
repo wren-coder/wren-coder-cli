@@ -9,7 +9,11 @@ import * as fsSync from 'fs';
 import * as path from 'path';
 import { homedir } from 'os';
 import { bfsFileSearch } from './bfsFileSearch.js';
-import { CONFIG_DIR, getAllMdFilenames, GLOBAL_MEMORY } from '../tools/memoryTool.js';
+import {
+  CONFIG_DIR,
+  getAllMdFilenames,
+  GLOBAL_MEMORY,
+} from '../tools/memoryTool.js';
 import { FileDiscoveryService } from '../services/fileDiscoveryService.js';
 import { processImports } from './memoryImportProcessor.js';
 
