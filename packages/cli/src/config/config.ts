@@ -11,13 +11,13 @@ import {
   Config,
   loadServerHierarchicalMemory,
   setMdFilename as setServerMdFilename,
-  getCurrentMdFilename,
   ApprovalMode,
   DEFAULT_MODEL,
   DEFAULT_EMBEDDING_MODEL,
   FileDiscoveryService,
   TelemetryTarget,
   MCPServerConfig,
+  DEFAULT_CONTEXT_FILENAME,
 } from '@wren-coder/wren-coder-cli-core';
 import { Settings } from './settings.js';
 
@@ -280,7 +280,7 @@ export async function loadCliConfig(
     setServerMdFilename(settings.contextFileName);
   } else {
     // Reset to default if not provided in settings.
-    setServerMdFilename(getCurrentMdFilename());
+    setServerMdFilename(DEFAULT_CONTEXT_FILENAME);
   }
 
   const extensionContextFilePaths = activeExtensions.flatMap(
