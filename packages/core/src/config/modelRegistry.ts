@@ -16,7 +16,8 @@ import {
   mistralModels,
   cohereModels,
 } from './providers/index.js';
-import { ModelNotFoundError } from './ModelNotFoundError.js';
+import { qwenModels } from './providers/qwen.js';
+import { DEFAULT_TOKEN_LIMIT } from './config.js';
 
 export interface ModelsConfigFile {
   models: ModelConfig[];
@@ -33,6 +34,7 @@ const DEFAULT_MODELS: ModelConfig[] = [
   ...llamaModels,
   ...mistralModels,
   ...cohereModels,
+  ...qwenModels,
 ];
 
 const DEFAULT_MODELS_MAP: Map<string, ModelConfig> = new Map(
@@ -158,11 +160,8 @@ export function listProviders(): string[] {
   return [...Array.from(DEFAULT_PROVIDERS), ...Array.from(customProviders)];
 }
 
-export function getModelConfig(modelName: string): ModelConfig {
+export function getModelConfig(modelName: string): ModelConfig | undefined {
   const model = getModel(modelName);
-  if (!model) {
-    throw new ModelNotFoundError(modelName);
-  }
   return model;
 }
 
@@ -172,5 +171,5 @@ export function isModelSupported(modelName: string): boolean {
 
 export function getTokenLimit(modelName: string): number {
   const config = getModelConfig(modelName);
-  return config.tokenLimit;
+  return config?.tokenLimit ?? DEFAULT_TOKEN_LIMIT;
 }
