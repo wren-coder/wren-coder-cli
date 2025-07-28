@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export { CODER_PROMPT } from "./coder.js";
-export { SUPERVISOR_PROMPT } from "./supervisor.js";
-export { PLANNER_PROMPT } from "./planner.js";
+export { BaseAgent } from "./base.js";
+export { CoderAgent } from "./coder.js";
+export { PlannerAgent } from "./planner.js";
+export { SupervisorAgent } from "./supervisor.js";

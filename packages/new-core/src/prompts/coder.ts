@@ -4,4 +4,4 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const CODER_PROMPT = ``;
+export const CODER_PROMPT = `Do something`;
