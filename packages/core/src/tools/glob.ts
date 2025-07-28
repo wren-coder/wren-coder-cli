@@ -173,8 +173,8 @@ export class GlobTool extends BaseTool<GlobToolParams, ToolResult> {
   }
 
   /**
-   * Executes the glob search with the given parameters
-   */
+     * Executes the glob search with the given parameters
+     */
   async execute(
     params: GlobToolParams,
     signal: AbortSignal,

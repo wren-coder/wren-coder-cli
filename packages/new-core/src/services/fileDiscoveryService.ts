@@ -8,7 +8,7 @@ import { GitIgnoreParser, GitIgnoreFilter } from '../utils/gitIgnoreParser.js';
 import { isGitRepository } from '../utils/gitUtils.js';
 import * as path from 'path';
 
-const GEMINI_IGNORE_FILE_NAME = '.geminiignore';
+const WREN_IGNORE_FILE_NAME = '.wrenignore';
 
 export interface FilterFilesOptions {
   respectGitIgnore?: boolean;
@@ -33,7 +33,7 @@ export class FileDiscoveryService {
     }
     const gParser = new GitIgnoreParser(this.projectRoot);
     try {
-      gParser.loadPatterns(GEMINI_IGNORE_FILE_NAME);
+      gParser.loadPatterns(WREN_IGNORE_FILE_NAME);
     } catch (_error) {
       // ignore file not found
     }

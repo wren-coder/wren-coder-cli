@@ -13,4 +13,6 @@ export enum ToolName {
     DELETE_FILE = "delete_file",
     RUN_SHELL = "run_shell",
     RUN_TESTS = "run_tests",
+    SCREENSHOT = 'screenshot',
+    READ_CONSOLE_LOG = 'read_console_log',
 }

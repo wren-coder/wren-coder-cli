@@ -12,6 +12,7 @@ import { GrepTool } from "../tools/grep.js";
 import { ListFilesTool } from "../tools/list-files.js";
 import { ReadFileTool } from "../tools/read-file.js";
 import { GlobTool } from "../tools/glob.js";
+import { ReadConsoleLogTool } from "../tools/read-console.js";
 
 const AGENT_NAME = 'planner';
 const AGENT_DESC = 'Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.';
@@ -23,6 +24,7 @@ const tools = [
   GrepTool,
   ListFilesTool,
   GlobTool,
+  ReadConsoleLogTool,
 ]
 
 interface CoderAgentConfig {

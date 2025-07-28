@@ -13,6 +13,8 @@ import { GrepTool } from "../tools/grep.js";
 import { ListFilesTool } from "../tools/list-files.js";
 import { ReadFileTool } from "../tools/read-file.js";
 import { GlobTool } from "../tools/glob.js";
+import { ScreenshotTool } from "../tools/screenshot.js";
+import { ReadConsoleLogTool } from "../tools/read-console.js";
 
 
 const AGENT_NAME = 'tester';
@@ -26,6 +28,8 @@ const tools = [
   GrepTool,
   ListFilesTool,
   GlobTool,
+  ScreenshotTool,
+  ReadConsoleLogTool,
 ]
 
 interface CoderAgentConfig {
