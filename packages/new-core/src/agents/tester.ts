@@ -8,8 +8,10 @@ import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { DuckDuckGoSearch } from "@langchain/community/tools/duckduckgo_search";
 import { BaseAgent } from "./base.js";
 import { ShellTool } from "../tools/shell.js";
-import { ReadFileTool, WriteFileTool } from "../tools/file.js";
 import { TESTER_PROMPT } from "../prompts/tester.js";
+import { GrepTool } from "../tools/grep-tool.js";
+import { ListFilesTool } from "../tools/list-files.js";
+import { ReadFileTool } from "../tools/read-file.js";
 
 
 const AGENT_NAME = 'tester';
@@ -20,7 +22,8 @@ const tools = [
   new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
   ShellTool,
   ReadFileTool,
-  WriteFileTool,
+  GrepTool,
+  ListFilesTool
 ]
 
 interface CoderAgentConfig {

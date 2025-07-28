@@ -9,7 +9,10 @@ import { DuckDuckGoSearch } from "@langchain/community/tools/duckduckgo_search";
 import { CODER_PROMPT } from "../prompts/coder.js";
 import { BaseAgent } from "./base.js";
 import { ShellTool } from "../tools/shell.js";
-import { ReadFileTool, WriteFileTool } from "../tools/file.js";
+import { ReadFileTool } from "../tools/read-file.js";
+import { WriteFileTool } from "../tools/write-file.js";
+import { GrepTool } from "../tools/grep-tool.js";
+import { ListFilesTool } from "../tools/list-files.js";
 
 
 const AGENT_NAME = 'coder';
@@ -21,6 +24,8 @@ const tools = [
   ShellTool,
   ReadFileTool,
   WriteFileTool,
+  GrepTool,
+  ListFilesTool
 ]
 
 interface CoderAgentConfig {

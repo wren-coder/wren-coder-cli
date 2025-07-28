@@ -4,8 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ReadFileTool, WriteFileTool } from "../tools/file.js";
+import { ReadFileTool } from "../tools/read-file.js";
 import { ShellTool } from "../tools/shell.js";
+import { WriteFileTool } from "../tools/write-file.js";
 
 export const CODER_PROMPT = `You are an **interactive CLI coding assistant**. On every user request, go straight to implementation under these rules:
 

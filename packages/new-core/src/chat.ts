@@ -12,6 +12,11 @@ import { SUPERVISOR_PROMPT } from "./prompts/supervisor.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { createLlmFromConfig, isAgentSpecificConfig, LlmConfig } from "./models/adapter.js";
 import { TesterAgent } from "./agents/tester.js";
+import { EvaluatorAgent } from "./agents/evaluator.js";
+
+// --- Import readline for user input ---
+import * as readline from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'node:process';
 
 export enum ApprovalMode {
     DEFAULT = 'default',
@@ -30,6 +35,7 @@ export class Chat {
     protected plannerAgent: PlannerAgent;
     protected coderAgent: CoderAgent;
     protected testerAgent: TesterAgent;
+    protected evaluatorAgent: EvaluatorAgent;
     protected messageHistory: BaseMessage[] = [];
 
     constructor(config: ChatConfig) {
@@ -44,11 +50,15 @@ export class Chat {
         this.testerAgent = new TesterAgent({
             llm: coderLlm,
         });
+        this.evaluatorAgent = new EvaluatorAgent({
+            llm: coderLlm,
+        });
 
         const subAgents = [
             this.coderAgent,
             this.plannerAgent,
             this.testerAgent,
+            this.evaluatorAgent,
             // ...this.loadCustomSubAgents(config.subAgents)
         ];
         this.supervisor = createSupervisor({
@@ -97,6 +107,7 @@ export class Chat {
 
         // 2. stream the *full* state after each node runs:
         let finalState: { messages: BaseMessage[] } | undefined;
+        this.supervisor.clearCache();
         const iterator = this.supervisor.stream(
             { messages: this.messageHistory },
             { streamMode: "values" }
@@ -122,15 +133,54 @@ export class Chat {
     }
 }
 
-const chat = new Chat({
-    llmConfig: {
-        defaultModel: {
-            provider: 'deepseek',
-            model: 'deepseek-chat'
-        }
-    }
-})
 
-chat.query("Write a simple browser based minecraft clone in the tmp/workspace/ dir").then(() => {
-    chat.query("Yes. Proceed")
-})
+(async () => {
+    const chat = new Chat({
+        llmConfig: {
+            defaultModel: {
+                provider: 'deepseek',
+                model: 'deepseek-chat'
+            }
+        }
+    });
+
+    // --- Create readline interface ---
+    const rl = readline.createInterface({ input, output });
+
+    try {
+        // --- Get the initial task from the user ---
+        const initialTask = await rl.question('Enter the initial task for the agent: ');
+
+        if (!initialTask.trim()) {
+            console.log("No task provided. Exiting.");
+            rl.close();
+            return;
+        }
+
+        console.log("\n--- Starting Task ---");
+        await chat.query(initialTask);
+
+        // --- Interactive loop ---
+        console.log("\n--- Entering Interactive Mode ---");
+        console.log("You can now provide feedback, ask questions, or type 'exit' to quit.");
+        while (true) {
+            const userInput = await rl.question('\nYou: ');
+
+            if (userInput.toLowerCase() === 'exit') {
+                console.log("Goodbye!");
+                break;
+            }
+
+            if (userInput.trim()) {
+                await chat.query(userInput);
+            } else {
+                console.log("Empty input ignored.");
+            }
+        }
+
+    } catch (error) {
+        console.error("An error occurred:", error);
+    } finally {
+        rl.close();
+    }
+})();

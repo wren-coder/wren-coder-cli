@@ -8,8 +8,12 @@ import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 import { exec } from "child_process";
 import { promisify } from "util";
+import { formatError } from "../utils/format-error.js";
+import { ToolName } from "./enum.js";
 
 const execAsync = promisify(exec);
+
+const DESC = "Execute a Bash command on the host machine. Input must be a single string containing the full command (e.g. 'ls -la /tmp'). Returns the command’s stdout or stderr.";
 
 /**
  * A StructuredTool that runs a bash command and returns stdout (or stderr on error).
@@ -23,14 +27,13 @@ export const ShellTool = tool(
                 return `STDERR: ${stderr}\nSTDOUT: ${stdout}`;
             }
             return stdout;
-        } catch (err: any) {
-            return `Error executing "${command}": ${err.message || err}`;
+        } catch (err) {
+            return `Error executing "${command}":  ${formatError(err)}`;
         }
     },
     {
-        name: "shell",
-        description:
-            "Execute a Bash command on the host machine. Input must be a single string containing the full command (e.g. 'ls -la /tmp'). Returns the command’s stdout or stderr.",
+        name: ToolName.RUN_SHELL,
+        description: DESC,
         schema: z.object({
             command: z.string().describe("The full bash command to execute"),
         }),

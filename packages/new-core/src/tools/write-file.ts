@@ -8,31 +8,10 @@ import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 import { promises as fs } from "fs";
 import { dirname } from "path";
+import { formatError } from "../utils/format-error.js";
+import { ToolName } from "./enum.js";
 
-/**
- * ReadFileTool
- * Reads the contents of a file at the given path.
- */
-export const ReadFileTool = tool(
-    async ({ path }: { path: string }) => {
-        try {
-            const data = await fs.readFile(path, "utf-8");
-            return data;
-        } catch (err: any) {
-            return `Error reading file "${path}": ${err.message || err}`;
-        }
-    },
-    {
-        name: "read_file",
-        description: "Read text from a file. Input: { path: string }. Returns file contents or an error message.",
-        schema: z.object({
-            path: z
-                .string()
-                .describe("The filesystem path of the file to read"),
-        }),
-    }
-);
-
+const DESC = "Write text to a file. Input: { path: string; content: string; append?: boolean }. Overwrites by default, or appends if append=true.";
 
 /**
  * WriteFileTool
@@ -58,14 +37,13 @@ export const WriteFileTool = tool(
                 await fs.writeFile(path, content, "utf-8");
                 return `Wrote to "${path}".`;
             }
-        } catch (err: any) {
-            return `Error writing file "${path}": ${err.message || err}`;
+        } catch (err) {
+            return `Error writing file "${path}":  ${formatError(err)}`;
         }
     },
     {
-        name: "write_file",
-        description:
-            "Write text to a file. Input: { path: string; content: string; append?: boolean }. Overwrites by default, or appends if append=true.",
+        name: ToolName.WRITE_FILE,
+        description: DESC,
         schema: z.object({
             path: z
                 .string()
