@@ -8,13 +8,15 @@ import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { DuckDuckGoSearch } from "@langchain/community/tools/duckduckgo_search";
 import { PLANNER_PROMPT } from "../prompts/planner.js";
 import { BaseAgent } from "./base.js";
+import { ReadFileTool } from "../tools/file.js";
 
 const AGENT_NAME = 'planner';
 const AGENT_DESC = 'Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.';
 const MAX_SEARCH_RESULTS = 5;
 
 const tools = [
-  new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS })
+  new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
+  ReadFileTool,
 ]
 
 interface CoderAgentConfig {
