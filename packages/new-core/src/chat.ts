@@ -15,6 +15,7 @@ import { TesterAgent } from "./agents/tester.js";
 
 export interface ChatConfig {
     llmConfig: LlmConfig,
+    debug?: boolean,
 }
 
 export class Chat {
@@ -95,7 +96,7 @@ export class Chat {
 
         for await (const state of await iterator) {
             // you’ll get the entire message array at each step:
-            console.log("intermediate messages:", state.messages);
+            console.debug("intermediate messages:", state.messages);
             finalState = state;
         }
 
@@ -122,6 +123,6 @@ const chat = new Chat({
     }
 })
 
-chat.query("Write a simple browser based minecraft clone.").then(() => {
+chat.query("Write a simple browser based minecraft clone in the ~/workspace/ dir").then(() => {
     chat.query("Yes. Proceed")
 })
