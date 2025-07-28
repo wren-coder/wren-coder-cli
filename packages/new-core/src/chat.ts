@@ -10,7 +10,6 @@ import { CoderAgent } from "./agents/coder.js";
 import { PlannerAgent } from "./agents/planner.js";
 import { ChatDeepSeek } from '@langchain/deepseek';
 import { SUPERVISOR_PROMPT } from "./prompts/supervisor.js";
-import { CompiledStateGraph } from "@langchain/langgraph";
 
 export interface ChatConfig {
     llmConfig: {}
@@ -18,7 +17,7 @@ export interface ChatConfig {
 
 
 export class Chat {
-    protected supervisor: CompiledStateGraph;
+    protected supervisor;
     protected plannerAgent: PlannerAgent;
     protected coderAgent: CoderAgent;
 
