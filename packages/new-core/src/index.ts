@@ -4,4 +4,4 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export { Chat } from "./chat.js";
+export { Chat, ChatConfig } from "./chat.js";
