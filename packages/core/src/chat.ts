@@ -37,8 +37,11 @@ export class Chat {
     protected testerAgent: TesterAgent;
     protected evaluatorAgent: EvaluatorAgent;
     protected messageHistory: BaseMessage[] = [];
+    protected debug: boolean;
 
     constructor(config: ChatConfig) {
+        this.debug = config.debug ?? false;
+
         const { coderLlm, plannerLlm, supervisorLlm } = this.loadModels(config.llmConfig);
 
         this.coderAgent = new CoderAgent({
@@ -105,27 +108,40 @@ export class Chat {
     async query(query: string) {
         this.messageHistory.push(new HumanMessage(query));
 
-        // 2. stream the *full* state after each node runs:
         let finalState: { messages: BaseMessage[] } | undefined;
         this.supervisor.clearCache();
+
+        // track how many messages we've already shown
+        let shownCount = this.messageHistory.length;
+
         const iterator = this.supervisor.stream(
             { messages: this.messageHistory },
             { streamMode: "values" }
         );
 
         for await (const state of await iterator) {
-            // you’ll get the entire message array at each step:
-            console.debug("intermediate messages:", state);
             finalState = state;
+
+            if (this.debug) {
+                // only print the new messages since last state
+                const all = state.messages;
+                const newlyAdded = all.slice(shownCount);
+                newlyAdded.forEach((m) => {
+                    const role = m instanceof HumanMessage
+                        ? "user"
+                        : m instanceof AIMessage
+                            ? "assistant"
+                            : "system";
+                    console.log(`[${role}] ${m.content}`);
+                });
+                shownCount = all.length;
+            }
         }
 
-        // 3. once done, stash the last state back into your history
-        if (!finalState) {
-            throw new Error("Stream completed without yielding a state");
-        }
+        if (!finalState) throw new Error("Stream completed without yielding a state");
         this.messageHistory = finalState.messages;
 
-        // 4. pull off the last AIMessage as your “assistant reply”
+        // last AI message is the “final” reply
         const last = this.messageHistory
             .filter((m): m is AIMessage => m instanceof AIMessage)
             .at(-1)!;
