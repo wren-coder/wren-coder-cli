@@ -7,4 +7,3 @@
 export { BaseAgent } from "./base.js";
 export { CoderAgent } from "./coder.js";
 export { PlannerAgent } from "./planner.js";
-export { SupervisorAgent } from "./supervisor.js";
