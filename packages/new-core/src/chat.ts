@@ -41,6 +41,7 @@ export class Chat {
         const subAgents = [
             this.coderAgent,
             this.plannerAgent,
+            this.testerAgent,
             // ...this.loadCustomSubAgents(config.subAgents)
         ];
         this.supervisor = createSupervisor({
@@ -123,6 +124,6 @@ const chat = new Chat({
     }
 })
 
-chat.query("Write a simple browser based minecraft clone in the ~/workspace/ dir").then(() => {
+chat.query("Write a simple browser based minecraft clone in the tmp/workspace/ dir").then(() => {
     chat.query("Yes. Proceed")
 })
