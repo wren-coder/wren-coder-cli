@@ -88,3 +88,12 @@ export class Chat {
         }
     }
 }
+
+new Chat({
+    llmConfig: {
+        defaultModel: {
+            provider: 'deepseek',
+            model: 'deepseek-chat'
+        }
+    }
+}).query("Write a simple hello world")
