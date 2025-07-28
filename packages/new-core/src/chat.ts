@@ -10,6 +10,7 @@ import { CoderAgent } from "./agents/coder.js";
 import { PlannerAgent } from "./agents/planner.js";
 import { ChatDeepSeek } from '@langchain/deepseek';
 import { SUPERVISOR_PROMPT } from "./prompts/supervisor.js";
+import { CompiledStateGraph } from "@langchain/langgraph";
 
 export interface ChatConfig {
     llmConfig: {}
@@ -17,7 +18,7 @@ export interface ChatConfig {
 
 
 export class Chat {
-    protected supervisor;
+    protected supervisor: CompiledStateGraph;
     protected plannerAgent: PlannerAgent;
     protected coderAgent: CoderAgent;
 
@@ -40,7 +41,7 @@ export class Chat {
             this.plannerAgent,
         ];
         this.supervisor = createSupervisor({
-            agents: subAgents,
+            agents: subAgents.map(agent => agent.getAgent()),
             prompt: SUPERVISOR_PROMPT,
             llm: new ChatDeepSeek(
                 {
@@ -48,6 +49,7 @@ export class Chat {
                 }
             ),
         })
+            .compile();
     }
 
     async query(query: string) {
