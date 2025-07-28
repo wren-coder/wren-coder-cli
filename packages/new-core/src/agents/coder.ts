@@ -9,7 +9,11 @@ import { CODER_PROMPT } from "../prompts/coder.js";
 import { BaseAgent } from "./base.js";
 
 const AGENT_NAME = 'coder';
-const AGENT_DESC = '';
+const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
+
+const tools = [
+
+]
 
 interface CoderAgentConfig {
   llm: BaseChatModel;
@@ -21,7 +25,8 @@ export class CoderAgent extends BaseAgent {
       name: AGENT_NAME,
       description: AGENT_DESC,
       prompt: CODER_PROMPT,
-      llm: config.llm
+      llm: config.llm,
+      tools,
     });
   }
 }

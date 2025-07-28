@@ -71,7 +71,7 @@ export class Chat {
         }
     }
 
-    // TODO: Figure this out later
+    // TODO: Figure this out later. Need to load models and come up with interface
     // private loadCustomSubAgents(configs?: BaseAgentConfig[]) {
     //     if (!configs) return [];
     //     return configs.map(config => new class CustomAgent extends BaseAgent { }(config))

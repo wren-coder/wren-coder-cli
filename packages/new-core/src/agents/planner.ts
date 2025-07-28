@@ -9,7 +9,11 @@ import { PLANNER_PROMPT } from "../prompts/planner.js";
 import { BaseAgent } from "./base.js";
 
 const AGENT_NAME = 'planner';
-const AGENT_DESC = '';
+const AGENT_DESC = 'Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.';
+
+const tools = [
+
+]
 
 interface CoderAgentConfig {
   llm: BaseChatModel;
@@ -22,6 +26,7 @@ export class PlannerAgent extends BaseAgent {
       description: AGENT_DESC,
       prompt: PLANNER_PROMPT,
       llm: config.llm
+      tools,
     });
   }
 }
