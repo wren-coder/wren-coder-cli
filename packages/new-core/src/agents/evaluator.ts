@@ -10,8 +10,9 @@ import { BaseAgent } from "./base.js";
 import { ShellTool } from "../tools/shell.js";
 import { EVALUATOR_PROMPT } from "../prompts/evaluator.js";
 import { ReadFileTool } from "../tools/read-file.js";
-import { GrepTool } from "../tools/grep-tool.js";
+import { GrepTool } from "../tools/grep.js";
 import { ListFilesTool } from "../tools/list-files.js";
+import { GlobTool } from "../tools/glob.js";
 
 const AGENT_NAME = 'evaluator';
 const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail and feedback';
@@ -23,6 +24,7 @@ const tools = [
   ReadFileTool,
   GrepTool,
   ListFilesTool,
+  GlobTool,
 ]
 
 export interface Evaluation {

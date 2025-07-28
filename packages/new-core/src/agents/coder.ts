@@ -11,8 +11,9 @@ import { BaseAgent } from "./base.js";
 import { ShellTool } from "../tools/shell.js";
 import { ReadFileTool } from "../tools/read-file.js";
 import { WriteFileTool } from "../tools/write-file.js";
-import { GrepTool } from "../tools/grep-tool.js";
+import { GrepTool } from "../tools/grep.js";
 import { ListFilesTool } from "../tools/list-files.js";
+import { GlobTool } from "../tools/glob.js";
 
 
 const AGENT_NAME = 'coder';
@@ -25,7 +26,8 @@ const tools = [
   ReadFileTool,
   WriteFileTool,
   GrepTool,
-  ListFilesTool
+  ListFilesTool,
+  GlobTool,
 ]
 
 interface CoderAgentConfig {

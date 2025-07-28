@@ -9,7 +9,6 @@ import os from 'os';
 import * as crypto from 'crypto';
 
 export const WREN_CODER_DIR = '.wren';
-export const GOOGLE_ACCOUNTS_FILENAME = 'google_accounts.json';
 const TMP_DIR_NAME = 'tmp';
 
 /**

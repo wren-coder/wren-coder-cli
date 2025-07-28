@@ -5,6 +5,7 @@
  */
 
 export enum ToolName {
+    GLOB = "glob",
     READ_FILE = "read_file",
     WRITE_FILE = "write_file",
     LIST_FILES = "list_files",
