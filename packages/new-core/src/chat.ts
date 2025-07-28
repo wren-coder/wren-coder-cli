@@ -13,8 +13,15 @@ import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { createLlmFromConfig, isAgentSpecificConfig, LlmConfig } from "./models/adapter.js";
 import { TesterAgent } from "./agents/tester.js";
 
+export enum ApprovalMode {
+    DEFAULT = 'default',
+    AUTO_EDIT = 'autoEdit',
+    YOLO = 'yolo',
+}
+
 export interface ChatConfig {
     llmConfig: LlmConfig,
+    approvalMode?: ApprovalMode,
     debug?: boolean,
 }
 

@@ -46,3 +46,4 @@ logs/
 
 # Wren Coder Configs
 .wren/
+*/**/tmp
