@@ -11,6 +11,7 @@ import { PlannerAgent } from "./agents/planner.js";
 import { SUPERVISOR_PROMPT } from "./prompts/supervisor.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { createLlmFromConfig, isAgentSpecificConfig, LlmConfig } from "./models/adapter.js";
+import { TesterAgent } from "./agents/tester.js";
 
 export interface ChatConfig {
     llmConfig: LlmConfig,
@@ -20,6 +21,7 @@ export class Chat {
     protected supervisor;
     protected plannerAgent: PlannerAgent;
     protected coderAgent: CoderAgent;
+    protected testerAgent: TesterAgent;
     protected messageHistory: BaseMessage[] = [];
 
     constructor(config: ChatConfig) {
@@ -30,6 +32,9 @@ export class Chat {
         });
         this.plannerAgent = new PlannerAgent({
             llm: plannerLlm,
+        });
+        this.testerAgent = new TesterAgent({
+            llm: coderLlm,
         });
 
         const subAgents = [
