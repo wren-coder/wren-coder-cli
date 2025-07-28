@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { HumanMessage } from "@langchain/core/messages";
+import { AIMessage, BaseMessage, coerceMessageLikeToMessage, HumanMessage, ToolMessage } from "@langchain/core/messages";
 import { createSupervisor } from "@langchain/langgraph-supervisor";
 import { CoderAgent } from "./agents/coder.js";
 import { PlannerAgent } from "./agents/planner.js";
@@ -20,6 +20,7 @@ export class Chat {
     protected supervisor;
     protected plannerAgent: PlannerAgent;
     protected coderAgent: CoderAgent;
+    protected messageHistory: BaseMessage[] = [];
 
     constructor(config: ChatConfig) {
         const { coderLlm, plannerLlm, supervisorLlm } = this.loadModels(config.llmConfig);
@@ -78,22 +79,44 @@ export class Chat {
     // }
 
     async query(query: string) {
-        const initialState = {
-            messages: [new HumanMessage(query)],
-        };
+        this.messageHistory.push(new HumanMessage(query));
 
-        for await (const step of await this.supervisor.stream(initialState)) {
-            console.log(step);
-            console.log("---");
+        // 2. stream the *full* state after each node runs:
+        let finalState: { messages: BaseMessage[] } | undefined;
+        const iterator = this.supervisor.stream(
+            { messages: this.messageHistory },
+            { streamMode: "values" }
+        );
+
+        for await (const state of await iterator) {
+            // you’ll get the entire message array at each step:
+            console.log("intermediate messages:", state.messages);
+            finalState = state;
         }
+
+        // 3. once done, stash the last state back into your history
+        if (!finalState) {
+            throw new Error("Stream completed without yielding a state");
+        }
+        this.messageHistory = finalState.messages;
+
+        // 4. pull off the last AIMessage as your “assistant reply”
+        const last = this.messageHistory
+            .filter((m): m is AIMessage => m instanceof AIMessage)
+            .at(-1)!;
+        console.log("assistant:", last.content);
     }
 }
 
-new Chat({
+const chat = new Chat({
     llmConfig: {
         defaultModel: {
             provider: 'deepseek',
             model: 'deepseek-chat'
         }
     }
-}).query("Write a simple hello world")
+})
+
+chat.query("Write a simple browser based minecraft clone.").then(() => {
+    chat.query("Yes. Proceed")
+})
