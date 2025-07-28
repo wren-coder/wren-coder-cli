@@ -1,6 +1,6 @@
 {
   "name": "@wren-coder/wren-coder-cli",
-  "version": "0.0.1-alpha.11",
+  "version": "0.0.1-alpha.12",
   "description": "Wren Coder CLI",
   "repository": {
     "type": "git",
@@ -25,7 +25,7 @@
     "dist"
   ],
   "config": {
-    "sandboxImageUri": "us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.0.1-alpha.11"
+    "sandboxImageUri": "us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.0.1-alpha.12"
   },
   "dependencies": {
     "@wren-coder/wren-coder-cli-core": "file:../core",

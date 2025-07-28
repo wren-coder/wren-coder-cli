@@ -1,6 +1,6 @@
 {
   "name": "@wren-coder/wren-coder-cli",
-  "version": "0.0.1-alpha.11",
+  "version": "0.0.1-alpha.12",
   "engines": {
     "node": ">=20"
   },
@@ -13,7 +13,7 @@
     "url": "git+https://github.com/wren-coder/wren-coder-cli.git"
   },
   "config": {
-    "sandboxImageUri": "us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.0.1-alpha.11"
+    "sandboxImageUri": "us-docker.pkg.dev/gemini-code-dev/gemini-cli/sandbox:0.0.1-alpha.12"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -83,7 +83,7 @@
     "yargs": "^18.0.0"
   },
   "dependencies": {
-    "@wren-coder/wren-coder-cli": "^0.0.1-alpha.11"
+    "@wren-coder/wren-coder-cli": "^0.0.1-alpha.12"
   },
   "publishConfig": {
     "access": "public"

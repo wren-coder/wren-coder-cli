@@ -31,7 +31,10 @@ import { initializeMetrics } from './metrics.js';
 import { ClearcutLogger } from './clearcut-logger/clearcut-logger.js';
 
 // For troubleshooting, set the log level to DiagLogLevel.DEBUG
-diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
+diag.setLogger(new DiagConsoleLogger(), {
+  logLevel: DiagLogLevel.INFO,
+  suppressOverrideMessage: true,
+});
 
 let sdk: NodeSDK | undefined;
 let telemetryInitialized = false;
