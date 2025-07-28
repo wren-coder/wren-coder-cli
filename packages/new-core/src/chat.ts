@@ -10,9 +10,15 @@ import { CoderAgent } from "./agents/coder.js";
 import { PlannerAgent } from "./agents/planner.js";
 import { ChatDeepSeek } from '@langchain/deepseek';
 import { SUPERVISOR_PROMPT } from "./prompts/supervisor.js";
+import { BaseAgent, BaseAgentConfig } from "./agents/base.js";
+
+export interface LlmConfig {
+
+}
 
 export interface ChatConfig {
-    llmConfig: {}
+    llmConfig: LlmConfig,
+    subAgents?: BaseAgentConfig[];
 }
 
 
@@ -38,6 +44,7 @@ export class Chat {
         const subAgents = [
             this.coderAgent,
             this.plannerAgent,
+            ...this.loadCustomSubAgents(config.subAgents)
         ];
         this.supervisor = createSupervisor({
             agents: subAgents.map(agent => agent.getAgent()),
@@ -49,6 +56,11 @@ export class Chat {
             ),
         })
             .compile();
+    }
+
+    private loadCustomSubAgents(configs?: BaseAgentConfig[]) {
+        if (!configs) return [];
+        return configs.map(config => new class CustomAgent extends BaseAgent { }(config))
     }
 
     async query(query: string) {
