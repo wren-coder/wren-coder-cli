@@ -97,7 +97,7 @@ export class Chat {
 
         for await (const state of await iterator) {
             // you’ll get the entire message array at each step:
-            console.debug("intermediate messages:", state.messages);
+            console.debug("intermediate messages:", state);
             finalState = state;
         }
 
