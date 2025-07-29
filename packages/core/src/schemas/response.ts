@@ -13,7 +13,9 @@ export const PlannerResponseSchema = z.object({
   steps: z.array(z.object({
     action: z.string(),
     description: z.string(),
-    details: z.array(z.string()),
+    details: z.union([z.array(z.string()), z.string()]).transform((val) => 
+      typeof val === 'string' ? [val] : val
+    ),
   })).describe('Array of steps describing what actions to take')
 });
 

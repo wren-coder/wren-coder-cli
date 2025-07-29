@@ -53,10 +53,8 @@ export class PlannerAgent extends BaseAgent {
     const result = await this.agent.invoke(state);
 
     const steps = result.structuredResponse?.steps || [];
-
-    return {
-      ...result,
-      steps
-    };
+    console.log(result.structuredResponse)
+    result.steps = steps;
+    return result;
   }
 }

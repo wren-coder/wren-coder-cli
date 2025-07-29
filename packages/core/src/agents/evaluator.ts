@@ -57,9 +57,9 @@ export class EvaluatorAgent extends BaseAgent {
 
     const suggestions = result.structuredResponse?.suggestions || [];
 
-    return {
-      ...result,
-      suggestions
-    };
+    console.log(result.structuredResponse)
+
+    result.suggestions = suggestions;
+    return result;
   }
 }
