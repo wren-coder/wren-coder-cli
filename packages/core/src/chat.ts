@@ -11,6 +11,7 @@ import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { createLlmFromConfig, isAgentSpecificConfig, LlmConfig } from "./models/adapter.js";
 import { EvaluatorAgent } from "./agents/evaluator.js";
 import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
+import type { PlannerResponse, EvaluatorResponse } from "./schemas/response.js";
 
 // --- Import readline for user input ---
 import * as readline from 'node:readline/promises';
@@ -22,7 +23,11 @@ export const StateAnnotation = Annotation.Root({
         reducer: (all, one) =>
             Array.isArray(one) ? all.concat(one) : all.concat([one]),
     }),
-    steps: Annotation<string[]>({
+    steps: Annotation<Array<{
+        action: string;
+        description: string;
+        details: string[];
+    }>>({
         default: () => [],
         reducer: (all, one) =>
             Array.isArray(one) ? all.concat(one) : all.concat([one]),
