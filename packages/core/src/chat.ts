@@ -42,7 +42,6 @@ export class Chat {
     protected debug: boolean;
     protected graphRecursionLimit: number;
     protected maxReflections: number;
-    protected reflectionCount: number = 0;
     protected workingDir: string;
 
     constructor(config: ChatConfig) {
@@ -138,62 +137,8 @@ export class Chat {
         }
     }
 
-    // TODO: Figure this out later. Need to load models and come up with interface
-    // private loadCustomSubAgents(configs?: BaseAgentConfig[]) {
-    //     if (!configs) return [];
-    //     return configs.map(config => new class CustomAgent extends BaseAgent { }(config))
-    // }
-
-    /**
-     * Reflect on the previous attempt and generate insights for improvement
-     * This method focuses specifically on evaluating and testing the code
-     */
-    private async reflectOnCodeAndTests(query: string, previousResponse: string): Promise<string> {
-        // Create a reflection prompt that analyzes the previous attempt with focus on code quality and testing
-        const reflectionPrompt = `
-You are an AI assistant tasked with reflecting on a previous coding attempt to improve code quality and test coverage.
-
-Analyze the previous response with a focus on:
-1. Code correctness and best practices
-2. Test coverage and quality of tests
-3. Edge cases that might not be handled
-4. Potential bugs or security issues
-5. Performance considerations
-
-Query: ${query}
-Previous Response: ${previousResponse}
-
-Please provide:
-1. Assessment of code quality in the previous response
-2. Evaluation of test coverage and test quality
-3. Identification of any missing edge cases or potential issues
-4. Specific suggestions for improving both code and tests
-5. Recommendations for additional testing that should be performed
-
-Keep your response focused and actionable.
-`;
-
-        return reflectionPrompt;
-    }
-
-    async query(query: string, isReflection: boolean = false) {
-        // Add reflection logic if this is not the first attempt and we haven't exceeded max reflections
-        if (isReflection && this.reflectionCount < this.maxReflections) {
-            // Get the last AI message for reflection
-            const lastAIMessage = this.messageHistory
-                .filter((m): m is AIMessage => m instanceof AIMessage)
-                .at(-1);
-
-            if (lastAIMessage) {
-                const reflectionPrompt = await this.reflectOnCodeAndTests(query, lastAIMessage.content as string);
-                this.messageHistory.push(new HumanMessage(`Reflecting on the previous code and tests:\n${reflectionPrompt}`));
-                this.reflectionCount++;
-            }
-        } else if (!isReflection) {
-            // Reset reflection count for a new query
-            this.reflectionCount = 0;
-            this.messageHistory.push(new HumanMessage(query));
-        }
+    async query(query: string) {
+        this.messageHistory.push(new HumanMessage(query));
 
         let finalState: { messages: BaseMessage[] } | undefined;
         this.graph.clearCache();
@@ -235,13 +180,6 @@ Keep your response focused and actionable.
 
         if (last) {
             console.log("assistant:", last.content);
-        }
-
-        // If this was a reflection, recursively call query to continue the reflection loop
-        if (isReflection && this.reflectionCount < this.maxReflections) {
-            // Add a prompt to encourage improvement based on reflection
-            this.messageHistory.push(new HumanMessage("Based on this reflection about code quality and testing, please provide an improved implementation with better tests."));
-            await this.query(query, true); // Recursive call for another reflection cycle
         }
     }
 }
