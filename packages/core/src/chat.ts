@@ -152,6 +152,7 @@ export class Chat {
 
 (async () => {
     const chat = new Chat({
+        debug: true,
         llmConfig: {
             defaultModel: {
                 provider: 'deepseek',
