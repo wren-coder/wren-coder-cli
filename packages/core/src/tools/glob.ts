@@ -16,7 +16,7 @@ import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
 interface GlobToolConfig {
     workingDir: string,
-    llm?: BaseChatModel, // Optional LLM for compression
+    llm: BaseChatModel, // Optional LLM for compression
 }
 
 const DESC =
@@ -77,14 +77,11 @@ export const GlobTool = ({ workingDir, llm }: GlobToolConfig) => tool(
             });
 
             const sortedPaths = entries.map((e) => e.path);
-            
-            // If we have an LLM and a large result, use it to compress the output
+
             const resultString = JSON.stringify(sortedPaths, null, 2);
-            if (llm && resultString.length > 10000) { // Arbitrary threshold for compression
-                const result = await processLargeContext(resultString, llm);
-                return result.content;
-            }
-            
+            const result = await processLargeContext(resultString, llm);
+            return result.content;
+
             return sortedPaths;
         } catch (err) {
             return `Error searching files for pattern '${pattern}': ${formatError(

@@ -31,7 +31,7 @@ export class CoderAgent extends BaseAgent {
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
       ShellTool({ workingDir, llm }),
       ReadFileTool({ workingDir, llm }),
-      WriteFileTool({ workingDir, llm }),
+      WriteFileTool({ workingDir }),
       GrepTool({ workingDir }),
       ListFilesTool({ workingDir }),
       GlobTool({ workingDir, llm }),

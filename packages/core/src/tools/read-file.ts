@@ -14,7 +14,7 @@ import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
 interface ReadFileToolConfig {
     workingDir: string,
-    llm?: BaseChatModel, // Optional LLM for compression
+    llm: BaseChatModel,
 }
 
 const DESC = "Read text from a file. Input: { path: string }. Returns file contents or an error message. Large files will be automatically compressed.";
@@ -28,13 +28,12 @@ export const ReadFileTool = ({ workingDir, llm }: ReadFileToolConfig) => tool(
     async ({ path }: { path: string }) => {
         try {
             const data = await fs.readFile(path, "utf-8");
-            
-            // If we have an LLM, use it to compress large files
-            if (llm && data.length > 10000) { // Arbitrary threshold for compression
-                const result = await processLargeContext(data, llm);
-                return result.content;
-            }
-            
+
+
+            const result = await processLargeContext(data, llm);
+            return result.content;
+
+
             return data;
         } catch (err) {
             return `Error reading file "${path}":  ${formatError(err)}`;

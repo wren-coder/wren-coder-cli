@@ -28,7 +28,7 @@ export class PlannerAgent extends BaseAgent {
     // Update tools to use the working directory if provided
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
-      ReadFileTool({ workingDir }),
+      ReadFileTool({ workingDir, llm }),
       GrepTool({ workingDir }),
       ListFilesTool({ workingDir }),
       GlobTool({ workingDir, llm }),

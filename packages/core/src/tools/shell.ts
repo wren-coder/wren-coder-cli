@@ -15,7 +15,7 @@ import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
 interface ShellToolConfig {
     workingDir: string,
-    llm?: BaseChatModel, // Optional LLM for compression
+    llm: BaseChatModel, // Optional LLM for compression
 }
 
 const execAsync = promisify(exec);
@@ -31,19 +31,17 @@ export const ShellTool = ({ workingDir, llm }: ShellToolConfig) => tool(
         try {
             const { stdout, stderr } = await execAsync(command, { shell: "/bin/bash" });
             let output = stdout;
-            
+
             if (stderr) {
                 // Some commands write warnings to stderr but still succeed; you can adjust this as needed.
                 output = `STDERR: ${stderr}
 STDOUT: ${stdout}`;
             }
-            
-            // If we have an LLM, use it to compress large outputs
-            if (llm && output.length > 5000) { // Arbitrary threshold for compression
-                const result = await processLargeContext(output, llm);
-                return result.content;
-            }
-            
+
+            const result = await processLargeContext(output, llm);
+            return result.content;
+
+
             return output;
         } catch (err) {
             return `Error executing "${command}":  ${formatError(err)}`;

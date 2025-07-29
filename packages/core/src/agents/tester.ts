@@ -39,7 +39,7 @@ export class TesterAgent extends BaseAgent {
       GlobTool({ workingDir, llm }),
       ScreenshotTool({ workingDir }),
       ReadConsoleLogTool({ workingDir }),
-      WriteFileTool({ workingDir, llm }),
+      WriteFileTool({ workingDir }),
     ];
 
     super({
