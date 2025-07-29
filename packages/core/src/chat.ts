@@ -157,7 +157,7 @@ export class Chat {
             defaultModel: {
                 provider: 'deepseek',
                 model: 'deepseek-reasoner',
-                temperature: 0.6,
+                temperature: 0,
             }
         }
     });
