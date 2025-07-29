@@ -13,6 +13,7 @@ export interface LlmModelConfig {
     temperature?: number;
     topP?: number;
     apiKey?: string;
+    maxRetries?: number; // Add retry configuration
 }
 
 interface DefaultLlmConfig {
@@ -40,9 +41,15 @@ interface AgentSpecificLlmConfig {
 export type LlmConfig = DefaultLlmConfig | AgentSpecificLlmConfig;
 
 export function createLlmFromConfig(config: LlmModelConfig): BaseChatModel {
-    switch (config.provider) {
+    // Set default maxRetries if not provided
+    const configWithRetries = {
+        maxRetries: 3,
+        ...config
+    };
+    
+    switch (configWithRetries.provider) {
         case 'deepseek':
-            return new ChatDeepSeek(config);
+            return new ChatDeepSeek(configWithRetries);
         // Add cases for other providers as needed
         // case 'openai':
         //     return new ChatOpenAI({...});
@@ -50,7 +57,7 @@ export function createLlmFromConfig(config: LlmModelConfig): BaseChatModel {
         //     return new ChatAnthropic({...});
         default:
             // Default to DeepSeek if provider is not recognized
-            return new ChatDeepSeek(config);
+            return new ChatDeepSeek(configWithRetries);
     }
 }
 
