@@ -35,12 +35,12 @@ export abstract class BaseAgent {
         this.tools = config.tools ?? [];
 
         this.agent = createReactAgent({
-            llm: config.responseFormat ? this.llm.withStructuredOutput(config.responseFormat) : this.llm,
+            llm: this.llm,
             tools: this.tools,
             prompt: this.prompt,
             name: this.name,
             stateSchema: StateAnnotation,
-            responseFormat: config.responseFormat
+            responseFormat: config.responseFormat,
         });
     }
 
