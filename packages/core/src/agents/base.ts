@@ -7,6 +7,7 @@
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { StructuredTool } from "@langchain/core/tools";
+import { StateAnnotation } from "../chat.js";
 
 export interface BaseAgentConfig {
     name: string;
@@ -36,6 +37,7 @@ export abstract class BaseAgent {
             tools: this.tools,
             prompt: this.prompt,
             name: this.name,
+            stateSchema: StateAnnotation,
         });
     }
 

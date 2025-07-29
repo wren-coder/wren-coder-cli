@@ -17,6 +17,19 @@ import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 
+export const StateAnnotation = Annotation.Root({
+    messages: Annotation<BaseMessage[]>({
+        default: () => [],
+        reducer: (all, one) =>
+            Array.isArray(one) ? all.concat(one) : all.concat([one]),
+    }),
+    suggestions: Annotation<string[]>({
+        default: () => [],
+        reducer: (all, one) =>
+            Array.isArray(one) ? all.concat(one) : all.concat([one]),
+    }),
+});
+
 export enum ApprovalMode {
     DEFAULT = 'default',
     AUTO_EDIT = 'autoEdit',
@@ -69,24 +82,10 @@ export class Chat {
             workingDir: this.workingDir,
         });
 
-
         this.graph = this.createGraph();
     }
 
     private createGraph() {
-        const StateAnnotation = Annotation.Root({
-            messages: Annotation<BaseMessage[]>({
-                default: () => [],
-                reducer: (all, one) =>
-                    Array.isArray(one) ? all.concat(one) : all.concat([one]),
-            }),
-            suggestions: Annotation<string[]>({
-                default: () => [],
-                reducer: (all, one) =>
-                    Array.isArray(one) ? all.concat(one) : all.concat([one]),
-            }),
-        });
-
         return new StateGraph(StateAnnotation)
             .addNode(this.plannerAgent.getName(), this.plannerAgent.getAgent())
             .addNode(this.coderAgent.getName(), this.coderAgent.getAgent())
