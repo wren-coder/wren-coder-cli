@@ -15,6 +15,7 @@ import { ListFilesTool } from "../tools/list-files.js";
 import { GlobTool } from "../tools/glob.js";
 import { ScreenshotTool } from "../tools/screenshot.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
+import { EvaluatorResponseSchema } from "../schemas/response.js";
 
 const AGENT_NAME = 'evaluator';
 const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail and feedback';
@@ -43,12 +44,15 @@ export class EvaluatorAgent extends BaseAgent {
       ReadConsoleLogTool({ workingDir }),
     ];
 
+    llm.withStructuredOutput(EvaluatorResponseSchema);
+
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
       prompt: EVALUATOR_PROMPT({ workingDir }),
       llm,
       tools,
+      responseFormat: EvaluatorResponseSchema,
     });
   }
 }

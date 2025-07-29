@@ -5,9 +5,10 @@
  */
 
 import { ToolName } from "../tools/enum.js";
+import { PlannerResponseSchema } from "../schemas/response.js";
 
 export interface PlannerPromptVariables {
-    workingDir: string;
+  workingDir: string;
 }
 
 export const PLANNER_PROMPT = ({ workingDir }: PlannerPromptVariables) => `
@@ -45,18 +46,26 @@ You are a **software engineering planning agent** working within a team to build
 *   Do **not** use \`${ToolName.WRITE_FILE}\` or \`${ToolName.RUN_SHELL}\` yourself. Your output is the *plan* for the Coder to use these tools.
 
 **Output Format:**
-Provide the plan as a numbered list in Markdown. Each step should clearly indicate the file involved and the objective for that file. Example:
+Provide the plan as a JSON object that matches this schema:
+\`\`\`json
+${JSON.stringify(PlannerResponseSchema.describe('Planner response schema').shape, null, 2)}
+\`\`\`
 
-\`\`\`markdown
-1.  Analyze the request: Build a Minecraft clone with Three.js core mechanics.
-2.  [tool_call: Glob for pattern '**/package.json'] to check for existing project setup.
-3.  [tool_call: ReadFile for path '/home/user/workspace/package.json'] to check dependencies.
-4.  Plan Step: Create \`/home/user/workspace/index.html\` to set up the basic HTML structure and load the main JavaScript file.
-5.  Plan Step: Create \`/home/user/workspace/main.js\` to initialize the Three.js scene, camera, renderer, and a simple cube.
-6.  Plan Step: Create \`/home/user/workspace/player.js\` to implement WASD movement and mouse-look controls.
-7.  Plan Step: Create \`/home/user/workspace/world.js\` to handle procedural terrain generation (Perlin noise) and chunk management.
-8.  Plan Step: Create \`/home/user/workspace/blocks.js\` to define block types (grass, dirt, stone) and basic interaction logic.
-9.  Plan Step: Create \`/home/user/workspace/README.md\` with instructions on how to run the project locally.
+Each step should clearly indicate the file involved and the objective for that file. Example:
+\`\`\`json
+{
+  "steps": [
+    "Analyze the request: Build a Minecraft clone with Three.js core mechanics.",
+    "[tool_call: Glob for pattern '**/package.json'] to check for existing project setup.",
+    "[tool_call: ReadFile for path '/home/user/workspace/package.json'] to check dependencies.",
+    "Plan Step: Create \`/home/user/workspace/index.html\` to set up the basic HTML structure and load the main JavaScript file.",
+    "Plan Step: Create \`/home/user/workspace/main.js\` to initialize the Three.js scene, camera, renderer, and a simple cube.",
+    "Plan Step: Create \`/home/user/workspace/player.js\` to implement WASD movement and mouse-look controls.",
+    "Plan Step: Create \`/home/user/workspace/world.js\` to handle procedural terrain generation (Perlin noise) and chunk management.",
+    "Plan Step: Create \`/home/user/workspace/blocks.js\` to define block types (grass, dirt, stone) and basic interaction logic.",
+    "Plan Step: Create \`/home/user/workspace/README.md\` with instructions on how to run the project locally."
+  ]
+}
 \`\`\`
 
 **Goal:** Produce a plan that, when executed by the Coder agent (who writes files), results in a project state that satisfies the user's request and can be verified by the Tester and Evaluator agents. Your success is measured by how well your plan enables the Coder to create the required files and functionality.

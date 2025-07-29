@@ -5,6 +5,7 @@
  */
 
 import { ToolName } from "../tools/enum.js";
+import { EvaluatorResponseSchema } from "../schemas/response.js";
 
 export interface EvalPromptVariables {
   workingDir: string;
@@ -29,11 +30,10 @@ Instructions:
 7.  Determine if the project meets the user's requirements satisfactorily based on the code in the files.
 
 Output Format (Strictly JSON):
-Respond ONLY with a JSON object in the following format:
-{
-  "grade": "pass" or "fail",
-  "feedback": "A concise explanation of your decision. If 'fail', clearly state what is missing, incorrect, or needs improvement according to the spec. Reference specific files or lack thereof if relevant."
-}
+Respond ONLY with a JSON object that matches this schema:
+\`\`\`json
+${JSON.stringify(EvaluatorResponseSchema.describe('Evaluator response schema').shape, null, 2)}
+\`\`\`
 
 Workflow:
 1. **Understand:** Use \`${ToolName.GLOB}\` and \`${ToolName.GREP}\` tools to understand the file structure and locate relevant files.

@@ -23,6 +23,11 @@ export const StateAnnotation = Annotation.Root({
         reducer: (all, one) =>
             Array.isArray(one) ? all.concat(one) : all.concat([one]),
     }),
+    steps: Annotation<string[]>({
+        default: () => [],
+        reducer: (all, one) =>
+            Array.isArray(one) ? all.concat(one) : all.concat([one]),
+    }),
     suggestions: Annotation<string[]>({
         default: () => [],
         reducer: (all, one) =>
@@ -86,17 +91,46 @@ export class Chat {
     }
 
     private createGraph() {
+        const placeholderFunction1 = async () => {
+            console.log("Executing placeholder function 1");
+            return {
+                messages: [],
+                suggestions: []
+            };
+        };
+
+        const placeholderFunction2 = async () => {
+            console.log("Executing placeholder function 2");
+            return {
+                messages: [],
+                suggestions: []
+            };
+        };
+
         return new StateGraph(StateAnnotation)
             .addNode(this.plannerAgent.getName(), this.plannerAgent.getAgent())
             .addNode(this.coderAgent.getName(), this.coderAgent.getAgent())
             .addNode(this.testerAgent.getName(), this.testerAgent.getAgent())
             .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.getAgent())
+            .addNode("placeholder1", placeholderFunction1)
+            .addNode("placeholder2", placeholderFunction2)
 
-            // wiring: START → plan → code → test → evaluate
+            // wiring: START → plan → code → test → evaluate → placeholder1 → placeholder2
             .addEdge(START, this.plannerAgent.getName())
             .addEdge(this.plannerAgent.getName(), this.coderAgent.getName())
+            .addEdge("placeholder1", this.coderAgent.getName())
             .addEdge(this.coderAgent.getName(), this.testerAgent.getName())
             .addEdge(this.testerAgent.getName(), this.evaluatorAgent.getName())
+            .addEdge(this.evaluatorAgent.getName(), "placeholder2")
+
+
+            .addConditionalEdges(
+                this.testerAgent.getName(),
+                state => {
+                    if (state.steps && state.steps.length > 0) return this.coderAgent.getName();
+                    return END;
+                }
+            )
 
             .addConditionalEdges(
                 this.evaluatorAgent.getName(),
@@ -145,16 +179,16 @@ export class Chat {
         // track how many messages we've already shown
         let shownCount = this.messageHistory.length;
 
-        const iterator = this.graph.stream(
+        const iterator = await this.graph.stream(
             { messages: this.messageHistory },
             { streamMode: "values", recursionLimit: this.graphRecursionLimit }
         );
 
-        for await (const state of await iterator) {
+        for await (const state of iterator) {
             finalState = state;
 
             if (this.debug) {
-                // only print the new messages since last state
+                console.log(state)
                 const all = state.messages;
                 const newlyAdded = all.slice(shownCount);
                 newlyAdded.forEach((m) => {

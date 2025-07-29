@@ -8,6 +8,7 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { StructuredTool } from "@langchain/core/tools";
 import { StateAnnotation } from "../chat.js";
+import { InteropZodType } from "@langchain/core/utils/types";
 
 export interface BaseAgentConfig {
     name: string;
@@ -15,6 +16,7 @@ export interface BaseAgentConfig {
     prompt: string;
     llm: BaseChatModel;
     tools?: StructuredTool[];
+    responseFormat?: InteropZodType;
 }
 
 export abstract class BaseAgent {
@@ -38,6 +40,7 @@ export abstract class BaseAgent {
             prompt: this.prompt,
             name: this.name,
             stateSchema: StateAnnotation,
+            responseFormat: config.responseFormat
         });
     }
 
