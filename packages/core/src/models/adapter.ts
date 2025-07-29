@@ -21,6 +21,8 @@ interface DefaultLlmConfig {
         coder?: LlmModelConfig;
         planner?: LlmModelConfig;
         supervisor?: LlmModelConfig;
+        tester?: LlmModelConfig;
+        evaluator?: LlmModelConfig;
         [key: string]: LlmModelConfig | undefined;
     };
 }

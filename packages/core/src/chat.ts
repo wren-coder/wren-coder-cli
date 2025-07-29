@@ -28,6 +28,7 @@ export interface ChatConfig {
     llmConfig: LlmConfig,
     approvalMode?: ApprovalMode,
     debug?: boolean,
+    graphRecursionLimit?: number,
 }
 
 export class Chat {
@@ -38,10 +39,11 @@ export class Chat {
     protected evaluatorAgent: EvaluatorAgent;
     protected messageHistory: BaseMessage[] = [];
     protected debug: boolean;
+    protected graphRecursionLimit: number;
 
     constructor(config: ChatConfig) {
         this.debug = config.debug ?? false;
-
+        this.graphRecursionLimit = config.graphRecursionLimit ?? 25;
         const { coderLlm, plannerLlm, supervisorLlm } = this.loadModels(config.llmConfig);
 
         this.coderAgent = new CoderAgent({
@@ -116,7 +118,7 @@ export class Chat {
 
         const iterator = this.supervisor.stream(
             { messages: this.messageHistory },
-            { streamMode: "values" }
+            { streamMode: "values", recursionLimit: this.graphRecursionLimit }
         );
 
         for await (const state of await iterator) {
@@ -153,11 +155,35 @@ export class Chat {
 (async () => {
     const chat = new Chat({
         debug: true,
+        graphRecursionLimit: 100,
         llmConfig: {
-            defaultModel: {
-                provider: 'deepseek',
-                model: 'deepseek-reasoner',
-                temperature: 0,
+            agentModels: {
+                coder: {
+                    provider: 'deepseek',
+                    model: 'deepseek-reasoner',
+                    temperature: 0,
+                },
+                planner: {
+                    provider: 'deepseek',
+                    model: 'deepseek-reasoner',
+                    temperature: 0,
+                },
+                supervisor: {
+                    provider: 'deepseek',
+                    model: 'deepseek-chat',
+                    temperature: 0,
+                },
+                tester: {
+                    provider: 'deepseek',
+                    model: 'deepseek-reasoner',
+                    temperature: 0,
+                },
+                evaluator: {
+                    provider: 'deepseek',
+                    model: 'deepseek-chat',
+                    temperature: 0,
+                },
+
             }
         }
     });
