@@ -35,7 +35,7 @@ export abstract class BaseAgent {
         this.tools = config.tools ?? [];
 
         this.agent = createReactAgent({
-            llm: this.llm,
+            llm: config.responseFormat ? this.llm.withStructuredOutput(config.responseFormat) : this.llm,
             tools: this.tools,
             prompt: this.prompt,
             name: this.name,

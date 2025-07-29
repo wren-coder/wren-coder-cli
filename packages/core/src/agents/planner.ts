@@ -36,7 +36,6 @@ export class PlannerAgent extends BaseAgent {
       ReadConsoleLogTool({ workingDir }),
     ];
 
-    llm.withStructuredOutput(PlannerResponseSchema);
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,

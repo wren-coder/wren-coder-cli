@@ -91,44 +91,21 @@ export class Chat {
     }
 
     private createGraph() {
-        const placeholderFunction1 = async () => {
-            console.log("Executing placeholder function 1");
-            return {
-                messages: [],
-                suggestions: []
-            };
-        };
-
-        const placeholderFunction2 = async () => {
-            console.log("Executing placeholder function 2");
-            return {
-                messages: [],
-                suggestions: []
-            };
-        };
-
         return new StateGraph(StateAnnotation)
             .addNode(this.plannerAgent.getName(), this.plannerAgent.getAgent())
             .addNode(this.coderAgent.getName(), this.coderAgent.getAgent())
             .addNode(this.testerAgent.getName(), this.testerAgent.getAgent())
             .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.getAgent())
-            .addNode("placeholder1", placeholderFunction1)
-            .addNode("placeholder2", placeholderFunction2)
 
-            // wiring: START → plan → code → test → evaluate → placeholder1 → placeholder2
             .addEdge(START, this.plannerAgent.getName())
             .addEdge(this.plannerAgent.getName(), this.coderAgent.getName())
-            .addEdge("placeholder1", this.coderAgent.getName())
             .addEdge(this.coderAgent.getName(), this.testerAgent.getName())
-            .addEdge(this.testerAgent.getName(), this.evaluatorAgent.getName())
-            .addEdge(this.evaluatorAgent.getName(), "placeholder2")
-
 
             .addConditionalEdges(
                 this.testerAgent.getName(),
                 state => {
                     if (state.steps && state.steps.length > 0) return this.coderAgent.getName();
-                    return END;
+                    return this.evaluatorAgent.getName();
                 }
             )
 

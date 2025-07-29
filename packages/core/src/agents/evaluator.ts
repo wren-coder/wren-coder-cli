@@ -44,8 +44,6 @@ export class EvaluatorAgent extends BaseAgent {
       ReadConsoleLogTool({ workingDir }),
     ];
 
-    llm.withStructuredOutput(EvaluatorResponseSchema);
-
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
