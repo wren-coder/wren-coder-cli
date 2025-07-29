@@ -15,6 +15,7 @@ import { ReadFileTool } from "../tools/read-file.js";
 import { GlobTool } from "../tools/glob.js";
 import { ScreenshotTool } from "../tools/screenshot.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
+import { WriteFileTool } from "../tools/write-file.js";
 
 
 const AGENT_NAME = 'tester';
@@ -30,6 +31,7 @@ const tools = [
   GlobTool,
   ScreenshotTool,
   ReadConsoleLogTool,
+  WriteFileTool,
 ]
 
 interface CoderAgentConfig {

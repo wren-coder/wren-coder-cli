@@ -156,7 +156,7 @@ export class Chat {
         llmConfig: {
             defaultModel: {
                 provider: 'deepseek',
-                model: 'deepseek-chat',
+                model: 'deepseek-reasoner',
                 temperature: 0.6,
             }
         }

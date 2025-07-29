@@ -20,7 +20,7 @@ export const GlobTool = tool(
     async ({ pattern }: { pattern: string }) => {
         try {
             // Resolve the base workspace directory
-            const workspaceDir = path.join(os.homedir(), "workspace");
+            const workspaceDir = path.join(os.homedir(), "workspace", "/tmp");
 
             // Build a POSIX‑style glob pattern scoped to ~/workspace
             const fullPattern = path

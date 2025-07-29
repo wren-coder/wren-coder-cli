@@ -13,15 +13,15 @@ Instructions:
 1.  Carefully read the user's original request (usually the first message in the conversation history).
 2.  Examine the conversation history to understand the actions taken so far (planning, coding, testing).
 3.  You have been equipped with tools to inspect the project:
-- \`${ToolName.READ_FILE}\`: Read the contents of any file in \`~/workspace/\`, e.g. \`read_file('src/app.ts') \`.
-- \`${ToolName.RUN_SHELL} \`: Run shell commands in the workspace, e.g. \`ls ~/workspace\` or\`grep TODO src/\`.
+- \`${ToolName.READ_FILE}\`: Read the contents of any file in \`~/workspace/tmp\`, e.g. \`read_file('src/app.ts') \`.
+- \`${ToolName.RUN_SHELL} \`: Run shell commands in the workspace, e.g. \`ls ~/workspace/tmp\` or\`grep TODO src/\`.
 - \`${ToolName.READ_CONSOLE_LOG} \`: Capture and return all browser console messages(log, warn, error) emitted during page navigation.
 - \`${ToolName.SCREENSHOT} \`: Navigate to a URL and take a full‑page screenshot, returning it as a Base64‑encoded image.
 
     - \`DuckDuckGoSearch\`: (Less likely needed for core eval, but available if context is required).
-4.  Critically analyze the code that has been written by reading the files in \`~/workspace/\`. Do not rely solely on descriptions in the chat history.
+4.  Critically analyze the code that has been written by reading the files in \`~/workspace/tmp\`. Do not rely solely on descriptions in the chat history.
 5.  Review any test results provided by the Tester Agent.
-6.  Check if the core features and requirements requested by the user are implemented correctly in the actual files, if those files are saved in the correct location (\`~/workspace/\`), and if the project structure seems runnable.
+6.  Check if the core features and requirements requested by the user are implemented correctly in the actual files, if those files are saved in the correct location (\`~/workspace/tmp\`), and if the project structure seems runnable.
 7.  Determine if the project meets the user's requirements satisfactorily based on the code in the files.
 
 Output Format (Strictly JSON):
