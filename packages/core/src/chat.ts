@@ -5,14 +5,13 @@
  */
 
 import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
-import { createSupervisor } from "@langchain/langgraph-supervisor";
 import { CoderAgent } from "./agents/coder.js";
 import { PlannerAgent } from "./agents/planner.js";
-import { SUPERVISOR_PROMPT } from "./prompts/supervisor.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { createLlmFromConfig, isAgentSpecificConfig, LlmConfig } from "./models/adapter.js";
 import { TesterAgent } from "./agents/tester.js";
 import { EvaluatorAgent } from "./agents/evaluator.js";
+import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
 
 // --- Import readline for user input ---
 import * as readline from 'node:readline/promises';
@@ -34,7 +33,7 @@ export interface ChatConfig {
 }
 
 export class Chat {
-    protected supervisor;
+    protected graph;
     protected plannerAgent: PlannerAgent;
     protected coderAgent: CoderAgent;
     protected testerAgent: TesterAgent;
@@ -52,7 +51,7 @@ export class Chat {
         this.maxReflections = config.maxReflections ?? 3;
         this.workingDir = config.workingDir ?? process.cwd();
 
-        const { coderLlm, plannerLlm, supervisorLlm } = this.loadModels(config.llmConfig);
+        const { coderLlm, plannerLlm } = this.loadModels(config.llmConfig);
 
         this.coderAgent = new CoderAgent({
             llm: coderLlm,
@@ -71,18 +70,44 @@ export class Chat {
             workingDir: this.workingDir,
         });
 
-        const subAgents = [
-            this.coderAgent,
-            this.plannerAgent,
-            this.testerAgent,
-            this.evaluatorAgent,
-            // ...this.loadCustomSubAgents(config.subAgents)
-        ];
-        this.supervisor = createSupervisor({
-            agents: subAgents.map(agent => agent.getAgent()),
-            prompt: SUPERVISOR_PROMPT({ workingDir: this.workingDir }),
-            llm: supervisorLlm,
-        })
+
+        this.graph = this.createGraph();
+    }
+
+    private createGraph() {
+        const StateAnnotation = Annotation.Root({
+            messages: Annotation<BaseMessage[]>({
+                default: () => [],
+                reducer: (all, one) =>
+                    Array.isArray(one) ? all.concat(one) : all.concat([one]),
+            }),
+            suggestions: Annotation<string[]>({
+                default: () => [],
+                reducer: (all, one) =>
+                    Array.isArray(one) ? all.concat(one) : all.concat([one]),
+            }),
+        });
+
+        return new StateGraph(StateAnnotation)
+            .addNode(this.plannerAgent.getName(), this.plannerAgent.getAgent())
+            .addNode(this.coderAgent.getName(), this.coderAgent.getAgent())
+            .addNode(this.testerAgent.getName(), this.testerAgent.getAgent())
+            .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.getAgent())
+
+            // wiring: START → plan → code → test → evaluate
+            .addEdge(START, this.plannerAgent.getName())
+            .addEdge(this.plannerAgent.getName(), this.coderAgent.getName())
+            .addEdge(this.coderAgent.getName(), this.testerAgent.getName())
+            .addEdge(this.testerAgent.getName(), this.evaluatorAgent.getName())
+
+            .addConditionalEdges(
+                this.evaluatorAgent.getName(),
+                state => {
+                    if (state.suggestions && state.suggestions.length > 0) return this.plannerAgent.getName();
+                    return END;
+                }
+            )
+
             .compile();
     }
 
@@ -171,12 +196,12 @@ Keep your response focused and actionable.
         }
 
         let finalState: { messages: BaseMessage[] } | undefined;
-        this.supervisor.clearCache();
+        this.graph.clearCache();
 
         // track how many messages we've already shown
         let shownCount = this.messageHistory.length;
 
-        const iterator = this.supervisor.stream(
+        const iterator = this.graph.stream(
             { messages: this.messageHistory },
             { streamMode: "values", recursionLimit: this.graphRecursionLimit }
         );
