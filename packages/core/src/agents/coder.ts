@@ -52,12 +52,14 @@ export class CoderAgent extends BaseAgent {
     let result = { ...state };
     while (result.steps.length > 0) {
       const currentStep = result.steps[0];
+      // Convert the step object to a string representation
+      const stepString = `${currentStep.action}: ${currentStep.description}\nDetails: ${Array.isArray(currentStep.details) ? currentStep.details.join(', ') : currentStep.details}`;
 
-      console.log(currentStep, result.steps.length);
+      console.log(stepString, result.steps.length);
 
       const stepState = {
         ...result,
-        messages: [...result.messages, new HumanMessage(currentStep)]
+        messages: [...result.messages, new HumanMessage(stepString)]
       };
 
       const agentResult = await this.agent.invoke(stepState);
