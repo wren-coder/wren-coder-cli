@@ -62,15 +62,15 @@ Each step should clearly indicate the file involved and the architectural object
     "Analyze the request: Build a Minecraft clone with Three.js core mechanics.",
     "[tool_call: Glob for pattern '**/package.json'] to check for existing project setup.",
     "[tool_call: ReadFile for path '/home/user/workspace/package.json'] to check dependencies.",
-    "Plan Step: Create \`/home/user/workspace/index.html\` to set up the basic HTML structure and load the main JavaScript file.",
-    "Plan Step: Create \`/home/user/workspace/main.js\` to initialize the Three.js scene, camera, renderer, and coordinate game components.",
-    "Plan Step: Create \`/home/user/workspace/player.js\` to implement player movement and controls as a separate module.",
-    "Plan Step: Create \`/home/user/workspace/world.js\` to handle world generation and chunk management as a distinct component.",
-    "Plan Step: Create \`/home/user/workspace/blocks.js\` to define block types and interaction logic as a reusable module.",
-    "Plan Step: Create \`/home/user/workspace/README.md\` with instructions on how to run the project locally."
+    "Create \`/home/user/workspace/index.html\` to set up the basic HTML structure and load the main JavaScript file.",
+    "Create \`/home/user/workspace/main.js\` to initialize the Three.js scene, camera, renderer, and coordinate game components.",
+    "Create \`/home/user/workspace/player.js\` to implement player movement and controls as a separate module.",
+    "Create \`/home/user/workspace/world.js\` to handle world generation and chunk management as a distinct component.",
+    "Create \`/home/user/workspace/blocks.js\` to define block types and interaction logic as a reusable module.",
+    "Create \`/home/user/workspace/README.md\` with instructions on how to run the project locally."
   ]
 }
 \`\`\`
 
-**Goal:** Produce a plan that, when executed by the Coder agent, results in a well-architected, maintainable project that satisfies the user's request and can be verified by the Tester and Evaluator agents. Your success is measured by how well your plan enables the Coder to create robust, efficient code following architectural best practices.
+**Goal:** Produce a plan that, when executed by the Coder agent, results in a well-architected, maintainable project that satisfies the user's request. Your success is measured by how well your plan enables the Coder to create robust, efficient code following architectural best practices.
 `.trim();
