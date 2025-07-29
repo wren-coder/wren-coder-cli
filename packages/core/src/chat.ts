@@ -116,26 +116,21 @@ export class Chat {
         let defaultLlm: BaseChatModel | undefined;
         let coderLlm: BaseChatModel;
         let plannerLlm: BaseChatModel;
-        let supervisorLlm: BaseChatModel;
 
         if (isAgentSpecificConfig(config)) {
             coderLlm = createLlmFromConfig(config.agentModels.coder);
             plannerLlm = createLlmFromConfig(config.agentModels.planner);
-            supervisorLlm = createLlmFromConfig(config.agentModels.supervisor);
         } else {
             defaultLlm = createLlmFromConfig(config.defaultModel);
             coderLlm = config.agentModels?.coder ?
                 createLlmFromConfig(config.agentModels.coder) : defaultLlm;
             plannerLlm = config.agentModels?.planner ?
                 createLlmFromConfig(config.agentModels.planner) : defaultLlm;
-            supervisorLlm = config.agentModels?.supervisor ?
-                createLlmFromConfig(config.agentModels.supervisor) : defaultLlm;
         }
 
         return {
             coderLlm,
             plannerLlm,
-            supervisorLlm
         }
     }
 
@@ -205,17 +200,11 @@ export class Chat {
                     model: 'deepseek-chat',
                     temperature: 0,
                 },
-                supervisor: {
-                    provider: 'deepseek',
-                    model: 'deepseek-chat',
-                    temperature: 0,
-                },
                 evaluator: {
                     provider: 'deepseek',
                     model: 'deepseek-chat',
                     temperature: 0,
                 },
-
             }
         }
     });

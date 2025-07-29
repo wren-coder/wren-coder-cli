@@ -21,8 +21,6 @@ interface DefaultLlmConfig {
     agentModels?: {
         coder?: LlmModelConfig;
         planner?: LlmModelConfig;
-        supervisor?: LlmModelConfig;
-        tester?: LlmModelConfig;
         evaluator?: LlmModelConfig;
         [key: string]: LlmModelConfig | undefined;
     };
@@ -33,7 +31,7 @@ interface AgentSpecificLlmConfig {
     agentModels: {
         coder: LlmModelConfig;
         planner: LlmModelConfig;
-        supervisor: LlmModelConfig;
+        evaluator: LlmModelConfig;
         [key: string]: LlmModelConfig;
     };
 }
@@ -46,7 +44,7 @@ export function createLlmFromConfig(config: LlmModelConfig): BaseChatModel {
         maxRetries: 3,
         ...config
     };
-    
+
     switch (configWithRetries.provider) {
         case 'deepseek':
             return new ChatDeepSeek(configWithRetries);
