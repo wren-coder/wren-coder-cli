@@ -72,96 +72,73 @@ Each step should clearly indicate the file involved and the architectural object
       "action": "Create directory structure",
       "description": "Set up the project directory with the following structure:",
       "details": [
-        "/minecraft/index.html - Main HTML file to load the game.",
-        "/minecraft/js/main.js - Entry point for the game logic.",
-        "/minecraft/js/world.js - Handles world generation and chunk management.",
-        "/minecraft/js/player.js - Manages player movement and camera controls.",
-        "/minecraft/js/block.js - Defines block types and textures.",
-        "/minecraft/js/renderer.js - Handles Three.js rendering setup and updates.",
-        "/minecraft/js/utils.js - Utility functions (e.g., Perlin noise).",
-        "/minecraft/css/style.css - Basic styling for the game UI.",
-        "/minecraft/textures/ - Directory for block textures (16x16 pixel images).",
-        "/minecraft/README.md - Instructions for running the game locally."
+        "/notetaker/index.html - Main HTML file to load the app.",
+        "/notetaker/js/app.js - Core logic for managing notes.",
+        "/notetaker/js/storage.js - Handles localStorage interactions.",
+        "/notetaker/js/ui.js - Manages DOM updates and event listeners.",
+        "/notetaker/css/style.css - Basic styling for the app UI.",
+        "/notetaker/assets/ - Directory for icons or placeholder assets.",
+        "/notetaker/README.md - Instructions for running and customizing the app."
       ]
     },
     {
-      "action": "Create /minecraft/index.html",
-      "description": "Set up the HTML file to load Three.js and the game scripts.",
-      "details": "Include Three.js from a CDN, link the CSS, and load the game scripts in the correct order."
+      "action": "Create /notetaker/index.html",
+      "description": "Set up the HTML structure for the note-taking UI.",
+      "details": "Include a header, a text input for new notes, a save button, and a container for displaying saved notes."
     },
     {
-      "action": "Create /minecraft/js/main.js",
-      "description": "Initialize the game by setting up the renderer, world, and player.",
-      "details": "Coordinate the game loop and handle interactions between the player, world, and renderer."
+      "action": "Create /notetaker/js/app.js",
+      "description": "Initialize the application and coordinate note logic.",
+      "details": "Handle app startup, note creation, and coordination with UI and storage modules."
     },
     {
-      "action": "Create /minecraft/js/world.js",
-      "description": "Implement procedurally generated voxel world using Perlin noise.",
+      "action": "Create /notetaker/js/storage.js",
+      "description": "Implement localStorage read/write operations.",
       "details": [
-        "Generate terrain with grass, dirt, and stone blocks.",
-        "Implement chunk-based rendering for performance.",
-        "Manage block data and updates."
+        "Save new notes to localStorage.",
+        "Retrieve and parse saved notes on load.",
+        "Support deleting individual notes."
       ]
     },
     {
-      "action": "Create /minecraft/js/player.js",
-      "description": "Handle first-person player movement and camera controls.",
+      "action": "Create /notetaker/js/ui.js",
+      "description": "Handle UI rendering and event binding.",
       "details": [
-        "WASD for movement.",
-        "Mouse-look for camera rotation.",
-        "Raycasting for block interaction (left-click to break, right-click to place)."
+        "Display notes in a list with delete buttons.",
+        "Bind input fields and buttons to app logic.",
+        "Reactively update the UI on user actions."
       ]
     },
     {
-      "action": "Create /minecraft/js/block.js",
-      "description": "Define block types and textures.",
-      "details": "Load 16x16 pixel textures for grass, dirt, and stone blocks."
+      "action": "Create /notetaker/css/style.css",
+      "description": "Add minimal styling for layout and readability.",
+      "details": "Ensure responsive design and clear separation between UI sections (header, input, notes list)."
     },
     {
-      "action": "Create /minecraft/js/renderer.js",
-      "description": "Set up Three.js rendering and lighting.",
+      "action": "Create /notetaker/assets/",
+      "description": "Add icons or images used in the app.",
+      "details": "Include placeholder icons for delete, edit, or logo."
+    },
+    {
+      "action": "Create /notetaker/README.md",
+      "description": "Document how to run and customize the note-taking app.",
+      "details": "Include instructions for serving the app locally and extending its features."
+    },
+    {
+      "action": "Test the application",
+      "description": "Ensure core features work properly.",
       "details": [
-        "Initialize the WebGL renderer.",
-        "Add simple directional lighting.",
-        "Render textured cubes for blocks."
-      ]
-    },
-    {
-      "action": "Create /minecraft/js/utils.js",
-      "description": "Implement utility functions, including Perlin noise for terrain generation.",
-      "details": "Ensure the noise function is optimized for performance."
-    },
-    {
-      "action": "Create /minecraft/css/style.css",
-      "description": "Add basic styling for the game UI.",
-      "details": "Ensure the canvas fills the viewport and remove default margins."
-    },
-    {
-      "action": "Create /minecraft/textures/",
-      "description": "Add block textures (16x16 pixel images).",
-      "details": "Include textures for grass, dirt, and stone blocks."
-    },
-    {
-      "action": "Create /minecraft/README.md",
-      "description": "Document how to run the game locally.",
-      "details": "Include instructions for setting up a local server (e.g., using Python's http.server or Node.js)."
-    },
-    {
-      "action": "Test the game",
-      "description": "Ensure all features work as expected.",
-      "details": [
-        "Verify terrain generation and chunk loading.",
-        "Test player movement and camera controls.",
-        "Check block interaction (breaking and placing).",
-        "Ensure performance is smooth with moderate world sizes."
+        "Test adding, displaying, and deleting notes.",
+        "Refresh the page to ensure notes persist via localStorage.",
+        "Check UI responsiveness and user experience."
       ]
     },
     {
       "action": "Quality assurance",
-      "description": "Run linting and verify the game works in modern browsers.",
+      "description": "Run basic code quality and compatibility checks.",
       "details": [
-        "Use ESLint for code quality.",
-        "Test in Chrome and Firefox."
+        "Use a linter like ESLint to maintain code consistency.",
+        "Test functionality in Chrome, Firefox, and Safari."
       ]
     }
   ]
