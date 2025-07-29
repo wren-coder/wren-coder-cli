@@ -50,29 +50,10 @@ export class PlannerAgent extends BaseAgent {
   }
 
   async plan(state: typeof StateAnnotation.State) {
-    // Use the agent to generate a structured response
     const result = await this.agent.invoke(state);
 
-    // Extract steps from the response
-    const aiMessage = result.messages[result.messages.length - 1];
-    const content = typeof aiMessage.content === 'string' ? aiMessage.content : '';
+    const steps = result.structuredResponse?.steps || [];
 
-    // Parse the JSON content to extract steps
-    let steps: string[] = [];
-    try {
-      // Extract JSON from the content
-      const jsonMatch = content.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
-        steps = parsed.steps || [];
-      }
-    } catch (e) {
-      console.error('Error parsing JSON from planner response:', e);
-      // Fallback: use the full content as a single step
-      steps = [content];
-    }
-
-    // Return the updated state with steps
     return {
       ...result,
       steps

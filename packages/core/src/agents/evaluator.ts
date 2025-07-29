@@ -22,11 +22,6 @@ const AGENT_NAME = 'evaluator';
 const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail and feedback';
 const MAX_SEARCH_RESULTS = 5;
 
-export interface Evaluation {
-  grade: 'pass' | 'fail';
-  feedback: string;
-}
-
 interface EvaluatorAgentConfig {
   llm: BaseChatModel;
   workingDir: string;
@@ -58,29 +53,10 @@ export class EvaluatorAgent extends BaseAgent {
   }
 
   async evaluate(state: typeof StateAnnotation.State) {
-    // Use the agent to generate a structured response
     const result = await this.agent.invoke(state);
 
-    // Extract suggestions from the response
-    const aiMessage = result.messages[result.messages.length - 1];
-    const content = typeof aiMessage.content === 'string' ? aiMessage.content : '';
+    const suggestions = result.structuredResponse?.suggestions || [];
 
-    // Parse the JSON content to extract suggestions
-    let suggestions: string[] = [];
-    try {
-      // Extract JSON from the content
-      const jsonMatch = content.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
-        suggestions = parsed.suggestions || [];
-      }
-    } catch (e) {
-      console.error('Error parsing JSON from planner response:', e);
-      // Fallback: use the full content as a single step
-      suggestions = [content];
-    }
-
-    // Return the updated state with suggestions
     return {
       ...result,
       suggestions

@@ -42,7 +42,7 @@ Workflow:
 4. **Test:** Run tests to verify functionality.
 5. **Quality Check:** Run linting, type checking, and other code quality tools.
 6. **Evaluate:** Compare the implementation against the original requirements.
-7. **Report:** Provide a clear assessment with specific feedback.
+7. **Report:** Provide a clear assessment with specific suggestions for improvement.
 
 Guidelines:
 * **Rigorous Convention Adherence:** Check that the code follows the project's established style, structure, and architectural patterns.
@@ -54,21 +54,29 @@ Guidelines:
 
 Examples:
 
-Example 1 (Fail - No Files):
+Example 1 (Project needs improvement):
 {
-  "grade": "fail",
-  "feedback": "The user requested a Three.js scene. I checked ~/workspace/ using ${ToolName.RUN_SHELL} (ls ~/workspace) and found no files. The Coder likely only described the code but did not write any files using ${ToolName.WRITE_FILE}."
+  "suggestions": [
+    "The user requested a Three.js scene. I checked ~/workspace/ using ${ToolName.RUN_SHELL} (ls ~/workspace) and found no files. The Coder likely only described the code but did not write any files using ${ToolName.WRITE_FILE}.",
+    "Create the basic project structure with an index.html and main.js file implementing a basic Three.js scene."
+  ]
 }
 
-Example 2 (Fail - Incomplete Implementation):
+Example 2 (Incomplete Implementation):
 {
-  "grade": "fail",
-  "feedback": "Files exist in ~/workspace/ (checked via ${ToolName.RUN_SHELL}). However, after reading main.js (using ${ToolName.READ_FILE}), the block interaction logic is missing. Left-click to break and right-click to place blocks were requested but not implemented. Tests also indicate failures in block interaction."
+  "suggestions": [
+    "Files exist in ~/workspace/ (checked via ${ToolName.RUN_SHELL}). However, after reading main.js (using ${ToolName.READ_FILE}), the block interaction logic is missing. Left-click to break and right-click to place blocks were requested but not implemented.",
+    "Add block interaction logic to world.js to handle left-click for breaking blocks and right-click for placing blocks.",
+    "Update tests to verify the block interaction functionality."
+  ]
 }
 
-Example 3 (Pass):
+Example 3 (Pass with minor improvements):
 {
-  "grade": "pass",
-  "feedback": "The project in ~/workspace/ includes index.html and main.js. I read main.js (${ToolName.READ_FILE}) and confirmed it initializes a Three.js scene with textured cubes (grass, dirt, stone). WASD movement and mouse-look are implemented in player.js. Block interaction logic for breaking (left-click) and placing (right-click) is present in world.js. Chunk loading logic is basic but present. Simple lighting is applied. Tests for core mechanics are passing. This meets the core requirements of the spec."
+  "suggestions": [
+    "The project in ~/workspace/ includes index.html and main.js. I read main.js (${ToolName.READ_FILE}) and confirmed it initializes a Three.js scene with textured cubes (grass, dirt, stone). WASD movement and mouse-look are implemented in player.js. Block interaction logic for breaking (left-click) and placing (right-click) is present in world.js. Chunk loading logic is basic but present. Simple lighting is applied. Tests for core mechanics are passing.",
+    "Consider adding more sophisticated lighting and shadows to improve the visual quality of the scene.",
+    "Add documentation to explain how to extend the block types or add new features."
+  ]
 }
 `;
