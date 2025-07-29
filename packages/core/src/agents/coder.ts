@@ -49,22 +49,23 @@ export class CoderAgent extends BaseAgent {
     this.code = this.code.bind(this);
   }
   async code(state: typeof StateAnnotation.State) {
-    let result = state;
+    let result = { ...state };
     while (result.steps.length > 0) {
-
       const currentStep = result.steps[0];
 
+      console.log(currentStep, result.steps.length);
+
       const stepState = {
-        ...result
+        ...result,
+        messages: [...result.messages, new HumanMessage(currentStep)]
       };
 
-      console.log(currentStep);
+      const agentResult = await this.agent.invoke(stepState);
 
-      stepState.messages.push(new HumanMessage(currentStep))
-
-      result = await this.agent.invoke(stepState);
-
-      result.steps = result.steps.slice(1);
+      result = {
+        ...agentResult,
+        steps: result.steps.slice(1)
+      };
     }
 
     return result;
