@@ -20,17 +20,6 @@ const AGENT_NAME = 'evaluator';
 const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail and feedback';
 const MAX_SEARCH_RESULTS = 5;
 
-const tools = [
-  new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
-  ShellTool,
-  ReadFileTool,
-  GrepTool,
-  ListFilesTool,
-  GlobTool,
-  ScreenshotTool,
-  ReadConsoleLogTool,
-]
-
 export interface Evaluation {
   grade: 'pass' | 'fail';
   feedback: string;
@@ -38,15 +27,27 @@ export interface Evaluation {
 
 interface EvaluatorAgentConfig {
   llm: BaseChatModel;
+  workingDir: string;
 }
 
 export class EvaluatorAgent extends BaseAgent {
-  constructor(config: EvaluatorAgentConfig) {
+  constructor({ workingDir, llm }: EvaluatorAgentConfig) {
+    const tools = [
+      new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
+      ShellTool({ workingDir }),
+      ReadFileTool({ workingDir }),
+      GrepTool({ workingDir }),
+      ListFilesTool({ workingDir }),
+      GlobTool({ workingDir }),
+      ScreenshotTool({ workingDir }),
+      ReadConsoleLogTool({ workingDir }),
+    ];
+
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
-      prompt: EVALUATOR_PROMPT,
-      llm: config.llm,
+      prompt: EVALUATOR_PROMPT({ workingDir }),
+      llm,
       tools,
     });
   }

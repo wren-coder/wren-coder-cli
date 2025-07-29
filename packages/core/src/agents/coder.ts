@@ -20,27 +20,28 @@ const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
 const MAX_SEARCH_RESULTS = 5;
 
-const tools = [
-  new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
-  ShellTool,
-  ReadFileTool,
-  WriteFileTool,
-  GrepTool,
-  ListFilesTool,
-  GlobTool,
-]
-
 interface CoderAgentConfig {
   llm: BaseChatModel;
+  workingDir: string;
 }
 
 export class CoderAgent extends BaseAgent {
-  constructor(config: CoderAgentConfig) {
+  constructor({ workingDir, llm }: CoderAgentConfig) {
+    const tools = [
+      new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
+      ShellTool({ workingDir }),
+      ReadFileTool({ workingDir }),
+      WriteFileTool({ workingDir }),
+      GrepTool({ workingDir }),
+      ListFilesTool({ workingDir }),
+      GlobTool({ workingDir }),
+    ];
+
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
-      prompt: CODER_PROMPT,
-      llm: config.llm,
+      prompt: CODER_PROMPT({ workingDir }),
+      llm,
       tools,
     });
   }

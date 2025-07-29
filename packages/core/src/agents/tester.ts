@@ -22,29 +22,31 @@ const AGENT_NAME = 'tester';
 const AGENT_DESC = 'Validates code correctness and quality by reviewing changes, running or simulating tests, and reporting issues or confirmations.';
 const MAX_SEARCH_RESULTS = 5;
 
-const tools = [
-  new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
-  ShellTool,
-  ReadFileTool,
-  GrepTool,
-  ListFilesTool,
-  GlobTool,
-  ScreenshotTool,
-  ReadConsoleLogTool,
-  WriteFileTool,
-]
-
-interface CoderAgentConfig {
+interface TesterAgentConfig {
   llm: BaseChatModel;
+  workingDir: string;
 }
 
 export class TesterAgent extends BaseAgent {
-  constructor(config: CoderAgentConfig) {
+  constructor({ workingDir, llm }: TesterAgentConfig) {
+    // Update tools to use the working directory if provided
+    const tools = [
+      new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
+      ShellTool({ workingDir }),
+      ReadFileTool({ workingDir }),
+      GrepTool({ workingDir }),
+      ListFilesTool({ workingDir }),
+      GlobTool({ workingDir }),
+      ScreenshotTool({ workingDir }),
+      ReadConsoleLogTool({ workingDir }),
+      WriteFileTool({ workingDir }),
+    ];
+
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
-      prompt: TESTER_PROMPT,
-      llm: config.llm,
+      prompt: TESTER_PROMPT({ workingDir }),
+      llm,
       tools,
     });
   }

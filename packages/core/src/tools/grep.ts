@@ -10,9 +10,13 @@ import { promises as fs } from "fs";
 import { formatError } from "../utils/format-error.js";
 import { ToolName } from "./enum.js";
 
+interface GrepToolConfig {
+    workingDir: string,
+}
+
 const DESC = "Search for a regex in a list of files. Input: { pattern: string; files: string[] }. Returns map of path→matches or error.";
 
-export const GrepTool = tool(
+export const GrepTool = ({ workingDir }: GrepToolConfig) => tool(
     async ({
         pattern,
         files,

@@ -8,39 +8,38 @@ import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 import { glob } from "glob";
 import path from "path";
-import os from "os";
 import fs from "fs/promises";
 import { formatError } from "../utils/format-error.js";
 import { ToolName } from "./enum.js";
 
+interface GlobToolConfig {
+    workingDir: string,
+}
+
 const DESC =
     "Searches for files matching a glob pattern in the user's workspace directory, returning absolute paths sorted by modification time (newest first). Input: { pattern: string }. Returns an array of matching file paths or an error message.";
 
-export const GlobTool = tool(
+export const GlobTool = ({ workingDir }: GlobToolConfig) => tool(
     async ({ pattern }: { pattern: string }) => {
         try {
-            // Resolve the base workspace directory
-            const workspaceDir = path.join(os.homedir(), "workspace", "/tmp");
-
-            // Build a POSIX‑style glob pattern scoped to ~/workspace
             const fullPattern = path
-                .join(workspaceDir, pattern)
+                .join(workingDir, pattern)
                 .split(path.sep)
                 .join("/");
 
             console.log(
-                `[GlobTool] Searching for files matching pattern: ${fullPattern} within ${workspaceDir}`
+                `[GlobTool] Searching for files matching pattern: ${fullPattern} within ${workingDir}`
             );
 
             // Perform the glob search (returns POSIX relative paths)
             const relativeMatches: string[] = await glob(fullPattern, {
-                cwd: workspaceDir,
+                cwd: workingDir,
                 absolute: false,
                 posix: true,
             });
 
             if (relativeMatches.length === 0) {
-                return `No files found matching pattern '${pattern}' in ${workspaceDir}.`;
+                return `No files found matching pattern '${pattern}' in ${workingDir}.`;
             }
 
             // Stat each file to get mtime, then sort by recency (last 24h newest first), then alphabetically
@@ -49,7 +48,7 @@ export const GlobTool = tool(
 
             const entries = await Promise.all(
                 relativeMatches.map(async (rel) => {
-                    const abs = path.resolve(workspaceDir, rel);
+                    const abs = path.resolve(workingDir, rel);
                     let mtime = 0;
                     try {
                         const st = await fs.stat(abs);

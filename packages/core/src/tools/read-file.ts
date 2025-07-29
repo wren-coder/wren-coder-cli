@@ -10,13 +10,17 @@ import { promises as fs } from "fs";
 import { formatError } from "../utils/format-error.js";
 import { ToolName } from "./enum.js";
 
+interface ReadFileToolConfig {
+    workingDir: string,
+}
+
 const DESC = "Read text from a file. Input: { path: string }. Returns file contents or an error message.";
 
 /**
  * ReadFileTool
  * Reads the contents of a file at the given path.
  */
-export const ReadFileTool = tool(
+export const ReadFileTool = ({ workingDir }: ReadFileToolConfig) => tool(
     async ({ path }: { path: string }) => {
         try {
             const data = await fs.readFile(path, "utf-8");

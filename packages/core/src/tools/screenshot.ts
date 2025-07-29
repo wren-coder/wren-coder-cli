@@ -10,10 +10,14 @@ import puppeteer from "puppeteer";
 import { ToolName } from "./enum.js";
 import { formatError } from "../utils/format-error.js";
 
+interface ScreenshotToolConfig {
+    workingDir: string,
+}
+
 const DESC =
     "Launches a headless browser, navigates to the given URL, and returns a full-page screenshot as a Base64-encoded PNG.";
 
-export const ScreenshotTool = tool(
+export const ScreenshotTool = ({ workingDir }: ScreenshotToolConfig) => tool(
     async ({ url }: { url: string }) => {
         try {
             // Launch headless Chromium

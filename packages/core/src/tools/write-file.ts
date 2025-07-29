@@ -11,13 +11,17 @@ import { dirname } from "path";
 import { formatError } from "../utils/format-error.js";
 import { ToolName } from "./enum.js";
 
+interface WriteFileToolConfig {
+    workingDir: string,
+}
+
 const DESC = "Write text to a file. Input: { path: string; content: string; append?: boolean }. Overwrites by default, or appends if append=true.";
 
 /**
  * WriteFileTool
  * Writes (or appends) text to a file at the given path.
  */
-export const WriteFileTool = tool(
+export const WriteFileTool = ({ workingDir }: WriteFileToolConfig) => tool(
     async ({
         path,
         content,

@@ -11,6 +11,10 @@ import { promisify } from "util";
 import { formatError } from "../utils/format-error.js";
 import { ToolName } from "./enum.js";
 
+interface ShellToolConfig {
+    workingDir: string,
+}
+
 const execAsync = promisify(exec);
 
 const DESC = "Execute a Bash command on the host machine. Input must be a single string containing the full command (e.g. 'ls -la /tmp'). Returns the command’s stdout or stderr.";
@@ -18,7 +22,7 @@ const DESC = "Execute a Bash command on the host machine. Input must be a single
 /**
  * A StructuredTool that runs a bash command and returns stdout (or stderr on error).
  */
-export const ShellTool = tool(
+export const ShellTool = ({ workingDir }: ShellToolConfig) => tool(
     async ({ command }: { command: string }) => {
         try {
             const { stdout, stderr } = await execAsync(command, { shell: "/bin/bash" });

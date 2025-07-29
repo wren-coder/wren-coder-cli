@@ -14,6 +14,10 @@ const CONFIG_DIR = ".wren";
 const GLOBAL_MEMORY_FILE = "MEMORY.md";
 const MEMORY_SECTION_HEADER = "## Added Memories";
 
+interface MemoryToolConfig {
+    workingDir: string,
+}
+
 /** Where to store the global memory file. */
 function getGlobalMemoryFilePath(): string {
     return join(homedir(), CONFIG_DIR, GLOBAL_MEMORY_FILE);
@@ -39,7 +43,7 @@ function formatError(err: unknown): string {
  * save_memory
  * Saves a short fact to long‑term memory, under ~/.wren/MEMORY.md.
  */
-export const SaveMemoryTool = tool(
+export const SaveMemoryTool = ({ workingDir }: MemoryToolConfig) => tool(
     async ({ fact }: { fact: string }) => {
         const memoryFile = getGlobalMemoryFilePath();
         const entry = `- ${fact.trim().replace(/^(-+\s*)+/, "").trim()}`;

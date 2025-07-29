@@ -29,6 +29,8 @@ export interface ChatConfig {
     approvalMode?: ApprovalMode,
     debug?: boolean,
     graphRecursionLimit?: number,
+    maxReflections?: number,
+    workingDir?: string,
 }
 
 export class Chat {
@@ -40,23 +42,33 @@ export class Chat {
     protected messageHistory: BaseMessage[] = [];
     protected debug: boolean;
     protected graphRecursionLimit: number;
+    protected maxReflections: number;
+    protected reflectionCount: number = 0;
+    protected workingDir: string;
 
     constructor(config: ChatConfig) {
         this.debug = config.debug ?? false;
         this.graphRecursionLimit = config.graphRecursionLimit ?? 25;
+        this.maxReflections = config.maxReflections ?? 3;
+        this.workingDir = config.workingDir ?? process.cwd();
+
         const { coderLlm, plannerLlm, supervisorLlm } = this.loadModels(config.llmConfig);
 
         this.coderAgent = new CoderAgent({
             llm: coderLlm,
+            workingDir: this.workingDir,
         });
         this.plannerAgent = new PlannerAgent({
             llm: plannerLlm,
+            workingDir: this.workingDir,
         });
         this.testerAgent = new TesterAgent({
             llm: coderLlm,
+            workingDir: this.workingDir,
         });
         this.evaluatorAgent = new EvaluatorAgent({
             llm: coderLlm,
+            workingDir: this.workingDir,
         });
 
         const subAgents = [
@@ -68,7 +80,7 @@ export class Chat {
         ];
         this.supervisor = createSupervisor({
             agents: subAgents.map(agent => agent.getAgent()),
-            prompt: SUPERVISOR_PROMPT,
+            prompt: SUPERVISOR_PROMPT({ workingDir: this.workingDir }),
             llm: supervisorLlm,
         })
             .compile();
@@ -107,8 +119,56 @@ export class Chat {
     //     return configs.map(config => new class CustomAgent extends BaseAgent { }(config))
     // }
 
-    async query(query: string) {
-        this.messageHistory.push(new HumanMessage(query));
+    /**
+     * Reflect on the previous attempt and generate insights for improvement
+     * This method focuses specifically on evaluating and testing the code
+     */
+    private async reflectOnCodeAndTests(query: string, previousResponse: string): Promise<string> {
+        // Create a reflection prompt that analyzes the previous attempt with focus on code quality and testing
+        const reflectionPrompt = `
+You are an AI assistant tasked with reflecting on a previous coding attempt to improve code quality and test coverage.
+
+Analyze the previous response with a focus on:
+1. Code correctness and best practices
+2. Test coverage and quality of tests
+3. Edge cases that might not be handled
+4. Potential bugs or security issues
+5. Performance considerations
+
+Query: ${query}
+Previous Response: ${previousResponse}
+
+Please provide:
+1. Assessment of code quality in the previous response
+2. Evaluation of test coverage and test quality
+3. Identification of any missing edge cases or potential issues
+4. Specific suggestions for improving both code and tests
+5. Recommendations for additional testing that should be performed
+
+Keep your response focused and actionable.
+`;
+
+        return reflectionPrompt;
+    }
+
+    async query(query: string, isReflection: boolean = false) {
+        // Add reflection logic if this is not the first attempt and we haven't exceeded max reflections
+        if (isReflection && this.reflectionCount < this.maxReflections) {
+            // Get the last AI message for reflection
+            const lastAIMessage = this.messageHistory
+                .filter((m): m is AIMessage => m instanceof AIMessage)
+                .at(-1);
+
+            if (lastAIMessage) {
+                const reflectionPrompt = await this.reflectOnCodeAndTests(query, lastAIMessage.content as string);
+                this.messageHistory.push(new HumanMessage(`Reflecting on the previous code and tests:\n${reflectionPrompt}`));
+                this.reflectionCount++;
+            }
+        } else if (!isReflection) {
+            // Reset reflection count for a new query
+            this.reflectionCount = 0;
+            this.messageHistory.push(new HumanMessage(query));
+        }
 
         let finalState: { messages: BaseMessage[] } | undefined;
         this.supervisor.clearCache();
@@ -143,11 +203,21 @@ export class Chat {
         if (!finalState) throw new Error("Stream completed without yielding a state");
         this.messageHistory = finalState.messages;
 
-        // last AI message is the “final” reply
+        // last AI message is the "final" reply
         const last = this.messageHistory
             .filter((m): m is AIMessage => m instanceof AIMessage)
-            .at(-1)!;
-        console.log("assistant:", last.content);
+            .at(-1);
+
+        if (last) {
+            console.log("assistant:", last.content);
+        }
+
+        // If this was a reflection, recursively call query to continue the reflection loop
+        if (isReflection && this.reflectionCount < this.maxReflections) {
+            // Add a prompt to encourage improvement based on reflection
+            this.messageHistory.push(new HumanMessage("Based on this reflection about code quality and testing, please provide an improved implementation with better tests."));
+            await this.query(query, true); // Recursive call for another reflection cycle
+        }
     }
 }
 
@@ -156,16 +226,18 @@ export class Chat {
     const chat = new Chat({
         debug: true,
         graphRecursionLimit: 100,
+        maxReflections: 3,
+        workingDir: process.cwd(), // Use current working directory
         llmConfig: {
             agentModels: {
                 coder: {
                     provider: 'deepseek',
-                    model: 'deepseek-reasoner',
+                    model: 'deepseek-chat',
                     temperature: 0,
                 },
                 planner: {
                     provider: 'deepseek',
-                    model: 'deepseek-reasoner',
+                    model: 'deepseek-chat',
                     temperature: 0,
                 },
                 supervisor: {
@@ -175,7 +247,7 @@ export class Chat {
                 },
                 tester: {
                     provider: 'deepseek',
-                    model: 'deepseek-reasoner',
+                    model: 'deepseek-chat',
                     temperature: 0,
                 },
                 evaluator: {

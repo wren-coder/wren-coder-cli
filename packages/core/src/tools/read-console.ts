@@ -9,10 +9,14 @@ import { z } from "zod";
 import puppeteer from "puppeteer";
 import { ToolName } from "./enum.js";
 
+interface ReadConsoleLogToolConfig {
+    workingDir: string,
+}
+
 const DESC =
     "Launches a headless browser, navigates to the given URL, and returns all console messages emitted during page load as an array of {type, text} objects.";
 
-export const ReadConsoleLogTool = tool(
+export const ReadConsoleLogTool = ({ workingDir }: ReadConsoleLogToolConfig) => tool(
     async ({ url }: { url: string }) => {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();

@@ -10,13 +10,17 @@ import { formatError } from "../utils/format-error.js";
 import glob from "fast-glob";
 import { ToolName } from "./enum.js";
 
+interface ListFilesToolConfig {
+    workingDir: string,
+}
+
 const DESC = "Find filesystem paths matching a glob. Input: { pattern: string }. Returns array of file paths or error.";
 
 /**
  * ListFilesTool
  * Finds files matching a glob pattern.
  */
-export const ListFilesTool = tool(
+export const ListFilesTool = ({ workingDir }: ListFilesToolConfig) => tool(
     async ({ pattern }: { pattern: string }) => {
         try {
             return await glob(pattern);

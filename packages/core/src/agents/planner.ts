@@ -18,26 +18,28 @@ const AGENT_NAME = 'planner';
 const AGENT_DESC = 'Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.';
 const MAX_SEARCH_RESULTS = 5;
 
-const tools = [
-  new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
-  ReadFileTool,
-  GrepTool,
-  ListFilesTool,
-  GlobTool,
-  ReadConsoleLogTool,
-]
-
-interface CoderAgentConfig {
+interface PlannerAgentConfig {
   llm: BaseChatModel;
+  workingDir: string;
 }
 
 export class PlannerAgent extends BaseAgent {
-  constructor(config: CoderAgentConfig) {
+  constructor({ workingDir, llm }: PlannerAgentConfig) {
+    // Update tools to use the working directory if provided
+    const tools = [
+      new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
+      ReadFileTool({ workingDir }),
+      GrepTool({ workingDir }),
+      ListFilesTool({ workingDir }),
+      GlobTool({ workingDir }),
+      ReadConsoleLogTool({ workingDir }),
+    ];
+
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
-      prompt: PLANNER_PROMPT,
-      llm: config.llm,
+      prompt: PLANNER_PROMPT({ workingDir }),
+      llm,
       tools,
     });
   }
