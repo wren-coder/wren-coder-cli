@@ -140,8 +140,21 @@ export async function processLargeContext(
     const maxChunkChars = effectiveConfig.maxChunkTokens * 4;
     const chunks = chunkContent(content, maxChunkChars);
 
+    // If we only have one chunk, just compress it directly
+    if (chunks.length === 1) {
+      return await compressContext(content, llm, config);
+    }
+
+    // Compress each chunk and then compress the combined summaries
     const summaries = await Promise.all(chunks.map(chunk => compressContext(chunk, llm, config)));
-    return await compressContext(summaries.join("----entry----"), llm, config);
+    const combinedSummaries = summaries.map(s => s.content).join("----entry----");
+    const finalResult = await compressContext(combinedSummaries, llm, config);
+    
+    return {
+      ...finalResult,
+      wasChunked: true,
+      chunkCount: chunks.length
+    };
   }
 
   // Otherwise, compress the content

@@ -87,6 +87,9 @@ describe('compression utilities', () => {
       const content = 'A'.repeat(50000); // Large content
       const mockLlm = new ChatDeepSeek({ model: 'deepseek-chat' });
       
+      // Mock the compressContext calls to return predictable results
+      mockLlmInvoke.mockResolvedValue(new AIMessage('Compressed content'));
+      
       const result = await processLargeContext(content, mockLlm, {
         maxTokens: 1000,
         enableChunking: true,
@@ -95,6 +98,22 @@ describe('compression utilities', () => {
       
       expect(result.wasChunked).toBe(true);
       expect(result.chunkCount).toBeGreaterThan(1);
+    });
+    
+    it('should compress content without chunking when just over threshold', async () => {
+      const content = 'A'.repeat(15000); // Medium-large content
+      const mockLlm = new ChatDeepSeek({ model: 'deepseek-chat' });
+      
+      mockLlmInvoke.mockResolvedValue(new AIMessage('Compressed content'));
+      
+      const result = await processLargeContext(content, mockLlm, {
+        maxTokens: 1000,
+        enableChunking: true,
+        maxChunkTokens: 5000
+      });
+      
+      expect(result.content).toBe('Compressed content');
+      expect(result.wasChunked).toBe(false);
     });
   });
 });
