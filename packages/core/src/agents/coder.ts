@@ -17,7 +17,6 @@ import { GlobTool } from "../tools/glob.js";
 import { StateAnnotation } from "../chat.js";
 import { HumanMessage } from "@langchain/core/messages";
 
-
 const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
 const MAX_SEARCH_RESULTS = 5;
