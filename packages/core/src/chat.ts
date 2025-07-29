@@ -9,7 +9,6 @@ import { CoderAgent } from "./agents/coder.js";
 import { PlannerAgent } from "./agents/planner.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { createLlmFromConfig, isAgentSpecificConfig, LlmConfig } from "./models/adapter.js";
-import { TesterAgent } from "./agents/tester.js";
 import { EvaluatorAgent } from "./agents/evaluator.js";
 import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
 
@@ -54,7 +53,6 @@ export class Chat {
     protected graph;
     protected plannerAgent: PlannerAgent;
     protected coderAgent: CoderAgent;
-    protected testerAgent: TesterAgent;
     protected evaluatorAgent: EvaluatorAgent;
     protected messageHistory: BaseMessage[] = [];
     protected debug: boolean;
@@ -78,10 +76,6 @@ export class Chat {
             llm: plannerLlm,
             workingDir: this.workingDir,
         });
-        this.testerAgent = new TesterAgent({
-            llm: coderLlm,
-            workingDir: this.workingDir,
-        });
         this.evaluatorAgent = new EvaluatorAgent({
             llm: coderLlm,
             workingDir: this.workingDir,
@@ -94,15 +88,13 @@ export class Chat {
         return new StateGraph(StateAnnotation)
             .addNode(this.plannerAgent.getName(), this.plannerAgent.plan)
             .addNode(this.coderAgent.getName(), this.coderAgent.code)
-            .addNode(this.testerAgent.getName(), this.testerAgent.getAgent())
             .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.evaluate)
 
             .addEdge(START, this.plannerAgent.getName())
             .addEdge(this.plannerAgent.getName(), this.coderAgent.getName())
-            .addEdge(this.coderAgent.getName(), this.testerAgent.getName())
 
             .addConditionalEdges(
-                this.testerAgent.getName(),
+                this.coderAgent.getName(),
                 state => {
                     if (state.steps && state.steps.length > 0) return this.coderAgent.getName();
                     return this.evaluatorAgent.getName();
@@ -214,11 +206,6 @@ export class Chat {
                     temperature: 0,
                 },
                 supervisor: {
-                    provider: 'deepseek',
-                    model: 'deepseek-chat',
-                    temperature: 0,
-                },
-                tester: {
                     provider: 'deepseek',
                     model: 'deepseek-chat',
                     temperature: 0,
