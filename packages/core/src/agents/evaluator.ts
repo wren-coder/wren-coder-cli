@@ -16,6 +16,7 @@ import { GlobTool } from "../tools/glob.js";
 import { ScreenshotTool } from "../tools/screenshot.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
 import { EvaluatorResponseSchema } from "../schemas/response.js";
+import { StateAnnotation } from "../chat.js";
 
 const AGENT_NAME = 'evaluator';
 const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail and feedback';
@@ -52,5 +53,37 @@ export class EvaluatorAgent extends BaseAgent {
       tools,
       responseFormat: EvaluatorResponseSchema,
     });
+
+    this.evaluate = this.evaluate.bind(this);
+  }
+
+  async evaluate(state: typeof StateAnnotation.State) {
+    // Use the agent to generate a structured response
+    const result = await this.agent.invoke(state);
+
+    // Extract suggestions from the response
+    const aiMessage = result.messages[result.messages.length - 1];
+    const content = typeof aiMessage.content === 'string' ? aiMessage.content : '';
+
+    // Parse the JSON content to extract suggestions
+    let suggestions: string[] = [];
+    try {
+      // Extract JSON from the content
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        suggestions = parsed.suggestions || [];
+      }
+    } catch (e) {
+      console.error('Error parsing JSON from planner response:', e);
+      // Fallback: use the full content as a single step
+      suggestions = [content];
+    }
+
+    // Return the updated state with suggestions
+    return {
+      ...result,
+      suggestions
+    };
   }
 }

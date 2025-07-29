@@ -92,10 +92,10 @@ export class Chat {
 
     private createGraph() {
         return new StateGraph(StateAnnotation)
-            .addNode(this.plannerAgent.getName(), this.plannerAgent.getAgent())
-            .addNode(this.coderAgent.getName(), this.coderAgent.getAgent())
+            .addNode(this.plannerAgent.getName(), this.plannerAgent.plan)
+            .addNode(this.coderAgent.getName(), this.coderAgent.code)
             .addNode(this.testerAgent.getName(), this.testerAgent.getAgent())
-            .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.getAgent())
+            .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.evaluate)
 
             .addEdge(START, this.plannerAgent.getName())
             .addEdge(this.plannerAgent.getName(), this.coderAgent.getName())

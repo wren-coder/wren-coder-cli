@@ -14,6 +14,7 @@ import { ReadFileTool } from "../tools/read-file.js";
 import { GlobTool } from "../tools/glob.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
 import { PlannerResponseSchema } from "../schemas/response.js";
+import { StateAnnotation } from "../chat.js";
 
 const AGENT_NAME = 'planner';
 const AGENT_DESC = 'Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.';
@@ -44,5 +45,37 @@ export class PlannerAgent extends BaseAgent {
       tools,
       responseFormat: PlannerResponseSchema,
     });
+
+    this.plan = this.plan.bind(this);
+  }
+
+  async plan(state: typeof StateAnnotation.State) {
+    // Use the agent to generate a structured response
+    const result = await this.agent.invoke(state);
+
+    // Extract steps from the response
+    const aiMessage = result.messages[result.messages.length - 1];
+    const content = typeof aiMessage.content === 'string' ? aiMessage.content : '';
+
+    // Parse the JSON content to extract steps
+    let steps: string[] = [];
+    try {
+      // Extract JSON from the content
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        const parsed = JSON.parse(jsonMatch[0]);
+        steps = parsed.steps || [];
+      }
+    } catch (e) {
+      console.error('Error parsing JSON from planner response:', e);
+      // Fallback: use the full content as a single step
+      steps = [content];
+    }
+
+    // Return the updated state with steps
+    return {
+      ...result,
+      steps
+    };
   }
 }
