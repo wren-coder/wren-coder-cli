@@ -156,7 +156,8 @@ export class Chat {
         llmConfig: {
             defaultModel: {
                 provider: 'deepseek',
-                model: 'deepseek-chat'
+                model: 'deepseek-chat',
+                temperature: 0,
             }
         }
     });

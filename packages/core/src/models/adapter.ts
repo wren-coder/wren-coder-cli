@@ -11,6 +11,7 @@ export interface LlmModelConfig {
     provider: 'deepseek' | 'openai' | 'anthropic' | string;
     model: string;
     temperature?: number;
+    topP?: number;
     apiKey?: string;
 }
 
@@ -36,15 +37,10 @@ interface AgentSpecificLlmConfig {
 
 export type LlmConfig = DefaultLlmConfig | AgentSpecificLlmConfig;
 
-
 export function createLlmFromConfig(config: LlmModelConfig): BaseChatModel {
     switch (config.provider) {
         case 'deepseek':
-            return new ChatDeepSeek({
-                model: config.model,
-                temperature: config.temperature,
-                apiKey: config.apiKey,
-            });
+            return new ChatDeepSeek(config);
         // Add cases for other providers as needed
         // case 'openai':
         //     return new ChatOpenAI({...});
@@ -52,11 +48,7 @@ export function createLlmFromConfig(config: LlmModelConfig): BaseChatModel {
         //     return new ChatAnthropic({...});
         default:
             // Default to DeepSeek if provider is not recognized
-            return new ChatDeepSeek({
-                model: config.model,
-                temperature: config.temperature,
-                apiKey: config.apiKey,
-            });
+            return new ChatDeepSeek(config);
     }
 }
 
