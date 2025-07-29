@@ -54,10 +54,21 @@ export class EvaluatorAgent extends BaseAgent {
 
   async evaluate(state: typeof StateAnnotation.State) {
     const result = await this.agent.invoke(state);
+    const lastMessage = result.messages[result.messages.length - 1];
 
-    const suggestions = result.structuredResponse?.suggestions || [];
-
-    console.log(result.structuredResponse)
+    let suggestions = [];
+    if (result.messages.length > 1) {
+      // Try to find JSON in the response
+      const jsonMatch = lastMessage.content.toString().match(/```json\s*([\s\S]*?)\s*```/);
+      if (jsonMatch) {
+        try {
+          const parsed = JSON.parse(jsonMatch[1]);
+          suggestions = parsed.suggestions || [];
+        } catch (e) {
+          console.error("Failed to parse JSON from LLM response:", e);
+        }
+      }
+    }
 
     result.suggestions = suggestions;
     return result;

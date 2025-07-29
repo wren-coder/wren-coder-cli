@@ -51,9 +51,22 @@ export class PlannerAgent extends BaseAgent {
 
   async plan(state: typeof StateAnnotation.State) {
     const result = await this.agent.invoke(state);
+    const lastMessage = result.messages[result.messages.length - 1];
 
-    const steps = result.structuredResponse?.steps || [];
-    console.log(result.structuredResponse)
+    let steps = [];
+    if (result.messages.length > 1) {
+      // Try to find JSON in the response
+      const jsonMatch = lastMessage.content.toString().match(/```json\s*([\s\S]*?)\s*```/);
+      if (jsonMatch) {
+        try {
+          const parsed = JSON.parse(jsonMatch[1]);
+          steps = parsed.steps || [];
+        } catch (e) {
+          console.error("Failed to parse JSON from LLM response:", e);
+        }
+      }
+    }
+
     result.steps = steps;
     return result;
   }
