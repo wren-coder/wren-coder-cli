@@ -32,14 +32,14 @@ export class TesterAgent extends BaseAgent {
     // Update tools to use the working directory if provided
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
-      ShellTool({ workingDir }),
-      ReadFileTool({ workingDir }),
+      ShellTool({ workingDir, llm }),
+      ReadFileTool({ workingDir, llm }),
       GrepTool({ workingDir }),
       ListFilesTool({ workingDir }),
-      GlobTool({ workingDir }),
+      GlobTool({ workingDir, llm }),
       ScreenshotTool({ workingDir }),
       ReadConsoleLogTool({ workingDir }),
-      WriteFileTool({ workingDir }),
+      WriteFileTool({ workingDir, llm }),
     ];
 
     super({

@@ -31,7 +31,7 @@ export class PlannerAgent extends BaseAgent {
       ReadFileTool({ workingDir }),
       GrepTool({ workingDir }),
       ListFilesTool({ workingDir }),
-      GlobTool({ workingDir }),
+      GlobTool({ workingDir, llm }),
       ReadConsoleLogTool({ workingDir }),
     ];
 

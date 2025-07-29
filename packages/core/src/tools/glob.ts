@@ -11,15 +11,18 @@ import path from "path";
 import fs from "fs/promises";
 import { formatError } from "../utils/format-error.js";
 import { ToolName } from "./enum.js";
+import { processLargeContext } from "../utils/compression.js";
+import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
 interface GlobToolConfig {
     workingDir: string,
+    llm?: BaseChatModel, // Optional LLM for compression
 }
 
 const DESC =
-    "Searches for files matching a glob pattern in the user's workspace directory, returning absolute paths sorted by modification time (newest first). Input: { pattern: string }. Returns an array of matching file paths or an error message.";
+    "Searches for files matching a glob pattern in the user's workspace directory, returning absolute paths sorted by modification time (newest first). Input: { pattern: string }. Returns an array of matching file paths or an error message. Large results will be automatically compressed.";
 
-export const GlobTool = ({ workingDir }: GlobToolConfig) => tool(
+export const GlobTool = ({ workingDir, llm }: GlobToolConfig) => tool(
     async ({ pattern }: { pattern: string }) => {
         try {
             const fullPattern = path
@@ -74,6 +77,14 @@ export const GlobTool = ({ workingDir }: GlobToolConfig) => tool(
             });
 
             const sortedPaths = entries.map((e) => e.path);
+            
+            // If we have an LLM and a large result, use it to compress the output
+            const resultString = JSON.stringify(sortedPaths, null, 2);
+            if (llm && resultString.length > 10000) { // Arbitrary threshold for compression
+                const result = await processLargeContext(resultString, llm);
+                return result.content;
+            }
+            
             return sortedPaths;
         } catch (err) {
             return `Error searching files for pattern '${pattern}': ${formatError(

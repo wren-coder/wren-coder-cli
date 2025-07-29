@@ -34,11 +34,11 @@ export class EvaluatorAgent extends BaseAgent {
   constructor({ workingDir, llm }: EvaluatorAgentConfig) {
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
-      ShellTool({ workingDir }),
-      ReadFileTool({ workingDir }),
+      ShellTool({ workingDir, llm }),
+      ReadFileTool({ workingDir, llm }),
       GrepTool({ workingDir }),
       ListFilesTool({ workingDir }),
-      GlobTool({ workingDir }),
+      GlobTool({ workingDir, llm }),
       ScreenshotTool({ workingDir }),
       ReadConsoleLogTool({ workingDir }),
     ];

@@ -29,12 +29,12 @@ export class CoderAgent extends BaseAgent {
   constructor({ workingDir, llm }: CoderAgentConfig) {
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
-      ShellTool({ workingDir }),
-      ReadFileTool({ workingDir }),
-      WriteFileTool({ workingDir }),
+      ShellTool({ workingDir, llm }),
+      ReadFileTool({ workingDir, llm }),
+      WriteFileTool({ workingDir, llm }),
       GrepTool({ workingDir }),
       ListFilesTool({ workingDir }),
-      GlobTool({ workingDir }),
+      GlobTool({ workingDir, llm }),
     ];
 
     super({
