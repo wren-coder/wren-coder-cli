@@ -13,12 +13,7 @@ export const PlannerResponseSchema = z.object({
   steps: z.array(z.object({
     action: z.string(),
     description: z.string(),
-    details: z.union([z.array(z.string()), z.string()]).optional().transform((val) => {
-      if (val === undefined) {
-        return [];
-      }
-      return typeof val === 'string' ? [val] : val;
-    }),
+    details: z.array(z.string()).or(z.string()),
   })).describe('Array of steps describing what actions to take')
 });
 
@@ -39,3 +34,4 @@ export const TesterResponseSchema = z.object({
 
 export type PlannerResponse = z.infer<typeof PlannerResponseSchema>;
 export type EvaluatorResponse = z.infer<typeof EvaluatorResponseSchema>;
+export type TesterResponse = z.infer<typeof TesterResponseSchema>;

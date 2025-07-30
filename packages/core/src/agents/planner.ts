@@ -12,11 +12,12 @@ import { ListFilesTool } from "../tools/list-files.js";
 import { ReadFileTool } from "../tools/read-file.js";
 import { GlobTool } from "../tools/glob.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
-import { PlannerResponseSchema } from "../schemas/response.js";
+import { PlannerResponse, PlannerResponseSchema } from "../schemas/response.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../models/adapter.js";
+import { extractStructuredResponse } from "../utils/jsonParser.js";
 
 const AGENT_NAME = 'planner';
 const AGENT_DESC = 'Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.';
@@ -53,7 +54,8 @@ export class PlannerAgent extends BaseAgent {
   async invoke(state: typeof StateAnnotation.State) {
     console.log("[Planner] Starting plan generation");
     const result = await this.generationService.invoke(state);
-    const steps = result.structuredResponse.steps;
+
+    const { steps } = extractStructuredResponse<PlannerResponse>(result, PlannerResponseSchema);
     result.steps = steps;
     console.log(`[Planner] Plan generation completed with ${steps.length} steps`);
     return result;

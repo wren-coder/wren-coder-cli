@@ -4,8 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { describe, it, expect } from 'vitest';
-import { parseJsonString, hasProperty } from './jsonParser.js';
+import { describe, it, expect, vi } from 'vitest';
+import { parseJsonString, hasProperty, extractStructuredResponse } from './jsonParser.js';
+import { z } from 'zod';
 
 describe('jsonParser', () => {
   describe('parseJsonString', () => {
@@ -84,4 +85,45 @@ describe('jsonParser', () => {
       expect(hasProperty(obj, 'details')).toBe(false);
     });
   });
-});
+
+  describe('extractStructuredResponse', () => {
+    // Define a simple schema for testing
+    const TestSchema = z.object({
+      result: z.string(),
+      errors: z.array(z.string()).optional()
+    });
+
+    it('should use structuredResponse when available', () => {
+      const result = {
+        structuredResponse: { result: 'PASS', errors: [] }
+      };
+
+      const fallbackMessageExtractor = vi.fn();
+
+      const extracted = extractStructuredResponse(
+        result,
+        TestSchema,
+        fallbackMessageExtractor
+      );
+
+      expect(extracted).toEqual({ result: 'PASS', errors: [] });
+      expect(fallbackMessageExtractor).not.toHaveBeenCalled();
+    });
+
+    it('should fall back to string parsing when structuredResponse is not available', () => {
+      const result = {};
+      const content = '```json\n{\n  "result": "PASS",\n  "errors": []\n}\n```';
+
+      const fallbackMessageExtractor = vi.fn().mockReturnValue(content);
+
+      const extracted = extractStructuredResponse(
+        result,
+        TestSchema,
+        fallbackMessageExtractor
+      );
+
+      expect(extracted).toEqual({ result: 'PASS', errors: [] });
+      expect(fallbackMessageExtractor).toHaveBeenCalled();
+    });
+  });
+})

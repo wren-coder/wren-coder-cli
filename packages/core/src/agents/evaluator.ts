@@ -14,11 +14,12 @@ import { ListFilesTool } from "../tools/list-files.js";
 import { GlobTool } from "../tools/glob.js";
 import { ScreenshotTool } from "../tools/screenshot.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
-import { EvaluatorResponseSchema } from "../schemas/response.js";
+import { EvaluatorResponse, EvaluatorResponseSchema } from "../schemas/response.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../models/adapter.js";
+import { extractStructuredResponse } from "../utils/jsonParser.js";
 
 const AGENT_NAME = 'evaluator';
 const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail and feedback';
@@ -56,7 +57,9 @@ export class EvaluatorAgent extends BaseAgent {
 
   async invoke(state: typeof StateAnnotation.State) {
     const result = await this.generationService.invoke(state);
-    const suggestions = result.structuredResponse.suggestions;
+
+    const { suggestions } = extractStructuredResponse<EvaluatorResponse>(result, EvaluatorResponseSchema);
+
     result.suggestions = suggestions;
     console.log(`[Evaluator] Evaluation generation completed with ${suggestions.length} suggestions`);
     return result;
