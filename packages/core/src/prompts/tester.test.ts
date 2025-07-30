@@ -21,8 +21,8 @@ describe("Tester Prompt", () => {
     const vars: TesterPromptVars = { workingDir: "/test/project" };
     const prompt = TESTER_PROMPT(vars);
     
-    expect(prompt).toContain('"passed": true');
-    expect(prompt).toContain('"passed": false');
+    expect(prompt).toContain('"result": "PASS"');
+    expect(prompt).toContain('"result": "FAIL"');
   });
 
   it("should trim whitespace from the prompt", () => {

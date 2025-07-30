@@ -91,7 +91,7 @@ export class CoderAgent extends BaseAgent {
           const newStep = {
             action: "fix",
             description: "Fix failed test",
-            details: [`The implementation for "${currentStep.description}" failed tests.With errors ${testErrors}. Please fix the implementation.`]
+            details: [`The implementation for "${currentStep.description}" failed tests. ${testErrors ? 'With errors' + testErrors + '. Please fix the implementation.' : ''}`]
           };
 
           result = {

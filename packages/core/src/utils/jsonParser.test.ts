@@ -111,7 +111,7 @@ describe('jsonParser', () => {
     });
 
     it('should fall back to string parsing when structuredResponse is not available', () => {
-      const result = {};
+      const result = { messages: [] };
       const content = '```json\n{\n  "result": "PASS",\n  "errors": []\n}\n```';
 
       const fallbackMessageExtractor = vi.fn().mockReturnValue(content);
