@@ -27,9 +27,9 @@ const MAX_SEARCH_RESULTS = 5;
 
 export class CoderAgent extends BaseAgent {
   protected testerAgent: TesterAgent;
-  constructor({ workingDir, provider, model, llmModelConfig, compressionConfig }: AgentConfig) {
+  constructor({ workingDir, llmModelConfig, compressionConfig }: AgentConfig) {
     const llm = createLlmFromConfig(llmModelConfig);
-    compressionConfig = compressionConfig ?? getModelSpecificCompressionConfig(provider, model);
+    compressionConfig = compressionConfig ?? getModelSpecificCompressionConfig(llmModelConfig.provider, llmModelConfig.model);
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
       ShellTool({ workingDir, llm, compressionConfig }),
@@ -49,7 +49,7 @@ export class CoderAgent extends BaseAgent {
       compressionConfig,
     });
 
-    this.testerAgent = new TesterAgent({ workingDir, provider, model, llmModelConfig, compressionConfig });
+    this.testerAgent = new TesterAgent({ workingDir, llmModelConfig, compressionConfig });
     this.invoke = this.invoke.bind(this);
   }
 

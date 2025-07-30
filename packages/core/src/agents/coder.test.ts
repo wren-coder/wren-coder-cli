@@ -6,23 +6,22 @@
 
 import { describe, it, expect } from "vitest";
 import { CoderAgent } from "./coder.js";
-import { ChatOpenAI } from "@langchain/openai";
+import { Provider } from "../types/provider.js";
+import { Model } from "../types/model.js";
 
 describe("CoderAgent", () => {
   const workingDir = "/test/dir";
   
-  // Use a real LLM instance that will be intercepted by MSW
-  const llm = new ChatOpenAI({
-    modelName: "gpt-4",
+  const llmModelConfig = {
+    provider: Provider.OPENAI as Provider,
+    model: "gpt-4" as Model,
     openAIApiKey: "fake-api-key", // This will be intercepted by MSW
-  });
+  };
 
   it("should create an instance with correct properties", () => {
     const agent = new CoderAgent({ 
-      llm, 
       workingDir,
-      model: "gpt-4",
-      provider: "openai"
+      llmModelConfig
     });
     
     expect(agent.getName()).toBe("coder");
@@ -31,10 +30,8 @@ describe("CoderAgent", () => {
 
   it("should have an invoke method", () => {
     const agent = new CoderAgent({ 
-      llm, 
       workingDir,
-      model: "gpt-4",
-      provider: "openai"
+      llmModelConfig
     });
     expect(typeof agent.invoke).toBe("function");
   });

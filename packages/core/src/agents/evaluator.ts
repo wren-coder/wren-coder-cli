@@ -25,9 +25,9 @@ const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail 
 const MAX_SEARCH_RESULTS = 5;
 
 export class EvaluatorAgent extends BaseAgent {
-  constructor({ workingDir, provider, model, llmModelConfig, compressionConfig }: AgentConfig) {
+  constructor({ workingDir, llmModelConfig, compressionConfig }: AgentConfig) {
     const llm = createLlmFromConfig(llmModelConfig);
-    compressionConfig = compressionConfig ?? getModelSpecificCompressionConfig(provider, model);
+    compressionConfig = compressionConfig ?? getModelSpecificCompressionConfig(llmModelConfig.provider, llmModelConfig.model);
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
       ShellTool({ workingDir, llm, compressionConfig }),
