@@ -77,7 +77,6 @@ export class GenerationService {
       ...state,
       messages: processedMessages
     };
-    console.log(processedMessages);
 
     return await this.agent.invoke(processedState, { recursionLimit: this.graphRecursionLimit });
   }
@@ -88,7 +87,6 @@ export class GenerationService {
       ...state,
       messages: processedMessages
     };
-    console.log(processedMessages);
 
     if (this.agent.stream) {
       const stream = await this.agent.stream(processedState, { streamMode: "values", recursionLimit: this.graphRecursionLimit });

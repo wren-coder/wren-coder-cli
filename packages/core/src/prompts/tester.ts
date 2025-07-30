@@ -19,8 +19,8 @@ Use:
 - \`RUN_SHELL\`: invoke the test command (e.g., “npm test”, “pytest”).  
 
 On success, return:
-  { "passed": true }
+  { "result": "PASS" }
 
 On failure, return:
-  { "passed": false, "errors": ["…stderr or test output…"] }
+  { "result": "FAIL", "errors": ["…stderr or test output…"] }
 `.trim();

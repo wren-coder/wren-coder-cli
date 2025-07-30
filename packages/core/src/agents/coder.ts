@@ -78,7 +78,7 @@ export class CoderAgent extends BaseAgent {
           messages: [...stepState.messages, new HumanMessage(`Test the implementation for ${stepString}`)]
         });
 
-        const testPassed = testAgentResult.testResult;
+        const { testPassed, testErrors } = testAgentResult;
 
         console.log(`[Coder] Test result for "${currentStep.description}": ${testPassed ? 'PASS' : 'FAIL'}`);
 
@@ -91,7 +91,7 @@ export class CoderAgent extends BaseAgent {
           const newStep = {
             action: "fix",
             description: "Fix failed test",
-            details: [`The implementation for "${currentStep.description}" failed tests. Please fix the implementation.`]
+            details: [`The implementation for "${currentStep.description}" failed tests. With errors ${testErrors}. Please fix the implementation.`]
           };
 
           result = {

@@ -33,7 +33,8 @@ export const EvaluatorResponseSchema = z.object({
  * Schema for the evaluator agent's response
  */
 export const TesterResponseSchema = z.object({
-  result: z.enum(["PASS", "FAIL"])
+  result: z.enum(["PASS", "FAIL"]),
+  errors: z.array(z.string()).or(z.string()).optional()
 });
 
 export type PlannerResponse = z.infer<typeof PlannerResponseSchema>;
