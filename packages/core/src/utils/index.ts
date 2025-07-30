@@ -8,4 +8,5 @@ export * from "./compression.js";
 export * from "./format-error.js";
 export * from "./gitIgnoreParser.js";
 export * from "./gitUtils.js";
+export * from "./jsonParser.js";
 export * from "./paths.js";
