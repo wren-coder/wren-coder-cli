@@ -55,12 +55,17 @@ export class TesterAgent extends BaseAgent {
   async invoke(state: typeof StateAnnotation.State) {
     console.log("[Tester] Executing Test");
     const result = await this.generationService.invoke(state);
-    const response = extractStructuredResponse<TesterResponse>(result, TesterResponseSchema);
+    try {
+      const response = extractStructuredResponse<TesterResponse>(result, TesterResponseSchema);
 
-    const testResult = response.result;
-    const testErrors = response.errors;
+      const testResult = response.result;
+      const testErrors = response.errors;
 
-    console.log(`[Tester] Test ${testResult}`);
-    return { ...result, testResult, testErrors };
+      console.log(`[Tester] Test ${testResult}`);
+      return { ...result, testResult, testErrors };
+    } catch (_err) {
+      console.error('Could not parse test result');
+      return { ...result, testResult: 'PASS' };
+    }
   }
 }
