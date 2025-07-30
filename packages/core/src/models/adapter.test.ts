@@ -63,7 +63,7 @@ describe("adapter", () => {
             expect(llm.constructor.name).toContain("ChatDeepSeek");
         });
 
-        it("should throw an error for unknown providers", async () => {
+        it("should throw an error for unknown providers", () => {
             const config = {
                 // @ts-expect-error - Testing unknown provider
                 provider: "unknown-provider",
@@ -71,7 +71,7 @@ describe("adapter", () => {
                 temperature: 0.7,
             };
 
-            await expect(createLlmFromConfig(config)).rejects.toThrowError(ProviderNotFoundError);
+            expect(() => createLlmFromConfig(config)).toThrowError(ProviderNotFoundError);
         });
 
         it("should apply temperature and topP parameters", async () => {
