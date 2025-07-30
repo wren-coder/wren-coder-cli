@@ -22,7 +22,7 @@ export function parseJsonString(jsonString: string): unknown {
   // Use regex to extract JSON content between ```json and ```
   const jsonBlockRegex = /```json\s*([\s\S]*?)\s*```/;
   const match = trimmed.match(jsonBlockRegex);
-  
+
   if (match) {
     trimmed = match[1].trim();
   }
@@ -64,7 +64,7 @@ export function extractStructuredResponse<T>(
     return schema.parse(result.structuredResponse);
   } else {
     console.warn("Fell back to string parsing");
-    console.warn("Fell back to string parsing");
+    console.log(result)
     const content = result.messages[result.messages.length - 1].content.toString();
     const parsed = parseJsonString(content);
     return schema.parse(parsed);

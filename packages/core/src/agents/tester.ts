@@ -55,7 +55,6 @@ export class TesterAgent extends BaseAgent {
   async invoke(state: typeof StateAnnotation.State) {
     console.log("[Tester] Executing Test");
     const result = await this.generationService.invoke(state);
-
     const response = extractStructuredResponse<TesterResponse>(result, TesterResponseSchema);
 
     const testResult = response.result;
