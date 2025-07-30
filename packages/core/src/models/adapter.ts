@@ -4,11 +4,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ChatDeepSeek } from "@langchain/deepseek";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { Provider } from "../types/provider.js";
 import { Model } from "../types/model.js";
 import { Temperature, TopP } from "../types/llmParameters.js";
+import { ProviderNotFoundError } from "../errors/ProviderNotFoundError.js";
+
+async function importChatDeepSeek() {
+    const { ChatDeepSeek } = await import("@langchain/deepseek");
+    return ChatDeepSeek;
+}
+
+async function importChatOpenAI() {
+    const { ChatOpenAI } = await import("@langchain/openai");
+    return ChatOpenAI;
+}
+
+async function importChatAnthropic() {
+    const { ChatAnthropic } = await import("@langchain/anthropic");
+    return ChatAnthropic;
+}
 
 export interface LlmModelConfig {
     provider: Provider;
@@ -41,23 +56,37 @@ interface AgentSpecificLlmConfig {
 
 export type LlmConfig = DefaultLlmConfig | AgentSpecificLlmConfig;
 
-export function createLlmFromConfig(config: LlmModelConfig): BaseChatModel {
+export async function createLlmFromConfig(config: LlmModelConfig): Promise<BaseChatModel> {
     const configWithRetries = {
-        maxRetries: 3,
+        maxRetries: config.maxRetries ?? 3,
         ...config
     };
 
+
     switch (configWithRetries.provider) {
         case Provider.DEEPSEEK:
-            return new ChatDeepSeek(configWithRetries);
-        // Add cases for other providers as needed
-        // case 'openai':
-        //     return new ChatOpenAI({...});
-        // case 'anthropic':
-        //     return new ChatAnthropic({...});
+            {
+                const ChatDeepSeek = await importChatDeepSeek();
+                return new ChatDeepSeek(configWithRetries);
+            }
+
+        case Provider.OPENAI:
+            {
+                const ChatOpenAI = await importChatOpenAI();
+                return new ChatOpenAI(configWithRetries);
+            }
+
+        case Provider.ANTHROPIC:
+            {
+                const ChatAnthropic = await importChatAnthropic();
+                return new ChatAnthropic(configWithRetries);
+            }
+
         default:
-            throw new Error();
+            console.error(`Failed to create LLM for provider ${configWithRetries.provider}`);
+            throw new ProviderNotFoundError(configWithRetries.provider);
     }
+
 }
 
 export function isAgentSpecificConfig(config: LlmConfig): config is AgentSpecificLlmConfig {
