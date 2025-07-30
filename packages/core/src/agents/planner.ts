@@ -23,7 +23,7 @@ const AGENT_DESC = 'Analyzes the codebase, tests, and configurations to draft cl
 const MAX_SEARCH_RESULTS = 5;
 
 export class PlannerAgent extends BaseAgent {
-  constructor({ workingDir, llmModelConfig, compressionConfig }: AgentConfig) {
+  constructor({ workingDir, llmModelConfig, compressionConfig, graphRecursionLimit }: AgentConfig) {
     const llm = createLlmFromConfig(llmModelConfig);
     compressionConfig = compressionConfig ?? getModelSpecificCompressionConfig(llmModelConfig.provider, llmModelConfig.model);
     // Update tools to use the working directory if provided
@@ -44,6 +44,7 @@ export class PlannerAgent extends BaseAgent {
       tools,
       responseFormat: PlannerResponseSchema,
       compressionConfig,
+      graphRecursionLimit,
     });
 
     this.invoke = this.invoke.bind(this);

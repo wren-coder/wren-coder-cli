@@ -25,7 +25,7 @@ const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail 
 const MAX_SEARCH_RESULTS = 5;
 
 export class EvaluatorAgent extends BaseAgent {
-  constructor({ workingDir, llmModelConfig, compressionConfig }: AgentConfig) {
+  constructor({ workingDir, llmModelConfig, compressionConfig, graphRecursionLimit }: AgentConfig) {
     const llm = createLlmFromConfig(llmModelConfig);
     compressionConfig = compressionConfig ?? getModelSpecificCompressionConfig(llmModelConfig.provider, llmModelConfig.model);
     const tools = [
@@ -47,6 +47,7 @@ export class EvaluatorAgent extends BaseAgent {
       tools,
       responseFormat: EvaluatorResponseSchema,
       compressionConfig,
+      graphRecursionLimit,
     });
 
     this.invoke = this.invoke.bind(this);

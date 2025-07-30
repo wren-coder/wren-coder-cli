@@ -79,7 +79,7 @@ export class GenerationService {
     };
     console.log(processedMessages);
 
-    return await this.agent.invoke(processedState);
+    return await this.agent.invoke(processedState, { recursionLimit: this.graphRecursionLimit });
   }
 
   async * stream(state: typeof StateAnnotation.State) {

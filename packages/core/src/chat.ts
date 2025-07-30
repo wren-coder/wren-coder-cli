@@ -99,17 +99,17 @@ export class Chat {
         let evaluatorAgentConfig: AgentConfig;
 
         if (isAgentSpecificConfig(config)) {
-            coderAgentConfig = createAgentConfig(this.workingDir, config.agentModels.coder, this.compressionConfig);
-            plannerAgentConfig = createAgentConfig(this.workingDir, config.agentModels.planner, this.compressionConfig);
-            evaluatorAgentConfig = createAgentConfig(this.workingDir, config.agentModels.evaluator, this.compressionConfig);
+            coderAgentConfig = createAgentConfig(this.workingDir, config.agentModels.coder, this.compressionConfig, this.graphRecursionLimit);
+            plannerAgentConfig = createAgentConfig(this.workingDir, config.agentModels.planner, this.compressionConfig, this.graphRecursionLimit);
+            evaluatorAgentConfig = createAgentConfig(this.workingDir, config.agentModels.evaluator, this.compressionConfig, this.graphRecursionLimit);
         } else {
-            defaultAgentConfig = createAgentConfig(this.workingDir, config.defaultModel, this.compressionConfig);
+            defaultAgentConfig = createAgentConfig(this.workingDir, config.defaultModel, this.compressionConfig, this.graphRecursionLimit);
             coderAgentConfig = config.agentModels?.coder ?
-                createAgentConfig(this.workingDir, config.agentModels.coder, this.compressionConfig) : defaultAgentConfig;
+                createAgentConfig(this.workingDir, config.agentModels.coder, this.compressionConfig, this.graphRecursionLimit) : defaultAgentConfig;
             plannerAgentConfig = config.agentModels?.planner ?
-                createAgentConfig(this.workingDir, config.agentModels.planner, this.compressionConfig) : defaultAgentConfig;
+                createAgentConfig(this.workingDir, config.agentModels.planner, this.compressionConfig, this.graphRecursionLimit) : defaultAgentConfig;
             evaluatorAgentConfig = config.agentModels?.evaluator ?
-                createAgentConfig(this.workingDir, config.agentModels.evaluator, this.compressionConfig) : defaultAgentConfig;
+                createAgentConfig(this.workingDir, config.agentModels.evaluator, this.compressionConfig, this.graphRecursionLimit) : defaultAgentConfig;
         }
 
         return {

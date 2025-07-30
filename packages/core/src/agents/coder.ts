@@ -27,7 +27,7 @@ const MAX_SEARCH_RESULTS = 5;
 
 export class CoderAgent extends BaseAgent {
   protected testerAgent: TesterAgent;
-  constructor({ workingDir, llmModelConfig, compressionConfig }: AgentConfig) {
+  constructor({ workingDir, llmModelConfig, compressionConfig, graphRecursionLimit }: AgentConfig) {
     const llm = createLlmFromConfig(llmModelConfig);
     compressionConfig = compressionConfig ?? getModelSpecificCompressionConfig(llmModelConfig.provider, llmModelConfig.model);
     const tools = [
@@ -47,9 +47,10 @@ export class CoderAgent extends BaseAgent {
       llm,
       tools,
       compressionConfig,
+      graphRecursionLimit,
     });
 
-    this.testerAgent = new TesterAgent({ workingDir, llmModelConfig, compressionConfig });
+    this.testerAgent = new TesterAgent({ workingDir, llmModelConfig, compressionConfig, graphRecursionLimit });
     this.invoke = this.invoke.bind(this);
   }
 

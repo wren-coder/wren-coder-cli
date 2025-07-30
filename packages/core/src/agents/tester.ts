@@ -25,7 +25,7 @@ const AGENT_DESC = 'Tests vs. the user spec, returns pass/fail and feedback';
 const MAX_SEARCH_RESULTS = 5;
 
 export class TesterAgent extends BaseAgent {
-  constructor({ workingDir, llmModelConfig, compressionConfig }: AgentConfig) {
+  constructor({ workingDir, llmModelConfig, compressionConfig, graphRecursionLimit }: AgentConfig) {
     const llm = createLlmFromConfig(llmModelConfig);
     compressionConfig = compressionConfig ?? getModelSpecificCompressionConfig(llmModelConfig.provider, llmModelConfig.model);
     const tools = [
@@ -47,6 +47,7 @@ export class TesterAgent extends BaseAgent {
       tools,
       compressionConfig,
       responseFormat: TesterResponseSchema,
+      graphRecursionLimit,
     });
   }
 

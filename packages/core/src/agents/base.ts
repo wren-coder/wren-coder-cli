@@ -20,6 +20,7 @@ export interface BaseAgentConfig {
     tools?: StructuredTool[];
     responseFormat?: InteropZodType;
     compressionConfig: CompressionConfig;
+    graphRecursionLimit?: number;
 }
 
 export abstract class BaseAgent implements AgentInterface {
@@ -27,7 +28,7 @@ export abstract class BaseAgent implements AgentInterface {
     protected description: string;
     protected generationService: GenerationService;
 
-    constructor({ name, description, prompt, llm, compressionConfig, responseFormat, tools }: BaseAgentConfig) {
+    constructor({ name, description, prompt, llm, compressionConfig, responseFormat, tools, graphRecursionLimit }: BaseAgentConfig) {
         this.name = name;
         this.description = description;
 
@@ -42,6 +43,7 @@ export abstract class BaseAgent implements AgentInterface {
             agent,
             llm,
             compressionConfig,
+            graphRecursionLimit,
         });
     }
 

@@ -11,14 +11,16 @@ export interface AgentConfig {
     workingDir: string;
     llmModelConfig: LlmModelConfig;
     compressionConfig?: CompressionConfig;
+    graphRecursionLimit?: number;
 }
 
 
-export function createAgentConfig(workingDir: string, llmModelConfig: LlmModelConfig, compressionConfig?: CompressionConfig): AgentConfig {
+export function createAgentConfig(workingDir: string, llmModelConfig: LlmModelConfig, compressionConfig?: CompressionConfig, graphRecursionLimit?: number): AgentConfig {
     return {
         workingDir,
         llmModelConfig,
         compressionConfig,
+        graphRecursionLimit,
     }
 
 }
