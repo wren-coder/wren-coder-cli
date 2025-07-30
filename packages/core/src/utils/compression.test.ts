@@ -12,15 +12,11 @@ import { AIMessage } from "@langchain/core/messages";
 // Mock the LLM
 const mockLlmInvoke = vi.fn();
 
-vi.mock("@langchain/deepseek", () => {
-  return {
-    ChatDeepSeek: vi.fn().mockImplementation(() => {
-      return {
+vi.mock("@langchain/deepseek", () => ({
+    ChatDeepSeek: vi.fn().mockImplementation(() => ({
         invoke: mockLlmInvoke
-      };
-    })
-  };
-});
+      }))
+  }));
 
 describe('compression utilities', () => {
   beforeEach(() => {

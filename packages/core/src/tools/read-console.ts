@@ -22,7 +22,7 @@ export const ReadConsoleLogTool = ({ workingDir }: ReadConsoleLogToolConfig) => 
         const page = await browser.newPage();
 
         // Collect console messages
-        const logs: { type: string; text: string }[] = [];
+        const logs: Array<{ type: string; text: string }> = [];
         page.on("console", (msg) => {
             logs.push({
                 type: msg.type(),       // e.g. "log", "error", "warning"
