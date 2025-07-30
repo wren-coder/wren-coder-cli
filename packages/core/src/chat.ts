@@ -7,14 +7,15 @@
 import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { CoderAgent } from "./agents/coder.js";
 import { PlannerAgent } from "./agents/planner.js";
-import { isAgentSpecificConfig, LlmConfig } from "./models/adapter.js";
+import { createLlmFromConfig, isAgentSpecificConfig, LlmConfig, LlmModelConfig } from "./models/adapter.js";
 import { EvaluatorAgent } from "./agents/evaluator.js";
 import { StateGraph, START, END } from "@langchain/langgraph";
 import { ApprovalMode } from "./types/approvalMode.js";
 import { StateAnnotation } from "./types/stateAnnotation.js";
 import { MessageRoles } from "./types/messageRole.js";
-import { CompressionConfig } from "./utils/compression.js";
+import { CompressionConfig, getModelSpecificCompressionConfig } from "./utils/compression.js";
 import { AgentConfig, createAgentConfig } from "./agents/agentConfig.js";
+import { GenerationService } from "./services/generationService.js";
 
 export interface ChatConfig {
     llmConfig: LlmConfig,
@@ -26,19 +27,19 @@ export interface ChatConfig {
 }
 
 export class Chat {
-    protected graph: ReturnType<typeof this.createGraph>
     protected plannerAgent: PlannerAgent;
     protected coderAgent: CoderAgent;
     protected evaluatorAgent: EvaluatorAgent;
     protected messageHistory: BaseMessage[] = [];
     protected debug: boolean;
-    protected graphRecursionLimit: number;
+    protected graphRecursionLimit?: number;
     protected workingDir: string;
     protected compressionConfig?: CompressionConfig;
+    protected generationService: GenerationService;
 
     constructor(config: ChatConfig) {
         this.debug = config.debug ?? false;
-        this.graphRecursionLimit = config.graphRecursionLimit ?? 25;
+        this.graphRecursionLimit = config.graphRecursionLimit;
         this.compressionConfig = config.compressionConfig;
         this.workingDir = config.workingDir ?? process.cwd();
 
@@ -48,7 +49,19 @@ export class Chat {
         this.plannerAgent = new PlannerAgent(plannerAgentConfig);
         this.evaluatorAgent = new EvaluatorAgent(evaluatorAgentConfig);
 
-        this.graph = this.createGraph();
+        const graph = this.createGraph();
+        this.generationService = this.createGenerationService(coderAgentConfig.llmModelConfig, graph);
+    }
+
+    private createGenerationService(llmModelConfig: LlmModelConfig, graph: ReturnType<typeof this.createGraph>) {
+        const llm = createLlmFromConfig(llmModelConfig);
+        const compressionConfig = this.compressionConfig ?? getModelSpecificCompressionConfig(llmModelConfig.provider, llmModelConfig.model);
+        return new GenerationService({
+            agent: graph,
+            llm,
+            compressionConfig,
+            graphRecursionLimit: this.graphRecursionLimit,
+        });
     }
 
     private createGraph() {
@@ -110,13 +123,14 @@ export class Chat {
         this.messageHistory.push(new HumanMessage(query));
 
         let finalState: { messages: BaseMessage[] } | undefined;
-        this.graph.clearCache();
-
         let shownCount = this.messageHistory.length;
 
-        const iterator = await this.graph.stream(
-            { messages: this.messageHistory },
-            { streamMode: "values", recursionLimit: this.graphRecursionLimit }
+        const iterator = this.generationService.stream(
+            {
+                messages: this.messageHistory,
+                steps: [],
+                suggestions: []
+            }
         );
 
         for await (const state of iterator) {
@@ -126,7 +140,7 @@ export class Chat {
                 console.log(state)
                 const all = state.messages;
                 const newlyAdded = all.slice(shownCount);
-                newlyAdded.forEach((m) => {
+                newlyAdded.forEach((m: BaseMessage) => {
                     const role = m instanceof HumanMessage
                         ? MessageRoles.USER
                         : m instanceof AIMessage

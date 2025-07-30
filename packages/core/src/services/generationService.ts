@@ -12,18 +12,21 @@ import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 export interface GenerationServiceConfig {
   compressionConfig: CompressionConfig;
   llm: BaseChatModel,
-  agent: any;
+  agent: any,
+  graphRecursionLimit?: number;
 }
 
 export class GenerationService {
   private agent;
   private compressionConfig: CompressionConfig;
   private llm: BaseChatModel;
+  private graphRecursionLimit: number;
 
-  constructor({ agent, llm, compressionConfig }: GenerationServiceConfig) {
+  constructor({ agent, llm, compressionConfig, graphRecursionLimit }: GenerationServiceConfig) {
     this.agent = agent;
     this.compressionConfig = compressionConfig;
     this.llm = llm;
+    this.graphRecursionLimit = graphRecursionLimit ?? 25;
   }
 
   /**
@@ -87,7 +90,7 @@ export class GenerationService {
     };
 
     if (this.agent.stream) {
-      const stream = await this.agent.stream(processedState);
+      const stream = await this.agent.stream(processedState, { streamMode: "values", recursionLimit: this.graphRecursionLimit });
 
       for await (const chunk of stream) {
         yield chunk;
