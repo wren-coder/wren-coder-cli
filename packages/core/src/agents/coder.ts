@@ -16,6 +16,7 @@ import { ListFilesTool } from "../tools/list-files.js";
 import { GlobTool } from "../tools/glob.js";
 import { StateAnnotation } from "../chat.js";
 import { HumanMessage } from "@langchain/core/messages";
+import { TesterAgent } from "./tester.js";
 
 const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
@@ -27,6 +28,7 @@ interface CoderAgentConfig {
 }
 
 export class CoderAgent extends BaseAgent {
+  protected testerAgent: TesterAgent;
   constructor({ workingDir, llm }: CoderAgentConfig) {
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
@@ -38,6 +40,8 @@ export class CoderAgent extends BaseAgent {
       GlobTool({ workingDir, llm }),
     ];
 
+
+
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
@@ -46,6 +50,7 @@ export class CoderAgent extends BaseAgent {
       tools,
     });
 
+    this.testerAgent = new TesterAgent({ workingDir, llm });
     this.code = this.code.bind(this);
   }
   async code(state: typeof StateAnnotation.State) {
@@ -64,10 +69,34 @@ export class CoderAgent extends BaseAgent {
 
       const agentResult = await this.agent.invoke(stepState);
 
-      result = {
-        ...agentResult,
-        steps: result.steps.slice(1)
-      };
+      // Now invoke the tester agent to validate the implementation
+      const testResult = await this.testerAgent.getAgent().invoke({
+        ...stepState,
+        messages: [...stepState.messages, new HumanMessage(`Test the implementation for ${stepString}`)]
+      });
+
+      // Check if the test passed
+      const testPassed = testResult.messages[testResult.messages.length - 1].content.toString().toLowerCase().includes("pass");
+
+      if (testPassed) {
+        // If test passed, continue with the next step
+        result = {
+          ...agentResult,
+          steps: result.steps.slice(1)
+        };
+      } else {
+        // If test failed, add a new step to fix the issue at the front of the queue
+        const newStep = {
+          action: "fix",
+          description: "Fix failed test",
+          details: [`The implementation for "${currentStep.description}" failed tests. Please fix the implementation.`]
+        };
+
+        result = {
+          ...agentResult,
+          steps: [newStep, ...result.steps] // Add the fix step at the beginning
+        };
+      }
     }
 
     return result;
