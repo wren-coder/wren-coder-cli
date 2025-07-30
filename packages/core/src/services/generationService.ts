@@ -59,10 +59,9 @@ export class GenerationService {
       const compressionResult = await processLargeContext(messagesString, this.llm, this.compressionConfig);
 
       // Create a new message with the compressed content
-      const compressedMessage = new HumanMessage({
-        content: `Compressed conversation history:\n${compressionResult.content}`,
-        name: "history_compression"
-      });
+      const compressedMessage = new HumanMessage(
+        `Compressed conversation history:\n${compressionResult.content}`
+      );
 
       // Return the compressed message plus any recent messages that weren't included
       return [compressedMessage];
@@ -78,16 +77,18 @@ export class GenerationService {
       ...state,
       messages: processedMessages
     };
+    console.log(processedMessages);
 
     return await this.agent.invoke(processedState);
   }
 
-  async *stream(state: typeof StateAnnotation.State) {
+  async * stream(state: typeof StateAnnotation.State) {
     const processedMessages = await this.compressMessages(state.messages);
     const processedState = {
       ...state,
       messages: processedMessages
     };
+    console.log(processedMessages);
 
     if (this.agent.stream) {
       const stream = await this.agent.stream(processedState, { streamMode: "values", recursionLimit: this.graphRecursionLimit });

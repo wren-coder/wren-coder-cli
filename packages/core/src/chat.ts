@@ -137,7 +137,6 @@ export class Chat {
             finalState = state;
 
             if (this.debug) {
-                console.log(state)
                 const all = state.messages;
                 const newlyAdded = all.slice(shownCount);
                 newlyAdded.forEach((m: BaseMessage) => {
