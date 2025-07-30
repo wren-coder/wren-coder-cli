@@ -10,40 +10,10 @@ import { PlannerAgent } from "./agents/planner.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { createLlmFromConfig, isAgentSpecificConfig, LlmConfig } from "./models/adapter.js";
 import { EvaluatorAgent } from "./agents/evaluator.js";
-import { StateGraph, START, END, Annotation } from "@langchain/langgraph";
-import type { PlannerResponse, EvaluatorResponse } from "./schemas/response.js";
-
-// --- Import readline for user input ---
-import * as readline from 'node:readline/promises';
-import { stdin as input, stdout as output } from 'node:process';
-
-export const StateAnnotation = Annotation.Root({
-    messages: Annotation<BaseMessage[]>({
-        default: () => [],
-        reducer: (all, one) =>
-            Array.isArray(one) ? all.concat(one) : all.concat([one]),
-    }),
-    steps: Annotation<Array<{
-        action: string;
-        description: string;
-        details: string[];
-    }>>({
-        default: () => [],
-        reducer: (all, one) =>
-            Array.isArray(one) ? all.concat(one) : all.concat([one]),
-    }),
-    suggestions: Annotation<string[]>({
-        default: () => [],
-        reducer: (all, one) =>
-            Array.isArray(one) ? all.concat(one) : all.concat([one]),
-    }),
-});
-
-export enum ApprovalMode {
-    DEFAULT = 'default',
-    AUTO_EDIT = 'autoEdit',
-    YOLO = 'yolo',
-}
+import { StateGraph, START, END } from "@langchain/langgraph";
+import { ApprovalMode } from "./types/approvalMode.js";
+import { StateAnnotation } from "./types/stateAnnotation.js";
+import { MessageRoles } from "./types/messageRole.js";
 
 export interface ChatConfig {
     llmConfig: LlmConfig,
@@ -145,7 +115,6 @@ export class Chat {
         let finalState: { messages: BaseMessage[] } | undefined;
         this.graph.clearCache();
 
-        // track how many messages we've already shown
         let shownCount = this.messageHistory.length;
 
         const iterator = await this.graph.stream(
@@ -162,10 +131,10 @@ export class Chat {
                 const newlyAdded = all.slice(shownCount);
                 newlyAdded.forEach((m) => {
                     const role = m instanceof HumanMessage
-                        ? "user"
+                        ? MessageRoles.USER
                         : m instanceof AIMessage
-                            ? "assistant"
-                            : "system";
+                            ? MessageRoles.ASSISTANT
+                            : MessageRoles.SYSTEM;
                     console.log(`[${role}] ${m.content}`);
                 });
                 shownCount = all.length;
@@ -185,72 +154,3 @@ export class Chat {
         }
     }
 }
-
-
-(async () => {
-    const chat = new Chat({
-        debug: true,
-        graphRecursionLimit: 100,
-        maxReflections: 3,
-        workingDir: process.cwd(), // Use current working directory
-        llmConfig: {
-            agentModels: {
-                coder: {
-                    provider: 'deepseek',
-                    model: 'deepseek-chat',
-                    temperature: 0,
-                },
-                planner: {
-                    provider: 'deepseek',
-                    model: 'deepseek-chat',
-                    temperature: 0,
-                },
-                evaluator: {
-                    provider: 'deepseek',
-                    model: 'deepseek-chat',
-                    temperature: 0,
-                },
-            }
-        }
-    });
-
-    // --- Create readline interface ---
-    const rl = readline.createInterface({ input, output });
-
-    try {
-        // --- Get the initial task from the user ---
-        const initialTask = await rl.question('Enter the initial task for the agent: ');
-
-        if (!initialTask.trim()) {
-            console.log("No task provided. Exiting.");
-            rl.close();
-            return;
-        }
-
-        console.log("\n--- Starting Task ---");
-        await chat.query(initialTask);
-
-        // --- Interactive loop ---
-        console.log("\n--- Entering Interactive Mode ---");
-        console.log("You can now provide feedback, ask questions, or type 'exit' to quit.");
-        while (true) {
-            const userInput = await rl.question('\nYou: ');
-
-            if (userInput.toLowerCase() === 'exit') {
-                console.log("Goodbye!");
-                break;
-            }
-
-            if (userInput.trim()) {
-                await chat.query(userInput);
-            } else {
-                console.log("Empty input ignored.");
-            }
-        }
-
-    } catch (error) {
-        console.error("An error occurred:", error);
-    } finally {
-        rl.close();
-    }
-})();

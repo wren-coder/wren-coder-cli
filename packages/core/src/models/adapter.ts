@@ -6,14 +6,17 @@
 
 import { ChatDeepSeek } from "@langchain/deepseek";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
+import { Provider } from "../types/provider.js";
+import { Model } from "../types/model.js";
+import { Temperature, TopP } from "../types/llmParameters.js";
 
 export interface LlmModelConfig {
-    provider: 'deepseek' | 'openai' | 'anthropic' | string;
-    model: string;
-    temperature?: number;
-    topP?: number;
+    provider: Provider;
+    model: Model;
+    temperature?: Temperature;
+    topP?: TopP;
     apiKey?: string;
-    maxRetries?: number; // Add retry configuration
+    maxRetries?: number;
 }
 
 interface DefaultLlmConfig {
@@ -39,14 +42,13 @@ interface AgentSpecificLlmConfig {
 export type LlmConfig = DefaultLlmConfig | AgentSpecificLlmConfig;
 
 export function createLlmFromConfig(config: LlmModelConfig): BaseChatModel {
-    // Set default maxRetries if not provided
     const configWithRetries = {
         maxRetries: 3,
         ...config
     };
 
     switch (configWithRetries.provider) {
-        case 'deepseek':
+        case Provider.DEEPSEEK:
             return new ChatDeepSeek(configWithRetries);
         // Add cases for other providers as needed
         // case 'openai':
@@ -54,8 +56,7 @@ export function createLlmFromConfig(config: LlmModelConfig): BaseChatModel {
         // case 'anthropic':
         //     return new ChatAnthropic({...});
         default:
-            // Default to DeepSeek if provider is not recognized
-            return new ChatDeepSeek(configWithRetries);
+            throw new Error();
     }
 }
 
