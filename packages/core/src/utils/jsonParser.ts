@@ -20,7 +20,7 @@ export function parseJsonString(jsonString: string): unknown {
   let trimmed = jsonString.trim();
 
   // Check if the string starts with a code block marker
-  if (trimmed.startsWith('```')) {
+  if (trimmed.startsWith('```json')) {
     // Find the end of the code block marker (first newline after the opening markers)
     const firstNewlineIndex = trimmed.indexOf('\n');
     if (firstNewlineIndex !== -1) {

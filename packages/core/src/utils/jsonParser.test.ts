@@ -111,19 +111,18 @@ describe('jsonParser', () => {
     });
 
     it('should fall back to string parsing when structuredResponse is not available', () => {
-      const result = { messages: [] };
-      const content = '```json\n{\n  "result": "PASS",\n  "errors": []\n}\n```';
-
-      const fallbackMessageExtractor = vi.fn().mockReturnValue(content);
+      const result = { 
+        messages: [{
+          content: '```json\n{\n  "result": "PASS",\n  "errors": []\n}\n```'
+        }] 
+      };
 
       const extracted = extractStructuredResponse(
         result,
-        TestSchema,
-        fallbackMessageExtractor
+        TestSchema
       );
 
       expect(extracted).toEqual({ result: 'PASS', errors: [] });
-      expect(fallbackMessageExtractor).toHaveBeenCalled();
     });
   });
 })
