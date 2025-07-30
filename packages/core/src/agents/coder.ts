@@ -77,7 +77,7 @@ export class CoderAgent extends BaseAgent {
           messages: [...stepState.messages, new HumanMessage(`Test the implementation for ${stepString}`)]
         });
 
-        const testPassed = testAgentResult.structuredResponse.result;
+        const testPassed = testAgentResult.testResult;
 
         console.log(`[Coder] Test result for "${currentStep.description}": ${testPassed ? 'PASS' : 'FAIL'}`);
 

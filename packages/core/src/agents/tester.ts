@@ -55,6 +55,6 @@ export class TesterAgent extends BaseAgent {
     const result = await this.generationService.invoke(state);
     const testResult = result.structuredResponse.result;
     console.log(`[Tester] Test ${testResult}`);
-    return result;
+    return { ...result, testResult };
   }
 }
