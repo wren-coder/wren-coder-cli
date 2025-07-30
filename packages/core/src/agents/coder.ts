@@ -79,8 +79,8 @@ export class CoderAgent extends BaseAgent {
           messages: [...stepState.messages, new HumanMessage(`Test the implementation for ${stepString}`)]
         });
 
-        // Check if the test passed
-        const testPassed = testResult.messages[testResult.messages.length - 1].content.toString().toLowerCase().includes("pass");
+        const testPassed = testResult.structuredResponse.result;
+
         console.log(`[Coder] Test result for "${currentStep.description}": ${testPassed ? 'PASS' : 'FAIL'}`);
 
         if (testPassed) {

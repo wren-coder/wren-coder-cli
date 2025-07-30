@@ -14,7 +14,6 @@ import { GlobTool } from "../tools/glob.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
 import { PlannerResponseSchema } from "../schemas/response.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
-import { formatError } from "../utils/format-error.js";
 import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../models/adapter.js";
@@ -52,34 +51,10 @@ export class PlannerAgent extends BaseAgent {
 
   async invoke(state: typeof StateAnnotation.State) {
     console.log("[Planner] Starting plan generation");
-
-    try {
-      const result = await this.generationService.invoke(state);
-      const lastMessage = result.messages[result.messages.length - 1];
-
-      let steps = [];
-      if (result.messages.length > 1) {
-        // Try to find JSON in the response
-        const jsonMatch = lastMessage.content.toString().match(/```json\s*([\s\S]*?)\s*```/);
-        if (jsonMatch) {
-          try {
-            const parsed = JSON.parse(jsonMatch[1]);
-            steps = parsed.steps || [];
-            console.log(`[Planner] Successfully parsed ${steps.length} steps from LLM response`);
-          } catch (e) {
-            console.error("[Planner] Failed to parse JSON from LLM response:", formatError(e));
-          }
-        } else {
-          console.warn("[Planner] No JSON found in LLM response");
-        }
-      }
-
-      result.steps = steps;
-      console.log(`[Planner] Plan generation completed with ${steps.length} steps`);
-      return result;
-    } catch (error) {
-      console.error(`[Planner] Error during plan generation: ${formatError(error)}`);
-      throw error;
-    }
+    const result = await this.generationService.invoke(state);
+    const steps = result.structuredResponse.steps;
+    result.steps = steps;
+    console.log(`[Planner] Plan generation completed with ${steps.length} steps`);
+    return result;
   }
 }

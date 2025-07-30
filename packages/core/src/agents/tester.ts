@@ -18,6 +18,7 @@ import { StateAnnotation } from "../types/stateAnnotation.js";
 import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../models/adapter.js";
+import { TesterResponseSchema } from "../schemas/response.js";
 
 const AGENT_NAME = 'Tester';
 const AGENT_DESC = 'Tests vs. the user spec, returns pass/fail and feedback';
@@ -45,10 +46,15 @@ export class TesterAgent extends BaseAgent {
       llm,
       tools,
       compressionConfig,
+      responseFormat: TesterResponseSchema,
     });
   }
 
   async invoke(state: typeof StateAnnotation.State) {
-    return await this.generationService.invoke(state);
+    console.log("[Tester] Executing Test");
+    const result = await this.generationService.invoke(state);
+    const testResult = result.structuredResponse.result;
+    console.log(`[Tester] Test ${testResult}`);
+    return result;
   }
 }
