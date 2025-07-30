@@ -80,7 +80,7 @@ export class CoderAgent extends BaseAgent {
 
         const { testResult, testErrors } = testAgentResult;
 
-        console.log(`[Coder] Test result for "${currentStep.description}": ${testResult ? 'PASS' : 'FAIL'}.  'With errors' + ${testErrors} + '. Please fix the implementation.' : ''}`);
+        console.log(`[Coder] Test result for "${currentStep.description}": ${testResult ? 'PASS' : 'FAIL'}.  ${testErrors ? 'With errors' + testErrors : ''}}`);
 
         if (testResult) {
           result = {
