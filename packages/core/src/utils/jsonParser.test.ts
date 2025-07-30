@@ -34,6 +34,19 @@ describe('jsonParser', () => {
       expect(result).toEqual({ result: 'PASS' });
     });
 
+    it('should parse a JSON string wrapped in code block markers with preceeding text', () => {
+      const jsonString = `### Test Result:                                                                                                                                                    │
+│    \`\`\`json                                                                                                                                                             │
+│    {                                                                                                                                                                   │
+│      "result": "PASS",                                                                                                                                                 │
+│      "details": "Directory created successfully."                                                                                                                      │
+│
+      }
+      \`\`\`                                                                                                                                                           │`;
+      const result = parseJsonString(jsonString);
+      expect(result).toEqual({ result: 'PASS' });
+    });
+
     it('should handle nested objects', () => {
       const jsonString = '```json\n{\n  "result": "PASS",\n  "details": {\n    "score": 100,\n    "message": "All tests passed"\n  }\n}\n```';
       const result = parseJsonString(jsonString);
@@ -111,10 +124,10 @@ describe('jsonParser', () => {
     });
 
     it('should fall back to string parsing when structuredResponse is not available', () => {
-      const result = { 
+      const result = {
         messages: [{
           content: '```json\n{\n  "result": "PASS",\n  "errors": []\n}\n```'
-        }] 
+        }]
       };
 
       const extracted = extractStructuredResponse(
