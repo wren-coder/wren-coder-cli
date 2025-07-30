@@ -18,14 +18,24 @@ describe("PlannerAgent", () => {
   });
 
   it("should create an instance with correct properties", () => {
-    const agent = new PlannerAgent({ llm, workingDir });
+    const agent = new PlannerAgent({ 
+      llm, 
+      workingDir,
+      model: "gpt-4",
+      provider: "openai"
+    });
     
     expect(agent.getName()).toBe("planner");
     expect(agent.getDescription()).toBe("Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.");
   });
 
   it("should have an invoke method", () => {
-    const agent = new PlannerAgent({ llm, workingDir });
+    const agent = new PlannerAgent({ 
+      llm, 
+      workingDir,
+      model: "gpt-4",
+      provider: "openai"
+    });
     expect(typeof agent.invoke).toBe("function");
   });
 });

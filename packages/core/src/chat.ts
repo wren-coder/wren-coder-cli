@@ -21,7 +21,6 @@ export interface ChatConfig {
     approvalMode?: ApprovalMode,
     debug?: boolean,
     graphRecursionLimit?: number,
-    maxReflections?: number,
     workingDir?: string,
     compressionConfig?: CompressionConfig;
 }
@@ -34,13 +33,13 @@ export class Chat {
     protected messageHistory: BaseMessage[] = [];
     protected debug: boolean;
     protected graphRecursionLimit: number;
-    protected maxReflections: number;
     protected workingDir: string;
+    protected compressionConfig?: CompressionConfig;
 
     constructor(config: ChatConfig) {
         this.debug = config.debug ?? false;
         this.graphRecursionLimit = config.graphRecursionLimit ?? 25;
-        this.maxReflections = config.maxReflections ?? 3;
+        this.compressionConfig = config.compressionConfig;
         this.workingDir = config.workingDir ?? process.cwd();
 
         const { coderAgentConfig, plannerAgentConfig, evaluatorAgentConfig } = this.loadAgentConfigs(config.llmConfig);
@@ -87,17 +86,17 @@ export class Chat {
         let evaluatorAgentConfig: AgentConfig;
 
         if (isAgentSpecificConfig(config)) {
-            coderAgentConfig = createAgentConfig(config.agentModels.coder, this.workingDir);
-            plannerAgentConfig = createAgentConfig(config.agentModels.planner, this.workingDir);
-            evaluatorAgentConfig = createAgentConfig(config.agentModels.planner, this.workingDir);
+            coderAgentConfig = createAgentConfig(this.workingDir, config.agentModels.coder, this.compressionConfig);
+            plannerAgentConfig = createAgentConfig(this.workingDir, config.agentModels.planner, this.compressionConfig);
+            evaluatorAgentConfig = createAgentConfig(this.workingDir, config.agentModels.evaluator, this.compressionConfig);
         } else {
-            defaultAgentConfig = createAgentConfig(config.defaultModel, this.workingDir);
+            defaultAgentConfig = createAgentConfig(this.workingDir, config.defaultModel, this.compressionConfig);
             coderAgentConfig = config.agentModels?.coder ?
-                createAgentConfig(config.agentModels.coder, this.workingDir) : defaultAgentConfig;
+                createAgentConfig(this.workingDir, config.agentModels.coder, this.compressionConfig) : defaultAgentConfig;
             plannerAgentConfig = config.agentModels?.planner ?
-                createAgentConfig(config.agentModels.planner, this.workingDir) : defaultAgentConfig;
-            evaluatorAgentConfig = config.agentModels?.planner ?
-                createAgentConfig(config.agentModels.planner, this.workingDir) : defaultAgentConfig;
+                createAgentConfig(this.workingDir, config.agentModels.planner, this.compressionConfig) : defaultAgentConfig;
+            evaluatorAgentConfig = config.agentModels?.evaluator ?
+                createAgentConfig(this.workingDir, config.agentModels.evaluator, this.compressionConfig) : defaultAgentConfig;
         }
 
         return {

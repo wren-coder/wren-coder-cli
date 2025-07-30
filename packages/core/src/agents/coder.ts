@@ -19,6 +19,7 @@ import { formatError } from "../utils/format-error.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
+import { createLlmFromConfig } from "../index.js";
 
 const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
@@ -26,8 +27,9 @@ const MAX_SEARCH_RESULTS = 5;
 
 export class CoderAgent extends BaseAgent {
   protected testerAgent: TesterAgent;
-  constructor({ workingDir, llm, provider, model }: AgentConfig) {
-    const compressionConfig = getModelSpecificCompressionConfig(provider, model);
+  constructor({ workingDir, provider, model, llmModelConfig, compressionConfig }: AgentConfig) {
+    const llm = createLlmFromConfig(llmModelConfig);
+    compressionConfig = compressionConfig ?? getModelSpecificCompressionConfig(provider, model);
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
       ShellTool({ workingDir, llm, compressionConfig }),
@@ -47,7 +49,7 @@ export class CoderAgent extends BaseAgent {
       compressionConfig,
     });
 
-    this.testerAgent = new TesterAgent({ workingDir, llm, provider, model });
+    this.testerAgent = new TesterAgent({ workingDir, provider, model, llmModelConfig, compressionConfig });
     this.invoke = this.invoke.bind(this);
   }
 

@@ -18,14 +18,24 @@ describe("EvaluatorAgent", () => {
   });
 
   it("should create an instance with correct properties", () => {
-    const agent = new EvaluatorAgent({ llm, workingDir });
+    const agent = new EvaluatorAgent({ 
+      llm, 
+      workingDir,
+      model: "gpt-4",
+      provider: "openai"
+    });
     
     expect(agent.getName()).toBe("evaluator");
     expect(agent.getDescription()).toBe("Evaluates code + tests vs. the user spec, returns pass/fail and feedback");
   });
 
   it("should have an invoke method", () => {
-    const agent = new EvaluatorAgent({ llm, workingDir });
+    const agent = new EvaluatorAgent({ 
+      llm, 
+      workingDir,
+      model: "gpt-4",
+      provider: "openai"
+    });
     expect(typeof agent.invoke).toBe("function");
   });
 });
