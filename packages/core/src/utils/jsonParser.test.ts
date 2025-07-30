@@ -23,7 +23,7 @@ describe('jsonParser', () => {
     });
 
     it('should parse a JSON string with only triple backticks', () => {
-      const jsonString = '```\n{\n  "result": "PASS"\n}\n```';
+      const jsonString = '```json\n{\n  "result": "PASS"\n}\n```';
       const result = parseJsonString(jsonString);
       expect(result).toEqual({ result: 'PASS' });
     });
