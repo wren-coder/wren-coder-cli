@@ -17,6 +17,7 @@ import { GlobTool } from "../tools/glob.js";
 import { StateAnnotation } from "../chat.js";
 import { HumanMessage } from "@langchain/core/messages";
 import { TesterAgent } from "./tester.js";
+import { formatError } from "../utils/format-error.js";
 
 const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
@@ -55,50 +56,61 @@ export class CoderAgent extends BaseAgent {
   }
   async code(state: typeof StateAnnotation.State) {
     let result = { ...state };
+    console.log(`[Coder] Starting execution with ${result.steps.length} steps`);
+    
     while (result.steps.length > 0) {
       const currentStep = result.steps[0];
       // Convert the step object to a string representation
       const stepString = `${currentStep.action}: ${currentStep.description}\nDetails: ${Array.isArray(currentStep.details) ? currentStep.details.join(', ') : currentStep.details}`;
 
-      console.log(stepString, result.steps.length);
+      console.log(`[Coder] Executing step (${result.steps.length} remaining): ${currentStep.action} - ${currentStep.description}`);
 
       const stepState = {
         ...result,
         messages: [...result.messages, new HumanMessage(stepString)]
       };
 
-      const agentResult = await this.agent.invoke(stepState);
+      try {
+        const agentResult = await this.agent.invoke(stepState);
 
-      // Now invoke the tester agent to validate the implementation
-      const testResult = await this.testerAgent.getAgent().invoke({
-        ...stepState,
-        messages: [...stepState.messages, new HumanMessage(`Test the implementation for ${stepString}`)]
-      });
+        // Now invoke the tester agent to validate the implementation
+        console.log(`[Coder] Testing implementation for: ${currentStep.description}`);
+        const testResult = await this.testerAgent.getAgent().invoke({
+          ...stepState,
+          messages: [...stepState.messages, new HumanMessage(`Test the implementation for ${stepString}`)]
+        });
 
-      // Check if the test passed
-      const testPassed = testResult.messages[testResult.messages.length - 1].content.toString().toLowerCase().includes("pass");
+        // Check if the test passed
+        const testPassed = testResult.messages[testResult.messages.length - 1].content.toString().toLowerCase().includes("pass");
+        console.log(`[Coder] Test result for "${currentStep.description}": ${testPassed ? 'PASS' : 'FAIL'}`);
 
-      if (testPassed) {
-        // If test passed, continue with the next step
-        result = {
-          ...agentResult,
-          steps: result.steps.slice(1)
-        };
-      } else {
-        // If test failed, add a new step to fix the issue at the front of the queue
-        const newStep = {
-          action: "fix",
-          description: "Fix failed test",
-          details: [`The implementation for "${currentStep.description}" failed tests. Please fix the implementation.`]
-        };
+        if (testPassed) {
+          // If test passed, continue with the next step
+          result = {
+            ...agentResult,
+            steps: result.steps.slice(1)
+          };
+        } else {
+          // If test failed, add a new step to fix the issue at the front of the queue
+          const newStep = {
+            action: "fix",
+            description: "Fix failed test",
+            details: [`The implementation for "${currentStep.description}" failed tests. Please fix the implementation.`]
+          };
 
-        result = {
-          ...agentResult,
-          steps: [newStep, ...result.steps] // Add the fix step at the beginning
-        };
+          result = {
+            ...agentResult,
+            steps: [newStep, ...result.steps] // Add the fix step at the beginning
+          };
+          console.log(`[Coder] Added fix step for: ${currentStep.description}`);
+        }
+      } catch (error) {
+        console.error(`[Coder] Error during step execution: ${formatError(error)}`);
+        throw error;
       }
     }
-
+    
+    console.log("[Coder] All steps completed");
     return result;
   }
 }
