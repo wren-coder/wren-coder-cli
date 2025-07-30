@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { DuckDuckGoSearch } from "@langchain/community/tools/duckduckgo_search";
 import { PLANNER_PROMPT } from "../prompts/planner.js";
 import { BaseAgent } from "./base.js";
@@ -16,25 +15,22 @@ import { ReadConsoleLogTool } from "../tools/read-console.js";
 import { PlannerResponseSchema } from "../schemas/response.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { formatError } from "../utils/format-error.js";
+import { AgentConfig } from "./agentConfig.js";
 
 const AGENT_NAME = 'planner';
 const AGENT_DESC = 'Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.';
 const MAX_SEARCH_RESULTS = 5;
 
-interface PlannerAgentConfig {
-  llm: BaseChatModel;
-  workingDir: string;
-}
-
 export class PlannerAgent extends BaseAgent {
-  constructor({ workingDir, llm }: PlannerAgentConfig) {
+  constructor({ workingDir, llm, provider, model }: AgentConfig) {
+    const compressionConfig = BaseAgent.getModelSpecificCompressionConfig(provider, model);
     // Update tools to use the working directory if provided
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
-      ReadFileTool({ workingDir, llm }),
+      ReadFileTool({ workingDir, llm, compressionConfig }),
       GrepTool({ workingDir }),
       ListFilesTool({ workingDir }),
-      GlobTool({ workingDir, llm }),
+      GlobTool({ workingDir, llm, compressionConfig }),
       ReadConsoleLogTool({ workingDir }),
     ];
 
@@ -45,6 +41,7 @@ export class PlannerAgent extends BaseAgent {
       llm,
       tools,
       responseFormat: PlannerResponseSchema,
+      compressionConfig,
     });
 
     this.invoke = this.invoke.bind(this);

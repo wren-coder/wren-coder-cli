@@ -11,18 +11,19 @@ import path from "path";
 import fs from "fs/promises";
 import { formatError } from "../utils/format-error.js";
 import { ToolName } from "./enum.js";
-import { processLargeContext } from "../utils/compression.js";
+import { CompressionConfig, processLargeContext } from "../utils/compression.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
 interface GlobToolConfig {
     workingDir: string,
     llm: BaseChatModel, // Optional LLM for compression
+    compressionConfig: CompressionConfig,
 }
 
 const DESC =
     "Searches for files matching a glob pattern in the user's workspace directory, returning absolute paths sorted by modification time (newest first). Input: { pattern: string }. Returns an array of matching file paths or an error message. Large results will be automatically compressed.";
 
-export const GlobTool = ({ workingDir, llm }: GlobToolConfig) => tool(
+export const GlobTool = ({ workingDir, llm, compressionConfig }: GlobToolConfig) => tool(
     async ({ pattern }: { pattern: string }) => {
         try {
             const fullPattern = path
@@ -79,7 +80,7 @@ export const GlobTool = ({ workingDir, llm }: GlobToolConfig) => tool(
             const sortedPaths = entries.map((e) => e.path);
 
             const resultString = JSON.stringify(sortedPaths, null, 2);
-            const result = await processLargeContext(resultString, llm);
+            const result = await processLargeContext(resultString, llm, compressionConfig);
             return result.content;
 
             return sortedPaths;

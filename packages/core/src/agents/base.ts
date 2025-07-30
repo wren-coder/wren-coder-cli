@@ -10,7 +10,7 @@ import { StructuredTool } from "@langchain/core/tools";
 import { InteropZodType } from "@langchain/core/utils/types";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { GenerationService } from "../services/generationService.js";
-import { AgentInterface } from "./agentInterface.js";
+import { AgentInterface, CompressionConfig, Model, Provider } from "../index.js";
 
 export interface BaseAgentConfig {
     name: string;
@@ -19,6 +19,7 @@ export interface BaseAgentConfig {
     llm: BaseChatModel;
     tools?: StructuredTool[];
     responseFormat?: InteropZodType;
+    compressionConfig: CompressionConfig;
 }
 
 export abstract class BaseAgent implements AgentInterface {
@@ -26,18 +27,32 @@ export abstract class BaseAgent implements AgentInterface {
     protected description: string;
     protected generationService: GenerationService;
 
-    constructor(config: BaseAgentConfig) {
-        this.name = config.name;
-        this.description = config.description;
+    constructor({ name, description, prompt, llm, compressionConfig, responseFormat, tools }: BaseAgentConfig) {
+        this.name = name;
+        this.description = description;
 
         const agent = createReactAgent({
-            name: config.name,
-            prompt: config.prompt,
-            llm: config.llm,
-            tools: config.tools ?? [],
-            responseFormat: config.responseFormat,
+            name,
+            prompt,
+            llm,
+            tools: tools ?? [],
+            responseFormat,
         });
-        this.generationService = new GenerationService(agent);
+        this.generationService = new GenerationService({
+            agent,
+            llm,
+            compressionConfig,
+        });
+    }
+
+    static getModelSpecificCompressionConfig(_provider: Provider, _model: Model): CompressionConfig {
+        return {
+            maxTokens: 30000,
+            targetTokens: 10000,
+            enableChunking: true,
+            maxChunkTokens: 5000,
+            maxMessages: 50,
+        }
     }
 
     abstract invoke(state: typeof StateAnnotation.State): Promise<typeof StateAnnotation.State>;

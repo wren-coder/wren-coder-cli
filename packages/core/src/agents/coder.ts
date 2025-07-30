@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { DuckDuckGoSearch } from "@langchain/community/tools/duckduckgo_search";
 import { CODER_PROMPT } from "../prompts/coder.js";
 import { BaseAgent } from "./base.js";
@@ -18,27 +17,24 @@ import { HumanMessage } from "@langchain/core/messages";
 import { TesterAgent } from "./tester.js";
 import { formatError } from "../utils/format-error.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
+import { AgentConfig } from "./agentConfig.js";
 
 const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
 const MAX_SEARCH_RESULTS = 5;
 
-interface CoderAgentConfig {
-  llm: BaseChatModel;
-  workingDir: string;
-}
-
 export class CoderAgent extends BaseAgent {
   protected testerAgent: TesterAgent;
-  constructor({ workingDir, llm }: CoderAgentConfig) {
+  constructor({ workingDir, llm, provider, model }: AgentConfig) {
+    const compressionConfig = BaseAgent.getModelSpecificCompressionConfig(provider, model);
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
-      ShellTool({ workingDir, llm }),
-      ReadFileTool({ workingDir, llm }),
+      ShellTool({ workingDir, llm, compressionConfig }),
+      ReadFileTool({ workingDir, llm, compressionConfig }),
       WriteFileTool({ workingDir }),
       GrepTool({ workingDir }),
       ListFilesTool({ workingDir }),
-      GlobTool({ workingDir, llm }),
+      GlobTool({ workingDir, llm, compressionConfig }),
     ];
 
     super({
@@ -47,9 +43,10 @@ export class CoderAgent extends BaseAgent {
       prompt: CODER_PROMPT({ workingDir }),
       llm,
       tools,
+      compressionConfig,
     });
 
-    this.testerAgent = new TesterAgent({ workingDir, llm });
+    this.testerAgent = new TesterAgent({ workingDir, llm, provider, model });
     this.invoke = this.invoke.bind(this);
   }
 

@@ -13,13 +13,15 @@ import { HumanMessage, SystemMessage } from "@langchain/core/messages";
  */
 export interface CompressionConfig {
   /** Maximum token limit before compression is triggered */
-  maxTokens?: number;
+  maxTokens: number;
   /** Target token count after compression */
   targetTokens?: number;
   /** Whether to enable chunking for very large content */
   enableChunking?: boolean;
   /** Maximum chunk size in tokens */
   maxChunkTokens?: number;
+
+  maxMessages: number;
 }
 
 /**
@@ -49,7 +51,7 @@ export interface CompressionResult {
 export async function compressContext(
   content: string,
   llm: BaseChatModel,
-  config?: CompressionConfig
+  _config: CompressionConfig
 ): Promise<CompressionResult> {
   // For now, we'll implement a basic compression using the LLM
   // In a more advanced implementation, we would check token counts and only compress if needed
@@ -66,7 +68,7 @@ export async function compressContext(
       content: response.content as string,
       wasChunked: false
     };
-  } catch (err) {
+  } catch (_err) {
     // If compression fails, return the original content
     return {
       content,
@@ -113,7 +115,7 @@ export function chunkContent(
 export async function processLargeContext(
   content: string,
   llm: BaseChatModel,
-  config?: CompressionConfig
+  config: CompressionConfig
 ): Promise<CompressionResult> {
   const effectiveConfig = {
     maxTokens: config?.maxTokens ?? 30000, // Default max tokens before compression
@@ -149,7 +151,7 @@ export async function processLargeContext(
     const summaries = await Promise.all(chunks.map(chunk => compressContext(chunk, llm, config)));
     const combinedSummaries = summaries.map(s => s.content).join("----entry----");
     const finalResult = await compressContext(combinedSummaries, llm, config);
-    
+
     return {
       ...finalResult,
       wasChunked: true,

@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { DuckDuckGoSearch } from "@langchain/community/tools/duckduckgo_search";
 import { BaseAgent } from "./base.js";
 import { ShellTool } from "../tools/shell.js";
@@ -17,25 +16,22 @@ import { ScreenshotTool } from "../tools/screenshot.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
 import { EvaluatorResponseSchema } from "../schemas/response.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
+import { AgentConfig } from "./agentConfig.js";
 
 const AGENT_NAME = 'evaluator';
 const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail and feedback';
 const MAX_SEARCH_RESULTS = 5;
 
-interface EvaluatorAgentConfig {
-  llm: BaseChatModel;
-  workingDir: string;
-}
-
 export class EvaluatorAgent extends BaseAgent {
-  constructor({ workingDir, llm }: EvaluatorAgentConfig) {
+  constructor({ workingDir, llm, provider, model }: AgentConfig) {
+    const compressionConfig = BaseAgent.getModelSpecificCompressionConfig(provider, model);
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
-      ShellTool({ workingDir, llm }),
-      ReadFileTool({ workingDir, llm }),
+      ShellTool({ workingDir, llm, compressionConfig }),
+      ReadFileTool({ workingDir, llm, compressionConfig }),
       GrepTool({ workingDir }),
       ListFilesTool({ workingDir }),
-      GlobTool({ workingDir, llm }),
+      GlobTool({ workingDir, llm, compressionConfig }),
       ScreenshotTool({ workingDir }),
       ReadConsoleLogTool({ workingDir }),
     ];
@@ -47,6 +43,7 @@ export class EvaluatorAgent extends BaseAgent {
       llm,
       tools,
       responseFormat: EvaluatorResponseSchema,
+      compressionConfig,
     });
 
     this.invoke = this.invoke.bind(this);

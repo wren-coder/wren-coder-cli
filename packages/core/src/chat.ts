@@ -7,13 +7,14 @@
 import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { CoderAgent } from "./agents/coder.js";
 import { PlannerAgent } from "./agents/planner.js";
-import { BaseChatModel } from "@langchain/core/language_models/chat_models";
-import { createLlmFromConfig, isAgentSpecificConfig, LlmConfig } from "./models/adapter.js";
+import { isAgentSpecificConfig, LlmConfig } from "./models/adapter.js";
 import { EvaluatorAgent } from "./agents/evaluator.js";
 import { StateGraph, START, END } from "@langchain/langgraph";
 import { ApprovalMode } from "./types/approvalMode.js";
 import { StateAnnotation } from "./types/stateAnnotation.js";
 import { MessageRoles } from "./types/messageRole.js";
+import { CompressionConfig } from "./utils/compression.js";
+import { AgentConfig, createAgentConfig } from "./agents/agentConfig.js";
 
 export interface ChatConfig {
     llmConfig: LlmConfig,
@@ -22,6 +23,7 @@ export interface ChatConfig {
     graphRecursionLimit?: number,
     maxReflections?: number,
     workingDir?: string,
+    compressionConfig?: CompressionConfig;
 }
 
 export class Chat {
@@ -41,20 +43,11 @@ export class Chat {
         this.maxReflections = config.maxReflections ?? 3;
         this.workingDir = config.workingDir ?? process.cwd();
 
-        const { coderLlm, plannerLlm, evaluatorLlm } = this.loadModels(config.llmConfig);
+        const { coderAgentConfig, plannerAgentConfig, evaluatorAgentConfig } = this.loadAgentConfigs(config.llmConfig);
 
-        this.coderAgent = new CoderAgent({
-            llm: coderLlm,
-            workingDir: this.workingDir,
-        });
-        this.plannerAgent = new PlannerAgent({
-            llm: plannerLlm,
-            workingDir: this.workingDir,
-        });
-        this.evaluatorAgent = new EvaluatorAgent({
-            llm: evaluatorLlm,
-            workingDir: this.workingDir,
-        });
+        this.coderAgent = new CoderAgent(coderAgentConfig);
+        this.plannerAgent = new PlannerAgent(plannerAgentConfig);
+        this.evaluatorAgent = new EvaluatorAgent(evaluatorAgentConfig);
 
         this.graph = this.createGraph();
     }
@@ -87,30 +80,30 @@ export class Chat {
             .compile();
     }
 
-    private loadModels(config: LlmConfig) {
-        let defaultLlm: BaseChatModel | undefined;
-        let coderLlm: BaseChatModel;
-        let plannerLlm: BaseChatModel;
-        let evaluatorLlm: BaseChatModel;
+    private loadAgentConfigs(config: LlmConfig) {
+        let defaultAgentConfig: AgentConfig | undefined;
+        let coderAgentConfig: AgentConfig;
+        let plannerAgentConfig: AgentConfig;
+        let evaluatorAgentConfig: AgentConfig;
 
         if (isAgentSpecificConfig(config)) {
-            coderLlm = createLlmFromConfig(config.agentModels.coder);
-            plannerLlm = createLlmFromConfig(config.agentModels.planner);
-            evaluatorLlm = createLlmFromConfig(config.agentModels.planner);
+            coderAgentConfig = createAgentConfig(config.agentModels.coder, this.workingDir);
+            plannerAgentConfig = createAgentConfig(config.agentModels.planner, this.workingDir);
+            evaluatorAgentConfig = createAgentConfig(config.agentModels.planner, this.workingDir);
         } else {
-            defaultLlm = createLlmFromConfig(config.defaultModel);
-            coderLlm = config.agentModels?.coder ?
-                createLlmFromConfig(config.agentModels.coder) : defaultLlm;
-            plannerLlm = config.agentModels?.planner ?
-                createLlmFromConfig(config.agentModels.planner) : defaultLlm;
-            evaluatorLlm = config.agentModels?.planner ?
-                createLlmFromConfig(config.agentModels.planner) : defaultLlm;
+            defaultAgentConfig = createAgentConfig(config.defaultModel, this.workingDir);
+            coderAgentConfig = config.agentModels?.coder ?
+                createAgentConfig(config.agentModels.coder, this.workingDir) : defaultAgentConfig;
+            plannerAgentConfig = config.agentModels?.planner ?
+                createAgentConfig(config.agentModels.planner, this.workingDir) : defaultAgentConfig;
+            evaluatorAgentConfig = config.agentModels?.planner ?
+                createAgentConfig(config.agentModels.planner, this.workingDir) : defaultAgentConfig;
         }
 
         return {
-            coderLlm,
-            plannerLlm,
-            evaluatorLlm,
+            coderAgentConfig,
+            plannerAgentConfig,
+            evaluatorAgentConfig,
         }
     }
 

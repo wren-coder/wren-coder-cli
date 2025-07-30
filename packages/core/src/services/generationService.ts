@@ -5,31 +5,96 @@
  */
 
 import { StateAnnotation } from "../types/stateAnnotation.js";
-import { getCompressionPrompt } from "../prompts/compression.js";
+import { BaseMessage, HumanMessage } from "@langchain/core/messages";
+import { processLargeContext, CompressionConfig } from "../utils/compression.js";
+import { BaseChatModel } from "@langchain/core/language_models/chat_models";
+
+export interface GenerationServiceConfig {
+  compressionConfig: CompressionConfig;
+  llm: BaseChatModel,
+  agent: any;
+}
 
 export class GenerationService {
   private agent;
+  private compressionConfig: CompressionConfig;
+  private llm: BaseChatModel;
 
-  constructor(agent: any) {
+  constructor({ agent, llm, compressionConfig }: GenerationServiceConfig) {
     this.agent = agent;
+    this.compressionConfig = compressionConfig;
+    this.llm = llm;
   }
 
-  async invoke(state: typeof StateAnnotation.State) {
-    // Here we could add compression, chunking, etc. logic
-    // For now, we'll just delegate to the underlying agent
-    return await this.agent.invoke(state);
+  /**
+   * Estimate token count for messages (simplified implementation)
+   * In a production environment, you would use a proper tokenizer
+   */
+  private estimateTokenCount(messages: BaseMessage[]): number {
+    // Rough estimation: 1 token ≈ 4 characters
+    const totalChars = messages.reduce((acc, msg) => acc + JSON.stringify(msg).length, 0);
+    return Math.floor(totalChars / 4);
   }
 
-  async *stream(state: typeof StateAnnotation.State) {
-    // Streaming implementation with potential for compression, chunking, etc.
-    // This is a simplified version - in a real implementation, we'd add the additional features
-    const stream = await this.agent.stream(state);
+  /**
+   * Compress message history if it exceeds token limits
+   */
+  private async compressMessages(messages: BaseMessage[]): Promise<BaseMessage[]> {
+    const tokenCount = this.estimateTokenCount(messages);
 
-    for await (const chunk of stream) {
-      // Could add chunking, compression, or other processing here
-      yield chunk;
+    // If within limits, no compression needed
+    if (tokenCount <= this.compressionConfig.maxTokens) {
+      return messages.slice(-this.compressionConfig.maxMessages);
+    }
+
+    // Convert messages to string for compression
+    const messagesString = messages.map(msg =>
+      `${msg._getType()}: ${typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content)}`
+    ).join('');
+
+    try {
+      const compressionResult = await processLargeContext(messagesString, this.llm, this.compressionConfig);
+
+      // Create a new message with the compressed content
+      const compressedMessage = new HumanMessage({
+        content: `Compressed conversation history:\n${compressionResult.content}`,
+        name: "history_compression"
+      });
+
+      // Return the compressed message plus any recent messages that weren't included
+      return [compressedMessage];
+    } catch (_error) {
+      // If compression fails, fall back to truncation
+      return messages.slice(-this.compressionConfig.maxMessages);
     }
   }
 
-  // Additional methods for compression, chunking, etc. could be added here
+  async invoke(state: typeof StateAnnotation.State) {
+    const processedMessages = await this.compressMessages(state.messages);
+    const processedState = {
+      ...state,
+      messages: processedMessages
+    };
+
+    return await this.agent.invoke(processedState);
+  }
+
+  async *stream(state: typeof StateAnnotation.State) {
+    const processedMessages = await this.compressMessages(state.messages);
+    const processedState = {
+      ...state,
+      messages: processedMessages
+    };
+
+    if (this.agent.stream) {
+      const stream = await this.agent.stream(processedState);
+
+      for await (const chunk of stream) {
+        yield chunk;
+      }
+    } else {
+      const result = await this.agent.invoke(processedState);
+      yield result;
+    }
+  }
 }

@@ -10,12 +10,13 @@ import { exec } from "child_process";
 import { promisify } from "util";
 import { formatError } from "../utils/format-error.js";
 import { ToolName } from "./enum.js";
-import { processLargeContext } from "../utils/compression.js";
+import { CompressionConfig, processLargeContext } from "../utils/compression.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
 interface ShellToolConfig {
     workingDir: string,
     llm: BaseChatModel, // Optional LLM for compression
+    compressionConfig: CompressionConfig;
 }
 
 const execAsync = promisify(exec);
@@ -26,7 +27,7 @@ const DESC = "Execute a Bash command on the host machine. Input must be a single
  * A StructuredTool that runs a bash command and returns stdout (or stderr on error).
  * Automatically compresses large outputs to stay within context limits.
  */
-export const ShellTool = ({ workingDir, llm }: ShellToolConfig) => tool(
+export const ShellTool = ({ workingDir, llm, compressionConfig }: ShellToolConfig) => tool(
     async ({ command }: { command: string }) => {
         try {
             const { stdout, stderr } = await execAsync(command, { shell: "/bin/bash" });
@@ -38,7 +39,7 @@ export const ShellTool = ({ workingDir, llm }: ShellToolConfig) => tool(
 STDOUT: ${stdout}`;
             }
 
-            const result = await processLargeContext(output, llm);
+            const result = await processLargeContext(output, llm, compressionConfig);
             return result.content;
 
 
