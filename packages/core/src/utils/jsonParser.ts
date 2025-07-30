@@ -19,26 +19,12 @@ export function parseJsonString(jsonString: string): unknown {
   // Trim whitespace
   let trimmed = jsonString.trim();
 
-  // Check if the string starts with a code block marker
-  if (trimmed.startsWith('```json')) {
-    // Find the end of the code block marker (first newline after the opening markers)
-    const firstNewlineIndex = trimmed.indexOf('\n');
-    if (firstNewlineIndex !== -1) {
-      // Extract content between the code block markers
-      const lastTripleBacktickIndex = trimmed.lastIndexOf('```');
-      if (lastTripleBacktickIndex !== -1 && lastTripleBacktickIndex > firstNewlineIndex) {
-        trimmed = trimmed.substring(firstNewlineIndex + 1, lastTripleBacktickIndex);
-      } else {
-        // If no closing ``` found, just remove the opening ones
-        trimmed = trimmed.substring(firstNewlineIndex + 1);
-      }
-    } else {
-      // If no newline found after ```, remove the opening markers
-      trimmed = trimmed.substring(3);
-    }
-
-    // Trim again after processing code block markers
-    trimmed = trimmed.trim();
+  // Use regex to extract JSON content between ```json and ```
+  const jsonBlockRegex = /```json\s*([\s\S]*?)\s*```/;
+  const match = trimmed.match(jsonBlockRegex);
+  
+  if (match) {
+    trimmed = match[1].trim();
   }
 
   try {

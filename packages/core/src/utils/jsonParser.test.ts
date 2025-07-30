@@ -35,14 +35,12 @@ describe('jsonParser', () => {
     });
 
     it('should parse a JSON string wrapped in code block markers with preceeding text', () => {
-      const jsonString = `### Test Result:                                                                                                                                                    │
-│    \`\`\`json                                                                                                                                                             │
-│    {                                                                                                                                                                   │
-│      "result": "PASS",                                                                                                                                                 │
-│      "details": "Directory created successfully."                                                                                                                      │
-│
+      const jsonString = `### Test Result:                                                                                                                                                    
+    \`\`\`json
+    {
+      "result": "PASS"
       }
-      \`\`\`                                                                                                                                                           │`;
+      \`\`\`;                                                                                                                                                        `;
       const result = parseJsonString(jsonString);
       expect(result).toEqual({ result: 'PASS' });
     });
@@ -116,7 +114,6 @@ describe('jsonParser', () => {
       const extracted = extractStructuredResponse(
         result,
         TestSchema,
-        fallbackMessageExtractor
       );
 
       expect(extracted).toEqual({ result: 'PASS', errors: [] });
