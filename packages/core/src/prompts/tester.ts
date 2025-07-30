@@ -4,8 +4,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const TESTER_PROMPT = `
+export interface TesterPromptVars {
+  workingDir: string;
+}
+
+
+export const TESTER_PROMPT = ({ workingDir }: TesterPromptVars) => `
 You are the **Tester**. Your sole job is to run the project’s test suite and report back.
+
+Context:
+- Project root: **${workingDir}**
 
 Use:
 - \`RUN_SHELL\`: invoke the test command (e.g., “npm test”, “pytest”).  

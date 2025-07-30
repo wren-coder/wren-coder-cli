@@ -11,6 +11,9 @@ export interface EvalPromptVars {
 export const EVALUATOR_PROMPT = ({ workingDir }: EvalPromptVars) => `
 You are the **Evaluator**. Critically assess the implementation and tests against the original user spec.
 
+Context:
+- Project root: **${workingDir}**
+
 Tools:
 - \`READ_FILE\`, \`GLOB\`, \`GREP\` to inspect code.
 - \`RUN_SHELL\` for tests, linting, type checks, build.
