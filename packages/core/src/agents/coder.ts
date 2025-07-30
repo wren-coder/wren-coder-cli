@@ -59,7 +59,6 @@ export class CoderAgent extends BaseAgent {
 
     while (result.steps.length > 0) {
       const currentStep = result.steps[0];
-      // Convert the step object to a string representation
       const stepString = `${currentStep.action}: ${currentStep.description}\nDetails: ${Array.isArray(currentStep.details) ? currentStep.details.join(', ') : currentStep.details}`;
 
       console.log(`[Coder] Executing step (${result.steps.length} remaining): ${currentStep.action} - ${currentStep.description}`);
@@ -72,25 +71,22 @@ export class CoderAgent extends BaseAgent {
       try {
         const agentResult = await this.generationService.invoke(stepState);
 
-        // Now invoke the tester agent to validate the implementation
         console.log(`[Coder] Testing implementation for: ${currentStep.description}`);
-        const testResult = await this.testerAgent.invoke({
+        const testAgentResult = await this.testerAgent.invoke({
           ...stepState,
           messages: [...stepState.messages, new HumanMessage(`Test the implementation for ${stepString}`)]
         });
 
-        const testPassed = testResult.structuredResponse.result;
+        const testPassed = testAgentResult.structuredResponse.result;
 
         console.log(`[Coder] Test result for "${currentStep.description}": ${testPassed ? 'PASS' : 'FAIL'}`);
 
         if (testPassed) {
-          // If test passed, continue with the next step
           result = {
             ...agentResult,
             steps: result.steps.slice(1)
           };
         } else {
-          // If test failed, add a new step to fix the issue at the front of the queue
           const newStep = {
             action: "fix",
             description: "Fix failed test",
@@ -99,7 +95,7 @@ export class CoderAgent extends BaseAgent {
 
           result = {
             ...agentResult,
-            steps: [newStep, ...result.steps] // Add the fix step at the beginning
+            steps: [newStep, ...result.steps]
           };
           console.log(`[Coder] Added fix step for: ${currentStep.description}`);
         }
