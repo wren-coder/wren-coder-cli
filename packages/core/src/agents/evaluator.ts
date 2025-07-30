@@ -49,11 +49,12 @@ export class EvaluatorAgent extends BaseAgent {
       responseFormat: EvaluatorResponseSchema,
     });
 
-    this.evaluate = this.evaluate.bind(this);
+    this.invoke = this.invoke.bind(this);
   }
 
-  async evaluate(state: typeof StateAnnotation.State) {
-    const result = await this.agent.invoke(state);
+
+  async invoke(state: typeof StateAnnotation.State) {
+    const result = await this.generationService.invoke(state);
     const lastMessage = result.messages[result.messages.length - 1];
 
     let suggestions = [];

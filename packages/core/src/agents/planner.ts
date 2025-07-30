@@ -47,14 +47,14 @@ export class PlannerAgent extends BaseAgent {
       responseFormat: PlannerResponseSchema,
     });
 
-    this.plan = this.plan.bind(this);
+    this.invoke = this.invoke.bind(this);
   }
 
-  async plan(state: typeof StateAnnotation.State) {
+  async invoke(state: typeof StateAnnotation.State) {
     console.log("[Planner] Starting plan generation");
 
     try {
-      const result = await this.agent.invoke(state);
+      const result = await this.generationService.invoke(state);
       const lastMessage = result.messages[result.messages.length - 1];
 
       let steps = [];

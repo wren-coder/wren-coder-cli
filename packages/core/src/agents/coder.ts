@@ -41,8 +41,6 @@ export class CoderAgent extends BaseAgent {
       GlobTool({ workingDir, llm }),
     ];
 
-
-
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
@@ -52,9 +50,10 @@ export class CoderAgent extends BaseAgent {
     });
 
     this.testerAgent = new TesterAgent({ workingDir, llm });
-    this.code = this.code.bind(this);
+    this.invoke = this.invoke.bind(this);
   }
-  async code(state: typeof StateAnnotation.State) {
+
+  async invoke(state: typeof StateAnnotation.State) {
     let result = { ...state };
     console.log(`[Coder] Starting execution with ${result.steps.length} steps`);
 
@@ -71,11 +70,11 @@ export class CoderAgent extends BaseAgent {
       };
 
       try {
-        const agentResult = await this.agent.invoke(stepState);
+        const agentResult = await this.generationService.invoke(stepState);
 
         // Now invoke the tester agent to validate the implementation
         console.log(`[Coder] Testing implementation for: ${currentStep.description}`);
-        const testResult = await this.testerAgent.getAgent().invoke({
+        const testResult = await this.testerAgent.invoke({
           ...stepState,
           messages: [...stepState.messages, new HumanMessage(`Test the implementation for ${stepString}`)]
         });

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { CoderAgent } from "./coder.js";
 import { ChatOpenAI } from "@langchain/openai";
 
@@ -24,8 +24,8 @@ describe("CoderAgent", () => {
     expect(agent.getDescription()).toBe("Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.");
   });
 
-  it("should have a code method", () => {
+  it("should have an invoke method", () => {
     const agent = new CoderAgent({ llm, workingDir });
-    expect(typeof agent.code).toBe("function");
+    expect(typeof agent.invoke).toBe("function");
   });
-});
+});;

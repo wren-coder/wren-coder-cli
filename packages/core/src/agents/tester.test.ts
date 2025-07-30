@@ -24,6 +24,11 @@ describe("TesterAgent", () => {
     expect(agent.getDescription()).toBe("Tests vs. the user spec, returns pass/fail and feedback");
   });
 
+  it("should have an invoke method", () => {
+    const agent = new TesterAgent({ llm, workingDir });
+    expect(typeof agent.invoke).toBe("function");
+  });
+
   it("should have the correct tools configured", () => {
     const agent = new TesterAgent({ llm, workingDir });
     

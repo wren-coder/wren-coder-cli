@@ -9,6 +9,8 @@ import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { StructuredTool } from "@langchain/core/tools";
 import { InteropZodType } from "@langchain/core/utils/types";
 import { StateAnnotation } from "../types/stateAnnotation.js";
+import { GenerationService } from "../services/generationService.js";
+import { AgentInterface } from "./agentInterface.js";
 
 export interface BaseAgentConfig {
     name: string;
@@ -19,34 +21,26 @@ export interface BaseAgentConfig {
     responseFormat?: InteropZodType;
 }
 
-export abstract class BaseAgent {
+export abstract class BaseAgent implements AgentInterface {
     protected name: string;
     protected description: string;
-    protected prompt: string;
-    protected llm: BaseChatModel;
-    protected tools: StructuredTool[];
-    protected agent;
+    protected generationService: GenerationService;
 
     constructor(config: BaseAgentConfig) {
         this.name = config.name;
         this.description = config.description;
-        this.prompt = config.prompt;
-        this.llm = config.llm;
-        this.tools = config.tools ?? [];
 
-        this.agent = createReactAgent({
-            llm: this.llm,
-            tools: this.tools,
-            prompt: this.prompt,
-            name: this.name,
-            stateSchema: StateAnnotation,
+        const agent = createReactAgent({
+            name: config.name,
+            prompt: config.prompt,
+            llm: config.llm,
+            tools: config.tools ?? [],
             responseFormat: config.responseFormat,
         });
+        this.generationService = new GenerationService(agent);
     }
 
-    getAgent() {
-        return this.agent;
-    }
+    abstract invoke(state: typeof StateAnnotation.State): Promise<typeof StateAnnotation.State>;
 
     getName(): string {
         return this.name;

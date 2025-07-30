@@ -15,6 +15,7 @@ import { GlobTool } from "../tools/glob.js";
 import { ScreenshotTool } from "../tools/screenshot.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
 import { TESTER_PROMPT } from "../prompts/tester.js";
+import { StateAnnotation } from "../types/stateAnnotation.js";
 
 const AGENT_NAME = 'Tester';
 const AGENT_DESC = 'Tests vs. the user spec, returns pass/fail and feedback';
@@ -45,5 +46,9 @@ export class TesterAgent extends BaseAgent {
       llm,
       tools,
     });
+  }
+
+  async invoke(state: typeof StateAnnotation.State) {
+    return await this.generationService.invoke(state);
   }
 }

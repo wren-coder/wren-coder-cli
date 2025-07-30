@@ -24,8 +24,8 @@ describe("EvaluatorAgent", () => {
     expect(agent.getDescription()).toBe("Evaluates code + tests vs. the user spec, returns pass/fail and feedback");
   });
 
-  it("should have an evaluate method", () => {
+  it("should have an invoke method", () => {
     const agent = new EvaluatorAgent({ llm, workingDir });
-    expect(typeof agent.evaluate).toBe("function");
+    expect(typeof agent.invoke).toBe("function");
   });
 });

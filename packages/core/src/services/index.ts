@@ -6,3 +6,4 @@
 
 export * from "./fileDiscoveryService.js";
 export * from "./gitService.js";
+export * from "./generationService.js";

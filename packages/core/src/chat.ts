@@ -41,7 +41,7 @@ export class Chat {
         this.maxReflections = config.maxReflections ?? 3;
         this.workingDir = config.workingDir ?? process.cwd();
 
-        const { coderLlm, plannerLlm } = this.loadModels(config.llmConfig);
+        const { coderLlm, plannerLlm, evaluatorLlm } = this.loadModels(config.llmConfig);
 
         this.coderAgent = new CoderAgent({
             llm: coderLlm,
@@ -52,7 +52,7 @@ export class Chat {
             workingDir: this.workingDir,
         });
         this.evaluatorAgent = new EvaluatorAgent({
-            llm: coderLlm,
+            llm: evaluatorLlm,
             workingDir: this.workingDir,
         });
 
@@ -61,9 +61,9 @@ export class Chat {
 
     private createGraph() {
         return new StateGraph(StateAnnotation)
-            .addNode(this.plannerAgent.getName(), this.plannerAgent.plan)
-            .addNode(this.coderAgent.getName(), this.coderAgent.code)
-            .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.evaluate)
+            .addNode(this.plannerAgent.getName(), this.plannerAgent.invoke)
+            .addNode(this.coderAgent.getName(), this.coderAgent.invoke)
+            .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.invoke)
 
             .addEdge(START, this.plannerAgent.getName())
             .addEdge(this.plannerAgent.getName(), this.coderAgent.getName())
@@ -91,21 +91,26 @@ export class Chat {
         let defaultLlm: BaseChatModel | undefined;
         let coderLlm: BaseChatModel;
         let plannerLlm: BaseChatModel;
+        let evaluatorLlm: BaseChatModel;
 
         if (isAgentSpecificConfig(config)) {
             coderLlm = createLlmFromConfig(config.agentModels.coder);
             plannerLlm = createLlmFromConfig(config.agentModels.planner);
+            evaluatorLlm = createLlmFromConfig(config.agentModels.planner);
         } else {
             defaultLlm = createLlmFromConfig(config.defaultModel);
             coderLlm = config.agentModels?.coder ?
                 createLlmFromConfig(config.agentModels.coder) : defaultLlm;
             plannerLlm = config.agentModels?.planner ?
                 createLlmFromConfig(config.agentModels.planner) : defaultLlm;
+            evaluatorLlm = config.agentModels?.planner ?
+                createLlmFromConfig(config.agentModels.planner) : defaultLlm;
         }
 
         return {
             coderLlm,
             plannerLlm,
+            evaluatorLlm,
         }
     }
 

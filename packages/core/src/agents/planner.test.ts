@@ -24,8 +24,8 @@ describe("PlannerAgent", () => {
     expect(agent.getDescription()).toBe("Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.");
   });
 
-  it("should have a plan method", () => {
+  it("should have an invoke method", () => {
     const agent = new PlannerAgent({ llm, workingDir });
-    expect(typeof agent.plan).toBe("function");
+    expect(typeof agent.invoke).toBe("function");
   });
 });
