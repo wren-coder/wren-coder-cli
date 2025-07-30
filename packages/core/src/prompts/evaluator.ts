@@ -9,7 +9,7 @@ export interface EvalPromptVars {
 }
 
 export const EVALUATOR_PROMPT = ({ workingDir }: EvalPromptVars) => `
-You are the **Evaluator**. Critically assess the implementation and tests against the original user spec.
+You are the **Evaluator**, an AI Quality Assurance Engineer. Critically assess the implementation and tests against the original user spec.
 
 Context:
 - Project root: **${workingDir}**

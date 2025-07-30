@@ -16,6 +16,7 @@ import { MessageRoles } from "./types/messageRole.js";
 import { CompressionConfig, getModelSpecificCompressionConfig } from "./utils/compression.js";
 import { AgentConfig, createAgentConfig } from "./agents/agentConfig.js";
 import { GenerationService } from "./services/generationService.js";
+import { PLANNER_USER_PROMPT } from "./index.js";
 
 export interface ChatConfig {
     llmConfig: LlmConfig,
@@ -120,7 +121,7 @@ export class Chat {
     }
 
     async query(query: string) {
-        this.messageHistory.push(new HumanMessage(query));
+        this.messageHistory.push(new HumanMessage(PLANNER_USER_PROMPT(query)));
 
         let finalState: { messages: BaseMessage[] } | undefined;
         let shownCount = this.messageHistory.length;

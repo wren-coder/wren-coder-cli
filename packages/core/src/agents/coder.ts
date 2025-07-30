@@ -5,7 +5,7 @@
  */
 
 import { DuckDuckGoSearch } from "@langchain/community/tools/duckduckgo_search";
-import { CODER_PROMPT } from "../prompts/coder.js";
+import { CODER_PROMPT, CODER_USER_PROMPT } from "../prompts/coder.js";
 import { BaseAgent } from "./base.js";
 import { ShellTool } from "../tools/shell.js";
 import { ReadFileTool } from "../tools/read-file.js";
@@ -19,7 +19,7 @@ import { formatError } from "../utils/format-error.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
-import { createLlmFromConfig } from "../index.js";
+import { createLlmFromConfig, TESTER_USER_PROMPT } from "../index.js";
 
 const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
@@ -66,7 +66,7 @@ export class CoderAgent extends BaseAgent {
 
       const stepState = {
         ...result,
-        messages: [...result.messages, new HumanMessage(stepString)]
+        messages: [...result.messages, new HumanMessage(CODER_USER_PROMPT(stepString))]
       };
 
       try {
@@ -75,7 +75,7 @@ export class CoderAgent extends BaseAgent {
         console.log(`[Coder] Testing implementation for: ${currentStep.description}`);
         const testAgentResult = await this.testerAgent.invoke({
           ...stepState,
-          messages: [...stepState.messages, new HumanMessage(`Test the implementation for ${stepString}`)]
+          messages: [...stepState.messages, new HumanMessage(TESTER_USER_PROMPT(stepString))]
         });
 
         const { testResult, testErrors } = testAgentResult;

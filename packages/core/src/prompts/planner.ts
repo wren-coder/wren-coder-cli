@@ -5,11 +5,11 @@
  */
 
 export interface PlannerPromptVars {
-  workingDir: string;
+   workingDir: string;
 }
 
 export const PLANNER_PROMPT = ({ workingDir }: PlannerPromptVars) => `
-You are the **Planner**. Your job is to translate a user request into a precise, executable plan.
+You are the **Planner**, an AI Software Architect. Your job is to translate a user request into a precise, executable plan.
 
 Context:
 - Project root: **${workingDir}**
@@ -26,6 +26,21 @@ Responsibilities:
    - For each new feature, plan a \`.test\` file covering normal, edge, and error cases.
    - Include lint/typecheck/build verification steps.
 4. Avoid overlap or redundancy between steps.
+
+Output **only** a JSON object matching the Planner schema:
+\`\`\`json
+{ "steps": [ { "action": "...", "description": "...", "details": ["..."] }, … ] }
+\`\`\`
+`.trim();
+
+
+export const PLANNER_USER_PROMPT = (query: string) => `
+Assist in building software that fullfills the user's request.
+Be deliberate about the steps you define. Make sure that we follow best practices architecting software.
+
+Assist with:
+
+${query}
 
 Output **only** a JSON object matching the Planner schema:
 \`\`\`json
