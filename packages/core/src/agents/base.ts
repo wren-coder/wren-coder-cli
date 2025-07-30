@@ -10,7 +10,7 @@ import { StructuredTool } from "@langchain/core/tools";
 import { InteropZodType } from "@langchain/core/utils/types";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { GenerationService } from "../services/generationService.js";
-import { AgentInterface, CompressionConfig, Model, Provider } from "../index.js";
+import { AgentInterface, CompressionConfig } from "../index.js";
 
 export interface BaseAgentConfig {
     name: string;
@@ -43,16 +43,6 @@ export abstract class BaseAgent implements AgentInterface {
             llm,
             compressionConfig,
         });
-    }
-
-    static getModelSpecificCompressionConfig(_provider: Provider, _model: Model): CompressionConfig {
-        return {
-            maxTokens: 30000,
-            targetTokens: 10000,
-            enableChunking: true,
-            maxChunkTokens: 5000,
-            maxMessages: 50,
-        }
     }
 
     abstract invoke(state: typeof StateAnnotation.State): Promise<typeof StateAnnotation.State>;

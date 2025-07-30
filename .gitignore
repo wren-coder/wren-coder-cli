@@ -50,3 +50,5 @@ logs/
 **/minecraft
 **/snake
 **/tetris
+
+**/testCli.ts

@@ -7,6 +7,8 @@
 import { getCompressionPrompt } from "../prompts/compression.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
+import { Provider } from "../types/provider.js";
+import { Model } from "../types/model.js";
 
 /**
  * Configuration for compression operations
@@ -161,4 +163,14 @@ export async function processLargeContext(
 
   // Otherwise, compress the content
   return await compressContext(content, llm, config);
+}
+
+export function getModelSpecificCompressionConfig(_provider: Provider, _model: Model): CompressionConfig {
+  return {
+    maxTokens: 30000,
+    targetTokens: 10000,
+    enableChunking: true,
+    maxChunkTokens: 5000,
+    maxMessages: 50,
+  }
 }

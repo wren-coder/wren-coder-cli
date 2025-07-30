@@ -18,6 +18,7 @@ import { TesterAgent } from "./tester.js";
 import { formatError } from "../utils/format-error.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { AgentConfig } from "./agentConfig.js";
+import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 
 const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
@@ -26,7 +27,7 @@ const MAX_SEARCH_RESULTS = 5;
 export class CoderAgent extends BaseAgent {
   protected testerAgent: TesterAgent;
   constructor({ workingDir, llm, provider, model }: AgentConfig) {
-    const compressionConfig = BaseAgent.getModelSpecificCompressionConfig(provider, model);
+    const compressionConfig = getModelSpecificCompressionConfig(provider, model);
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
       ShellTool({ workingDir, llm, compressionConfig }),

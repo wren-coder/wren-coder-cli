@@ -49,8 +49,8 @@ export class GenerationService {
 
     // Convert messages to string for compression
     const messagesString = messages.map(msg =>
-      `${msg._getType()}: ${typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content)}`
-    ).join('');
+      `${msg._getType()}: ${typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content)} `
+    ).join('\n');
 
     try {
       const compressionResult = await processLargeContext(messagesString, this.llm, this.compressionConfig);

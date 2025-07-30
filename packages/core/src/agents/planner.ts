@@ -16,6 +16,7 @@ import { PlannerResponseSchema } from "../schemas/response.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { formatError } from "../utils/format-error.js";
 import { AgentConfig } from "./agentConfig.js";
+import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 
 const AGENT_NAME = 'planner';
 const AGENT_DESC = 'Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.';
@@ -23,7 +24,7 @@ const MAX_SEARCH_RESULTS = 5;
 
 export class PlannerAgent extends BaseAgent {
   constructor({ workingDir, llm, provider, model }: AgentConfig) {
-    const compressionConfig = BaseAgent.getModelSpecificCompressionConfig(provider, model);
+    const compressionConfig = getModelSpecificCompressionConfig(provider, model);
     // Update tools to use the working directory if provided
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),

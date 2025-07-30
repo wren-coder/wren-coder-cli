@@ -17,6 +17,7 @@ import { ReadConsoleLogTool } from "../tools/read-console.js";
 import { EvaluatorResponseSchema } from "../schemas/response.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { AgentConfig } from "./agentConfig.js";
+import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 
 const AGENT_NAME = 'evaluator';
 const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail and feedback';
@@ -24,7 +25,7 @@ const MAX_SEARCH_RESULTS = 5;
 
 export class EvaluatorAgent extends BaseAgent {
   constructor({ workingDir, llm, provider, model }: AgentConfig) {
-    const compressionConfig = BaseAgent.getModelSpecificCompressionConfig(provider, model);
+    const compressionConfig = getModelSpecificCompressionConfig(provider, model);
     const tools = [
       new DuckDuckGoSearch({ maxResults: MAX_SEARCH_RESULTS }),
       ShellTool({ workingDir, llm, compressionConfig }),
