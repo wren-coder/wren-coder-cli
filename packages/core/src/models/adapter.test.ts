@@ -8,6 +8,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Provider } from "../types/provider.js";
 import { Model } from "../types/model.js";
 import { createLlmFromConfig, isAgentSpecificConfig } from "./adapter.js";
+import { ProviderNotFoundError } from "../errors/ProviderNotFoundError.js";
 
 // Mock console.warn to avoid noise in test output
 vi.spyOn(console, 'warn').mockImplementation(() => { });
@@ -70,7 +71,7 @@ describe("adapter", () => {
                 temperature: 0.7,
             };
 
-            await expect(createLlmFromConfig(config)).rejects.toThrow(/Cannot find provider/);
+            await expect(createLlmFromConfig(config)).rejects.toThrowError(ProviderNotFoundError);
         });
 
         it("should apply temperature and topP parameters", async () => {

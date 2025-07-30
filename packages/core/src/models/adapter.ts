@@ -5,25 +5,13 @@
  */
 
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
+import { ChatAnthropic } from "@langchain/anthropic";
 import { Provider } from "../types/provider.js";
 import { Model } from "../types/model.js";
 import { Temperature, TopP } from "../types/llmParameters.js";
 import { ProviderNotFoundError } from "../errors/ProviderNotFoundError.js";
-
-async function importChatDeepSeek() {
-    const { ChatDeepSeek } = await import("@langchain/deepseek");
-    return ChatDeepSeek;
-}
-
-async function importChatOpenAI() {
-    const { ChatOpenAI } = await import("@langchain/openai");
-    return ChatOpenAI;
-}
-
-async function importChatAnthropic() {
-    const { ChatAnthropic } = await import("@langchain/anthropic");
-    return ChatAnthropic;
-}
+import { ChatDeepSeek } from "@langchain/deepseek";
+import { ChatOpenAI } from "@langchain/openai";
 
 export interface LlmModelConfig {
     provider: Provider;
@@ -56,7 +44,7 @@ interface AgentSpecificLlmConfig {
 
 export type LlmConfig = DefaultLlmConfig | AgentSpecificLlmConfig;
 
-export async function createLlmFromConfig(config: LlmModelConfig): Promise<BaseChatModel> {
+export function createLlmFromConfig(config: LlmModelConfig): BaseChatModel {
     const configWithRetries = {
         maxRetries: config.maxRetries ?? 3,
         ...config
@@ -66,19 +54,16 @@ export async function createLlmFromConfig(config: LlmModelConfig): Promise<BaseC
     switch (configWithRetries.provider) {
         case Provider.DEEPSEEK:
             {
-                const ChatDeepSeek = await importChatDeepSeek();
                 return new ChatDeepSeek(configWithRetries);
             }
 
         case Provider.OPENAI:
             {
-                const ChatOpenAI = await importChatOpenAI();
                 return new ChatOpenAI(configWithRetries);
             }
 
         case Provider.ANTHROPIC:
             {
-                const ChatAnthropic = await importChatAnthropic();
                 return new ChatAnthropic(configWithRetries);
             }
 

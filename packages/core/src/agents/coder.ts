@@ -14,10 +14,10 @@ import { WriteFileTool } from "../tools/write-file.js";
 import { GrepTool } from "../tools/grep.js";
 import { ListFilesTool } from "../tools/list-files.js";
 import { GlobTool } from "../tools/glob.js";
-import { StateAnnotation } from "../chat.js";
 import { HumanMessage } from "@langchain/core/messages";
 import { TesterAgent } from "./tester.js";
 import { formatError } from "../utils/format-error.js";
+import { StateAnnotation } from "../types/stateAnnotation.js";
 
 const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
@@ -57,7 +57,7 @@ export class CoderAgent extends BaseAgent {
   async code(state: typeof StateAnnotation.State) {
     let result = { ...state };
     console.log(`[Coder] Starting execution with ${result.steps.length} steps`);
-    
+
     while (result.steps.length > 0) {
       const currentStep = result.steps[0];
       // Convert the step object to a string representation
@@ -109,7 +109,7 @@ export class CoderAgent extends BaseAgent {
         throw error;
       }
     }
-    
+
     console.log("[Coder] All steps completed");
     return result;
   }

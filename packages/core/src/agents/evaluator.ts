@@ -16,7 +16,7 @@ import { GlobTool } from "../tools/glob.js";
 import { ScreenshotTool } from "../tools/screenshot.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
 import { EvaluatorResponseSchema } from "../schemas/response.js";
-import { StateAnnotation } from "../chat.js";
+import { StateAnnotation } from "../types/stateAnnotation.js";
 
 const AGENT_NAME = 'evaluator';
 const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail and feedback';

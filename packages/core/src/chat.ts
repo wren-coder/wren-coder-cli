@@ -25,10 +25,10 @@ export interface ChatConfig {
 }
 
 export class Chat {
-    protected graph: ReturnType<typeof this.createGraph> | null = null;
-    protected plannerAgent: PlannerAgent | null = null;
-    protected coderAgent: CoderAgent | null = null;
-    protected evaluatorAgent: EvaluatorAgent | null = null;
+    protected graph: ReturnType<typeof this.createGraph>
+    protected plannerAgent: PlannerAgent;
+    protected coderAgent: CoderAgent;
+    protected evaluatorAgent: EvaluatorAgent;
     protected messageHistory: BaseMessage[] = [];
     protected debug: boolean;
     protected graphRecursionLimit: number;
@@ -40,16 +40,8 @@ export class Chat {
         this.graphRecursionLimit = config.graphRecursionLimit ?? 25;
         this.maxReflections = config.maxReflections ?? 3;
         this.workingDir = config.workingDir ?? process.cwd();
-        
-        // Initialize with placeholders, will be properly set in async initialize method
-        this.coderAgent = null;
-        this.plannerAgent = null;
-        this.evaluatorAgent = null;
-        this.graph = null;
-    }
-    
-    async initialize(config: ChatConfig) {
-        const { coderLlm, plannerLlm } = await this.loadModels(config.llmConfig);
+
+        const { coderLlm, plannerLlm } = this.loadModels(config.llmConfig);
 
         this.coderAgent = new CoderAgent({
             llm: coderLlm,
@@ -95,20 +87,20 @@ export class Chat {
             .compile();
     }
 
-    private async loadModels(config: LlmConfig) {
+    private loadModels(config: LlmConfig) {
         let defaultLlm: BaseChatModel | undefined;
         let coderLlm: BaseChatModel;
         let plannerLlm: BaseChatModel;
 
         if (isAgentSpecificConfig(config)) {
-            coderLlm = await createLlmFromConfig(config.agentModels.coder);
-            plannerLlm = await createLlmFromConfig(config.agentModels.planner);
+            coderLlm = createLlmFromConfig(config.agentModels.coder);
+            plannerLlm = createLlmFromConfig(config.agentModels.planner);
         } else {
-            defaultLlm = await createLlmFromConfig(config.defaultModel);
+            defaultLlm = createLlmFromConfig(config.defaultModel);
             coderLlm = config.agentModels?.coder ?
-                await createLlmFromConfig(config.agentModels.coder) : defaultLlm;
+                createLlmFromConfig(config.agentModels.coder) : defaultLlm;
             plannerLlm = config.agentModels?.planner ?
-                await createLlmFromConfig(config.agentModels.planner) : defaultLlm;
+                createLlmFromConfig(config.agentModels.planner) : defaultLlm;
         }
 
         return {
@@ -118,11 +110,6 @@ export class Chat {
     }
 
     async query(query: string) {
-        // Ensure components are initialized
-        if (!this.graph || !this.coderAgent || !this.plannerAgent || !this.evaluatorAgent) {
-            throw new Error("Chat not initialized. Call initialize() first.");
-        }
-        
         this.messageHistory.push(new HumanMessage(query));
 
         let finalState: { messages: BaseMessage[] } | undefined;

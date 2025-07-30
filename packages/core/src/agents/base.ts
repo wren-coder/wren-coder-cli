@@ -7,8 +7,8 @@
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { StructuredTool } from "@langchain/core/tools";
-import { StateAnnotation } from "../chat.js";
 import { InteropZodType } from "@langchain/core/utils/types";
+import { StateAnnotation } from "../types/stateAnnotation.js";
 
 export interface BaseAgentConfig {
     name: string;

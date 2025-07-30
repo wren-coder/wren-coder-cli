@@ -14,7 +14,7 @@ import { ReadFileTool } from "../tools/read-file.js";
 import { GlobTool } from "../tools/glob.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
 import { PlannerResponseSchema } from "../schemas/response.js";
-import { StateAnnotation } from "../chat.js";
+import { StateAnnotation } from "../types/stateAnnotation.js";
 import { formatError } from "../utils/format-error.js";
 
 const AGENT_NAME = 'planner';
@@ -52,7 +52,7 @@ export class PlannerAgent extends BaseAgent {
 
   async plan(state: typeof StateAnnotation.State) {
     console.log("[Planner] Starting plan generation");
-    
+
     try {
       const result = await this.agent.invoke(state);
       const lastMessage = result.messages[result.messages.length - 1];

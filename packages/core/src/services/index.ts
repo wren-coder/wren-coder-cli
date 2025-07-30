@@ -4,4 +4,5 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export * from "./ProviderNotFoundError.js";
+export * from "./fileDiscoveryService.js";
+export * from "./gitService.js";
