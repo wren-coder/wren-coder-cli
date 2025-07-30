@@ -29,7 +29,7 @@ export const EvaluatorResponseSchema = z.object({
  */
 export const TesterResponseSchema = z.object({
   result: z.enum(["PASS", "FAIL"]),
-  errors: z.array(z.string()).or(z.string()).optional()
+  errors: z.array(z.string()).or(z.string()).nullable().optional()
 });
 
 export type PlannerResponse = z.infer<typeof PlannerResponseSchema>;
