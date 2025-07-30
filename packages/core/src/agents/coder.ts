@@ -78,11 +78,11 @@ export class CoderAgent extends BaseAgent {
           messages: [...stepState.messages, new HumanMessage(`Test the implementation for ${stepString}`)]
         });
 
-        const { testPassed, testErrors } = testAgentResult;
+        const { testResult, testErrors } = testAgentResult;
 
-        console.log(`[Coder] Test result for "${currentStep.description}": ${testPassed ? 'PASS' : 'FAIL'}`);
+        console.log(`[Coder] Test result for "${currentStep.description}": ${testResult ? 'PASS' : 'FAIL'}. With errors: ${testErrors}}`);
 
-        if (testPassed) {
+        if (testResult) {
           result = {
             ...agentResult,
             steps: result.steps.slice(1)
@@ -91,17 +91,17 @@ export class CoderAgent extends BaseAgent {
           const newStep = {
             action: "fix",
             description: "Fix failed test",
-            details: [`The implementation for "${currentStep.description}" failed tests. With errors ${testErrors}. Please fix the implementation.`]
+            details: [`The implementation for "${currentStep.description}" failed tests.With errors ${testErrors}. Please fix the implementation.`]
           };
 
           result = {
             ...agentResult,
             steps: [newStep, ...result.steps]
           };
-          console.log(`[Coder] Added fix step for: ${currentStep.description}`);
+          console.log(`[Coder] Added fix step for: ${currentStep.description} `);
         }
       } catch (error) {
-        console.error(`[Coder] Error during step execution: ${formatError(error)}`);
+        console.error(`[Coder] Error during step execution: ${formatError(error)} `);
         throw error;
       }
     }
