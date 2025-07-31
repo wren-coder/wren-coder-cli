@@ -5,7 +5,7 @@
  */
 
 import { DuckDuckGoSearch } from "@langchain/community/tools/duckduckgo_search";
-import { PLANNER_PROMPT } from "../prompts/planner.js";
+import { PLANNER_PROMPT, PLANNER_USER_PROMPT } from "../prompts/planner.js";
 import { BaseAgent } from "./base.js";
 import { GrepTool } from "../tools/grep.js";
 import { ListFilesTool } from "../tools/list-files.js";
@@ -16,6 +16,7 @@ import { StateAnnotation } from "../types/stateAnnotation.js";
 import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../models/adapter.js";
+import { HumanMessage } from "@langchain/core/messages";
 
 const AGENT_NAME = 'planner';
 const AGENT_DESC = 'Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.';
@@ -50,7 +51,13 @@ export class PlannerAgent extends BaseAgent {
 
   async invoke(state: typeof StateAnnotation.State) {
     console.log("[Planner] Starting plan generation");
-    const result = await this.generationService.invoke(state);
+    const messages = state.messages;
+    const prompt = messages[messages.length - 1].content.toString()
+    messages.push(new HumanMessage(PLANNER_USER_PROMPT(`${prompt}`)));
+    const result = await this.generationService.invoke({
+      ...state,
+      messages
+    });
     console.log(`[Planner] Plan generation completed.`);
     return result;
   }

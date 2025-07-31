@@ -118,7 +118,7 @@ export class Chat {
     }
 
     async query(query: string) {
-        this.messageHistory.push(new HumanMessage(PLANNER_USER_PROMPT(query)));
+        this.messageHistory.push(new HumanMessage(query));
 
         let finalState: { messages: BaseMessage[] } | undefined;
         let shownCount = this.messageHistory.length;
