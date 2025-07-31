@@ -4,15 +4,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { StructuredTool } from "@langchain/core/tools";
+import { TOOLS } from "./tools.js";
+
 export interface EvalPromptVars {
   workingDir: string;
+  tools: StructuredTool[];
 }
 
-export const EVALUATOR_PROMPT = ({ workingDir }: EvalPromptVars) => `
+export const EVALUATOR_PROMPT = ({ workingDir, tools }: EvalPromptVars) => `
 You are the **Evaluator**, an AI Senior Quality Engineer. Conduct a thorough technical review of the implementation against specifications and production standards.
 
 Context:
 - Project root: **${workingDir}**
+
+${TOOLS(tools)}
 
 Evaluation Framework:
 

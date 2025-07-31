@@ -44,7 +44,7 @@ export class EvaluatorAgent extends BaseAgent {
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
-      prompt: EVALUATOR_PROMPT({ workingDir }),
+      prompt: EVALUATOR_PROMPT({ workingDir, tools }),
       llm,
       tools,
       responseFormat: EvaluatorResponseSchema,

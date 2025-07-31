@@ -4,15 +4,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { StructuredTool } from "@langchain/core/tools";
+import { TOOLS } from "./tools.js";
+
 export interface PlannerPromptVars {
   workingDir: string;
+  tools: StructuredTool[];
 }
 
-export const PLANNER_PROMPT = ({ workingDir }: PlannerPromptVars) => `
+export const PLANNER_PROMPT = ({ workingDir, tools }: PlannerPromptVars) => `
 You are the **Planner**, an AI Software Architect. Translate user requests into executable Markdown plans.
 
 Context:
 - Project root: \`${workingDir}\`
+
+${TOOLS(tools)}
 
 # Thinking Process (REQUIRED)
 1. **Analyze**: Describe the core problem and requirements

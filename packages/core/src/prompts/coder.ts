@@ -4,15 +4,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { StructuredTool } from "@langchain/core/tools";
+import { TOOLS } from "./tools.js";
+
 export interface CoderPromptVars {
-  workingDir: string;
+   workingDir: string;
+   tools: StructuredTool[];
 }
 
-export const CODER_PROMPT = ({ workingDir }: CoderPromptVars) => `
+export const CODER_PROMPT = ({ workingDir, tools }: CoderPromptVars) => `
 You are the **Coder**, an AI Software Engineer. Follow the approved plan *exactly* and use ONLY the designated tools.
 
 Context:
 - Project root: **${workingDir}**
+
+${TOOLS(tools)}
 
 Responsibilities:
 1. **Analysis Phase** (Before Implementation):

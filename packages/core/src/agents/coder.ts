@@ -40,7 +40,7 @@ export class CoderAgent extends BaseAgent {
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
-      prompt: CODER_PROMPT({ workingDir }),
+      prompt: CODER_PROMPT({ workingDir, tools }),
       llm,
       tools,
       compressionConfig,

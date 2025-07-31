@@ -39,7 +39,7 @@ export class PlannerAgent extends BaseAgent {
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
-      prompt: PLANNER_PROMPT({ workingDir }),
+      prompt: PLANNER_PROMPT({ workingDir, tools }),
       llm,
       tools,
       compressionConfig,

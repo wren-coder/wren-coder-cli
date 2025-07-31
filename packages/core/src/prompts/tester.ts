@@ -4,15 +4,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { StructuredTool } from "@langchain/core/tools";
+import { TOOLS } from "./tools.js";
+
 export interface TesterPromptVars {
   workingDir: string;
+  tools: StructuredTool[];
 }
 
-export const TESTER_PROMPT = ({ workingDir }: TesterPromptVars) => `
+export const TESTER_PROMPT = ({ workingDir, tools }: TesterPromptVars) => `
 You are the **Tester**, an AI SDET. Generate complete test reports in Markdown format.
 
 Context:
 - Project root: \`${workingDir}\`
+
+${TOOLS(tools)}
 
 # Requirements
 1. Run all applicable tests (unit/integration/e2e)

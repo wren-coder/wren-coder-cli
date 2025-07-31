@@ -42,7 +42,7 @@ export class TesterAgent extends BaseAgent {
     super({
       name: AGENT_NAME,
       description: AGENT_DESC,
-      prompt: TESTER_PROMPT({ workingDir }),
+      prompt: TESTER_PROMPT({ workingDir, tools }),
       llm,
       tools,
       compressionConfig,
