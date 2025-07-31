@@ -53,20 +53,13 @@ export class CoderAgent extends BaseAgent {
   async stream(state: typeof StateAnnotation.State) {
     const messages = state.messages;
     const plan = messages[messages.length - 1].content.toString();
-    let lm = "";
-    let result;
+    console.log("[Coder] Starting implementation.")
 
-    while (!lm.includes("-----DONE-----")) {
-      console.log("---lm--- ", lm, " ---end---")
-      messages.push(new HumanMessage(CODER_USER_PROMPT(plan, lm)));
-      result = await this.generationService.stream({
-        ...state,
-        messages
-      });
-
-      const currMessages = result!.messages;
-      lm = currMessages[currMessages.length - 1].content.toString();
-    }
+    messages.push(new HumanMessage(CODER_USER_PROMPT(plan)));
+    const result = await this.generationService.stream({
+      ...state,
+      messages
+    });
 
     console.log("[Coder] All steps completed");
     return result!;

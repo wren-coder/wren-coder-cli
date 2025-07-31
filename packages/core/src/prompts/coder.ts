@@ -45,21 +45,20 @@ ${[
 
 ## Output Format
 \`\`\`markdown
-[REASONING]
-• Current issue: <describe>
-• Next step: <step #><continue|fix|finalize>
+[PROGRESS]
+• Implemented: <list exact changes made in this iteration>
+• Tested: <verified aspects - e.g. "linting", "unit tests", "build">
+• Remaining: <outstanding work>
+
+[NEXT ACTION]  
+• Verify: <specific items needing validation>
+• Change: <precise modification needed (file/line)>
+• Tool: <which tool to use next>
 
 [TOOL CALLS...]
 \`\`\`
-
------DONE-----
 `.trim();
 
-export const CODER_USER_PROMPT = (query: string, lastOutput: string) => `
+export const CODER_USER_PROMPT = (query: string) => `
 IMPLEMENT ACCORDING TO THE ANALYSIS & PLAN: ${query}
-
-## Current Progress
-${lastOutput ?
-      "```\n" + lastOutput + "\n```" :
-      "No progress yet (just starting)"}
 `.trim();
