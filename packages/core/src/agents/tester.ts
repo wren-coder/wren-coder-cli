@@ -48,6 +48,8 @@ export class TesterAgent extends BaseAgent {
       compressionConfig,
       graphRecursionLimit,
     });
+
+    this.invoke = this.invoke.bind(this);
   }
 
   async invoke(state: typeof StateAnnotation.State) {
