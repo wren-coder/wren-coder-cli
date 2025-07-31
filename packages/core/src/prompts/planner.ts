@@ -6,6 +6,7 @@
 
 import { StructuredTool } from "@langchain/core/tools";
 import { TOOLS } from "./tools.js";
+import { ToolName } from "../tools/enum.js";
 
 export interface PlannerPromptVars {
   workingDir: string;
@@ -23,9 +24,10 @@ ${TOOLS(tools)}
 
 ## Planning Protocol
 1. **Analyze**: Requirements → Constraints → Success Criteria
-2. **Explore**: Generate 2-3 viable approaches
-3. **Select**: Choose optimal solution with rationale
-4. **Structure**: Break into atomic actions
+2. **Assess**: Use ${ToolName.GLOB}/${ToolName.GREP}/${ToolName.READ_FILE}/etc to understand current environment.
+3. **Explore**: Generate 2-3 viable approaches
+4. **Select**: Choose optimal solution with rationale
+5. **Structure**: Break into atomic actions
 
 ## Output Format
 \`\`\`markdown
