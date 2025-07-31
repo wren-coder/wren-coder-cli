@@ -10,7 +10,7 @@ import { Model } from "../types/model.js";
 import { createLlmFromConfig, isAgentSpecificConfig } from "./adapter.js";
 import { ProviderNotFoundError } from "../errors/ProviderNotFoundError.js";
 
-// Mock console.warn to avoid noise in test output
+// Mock logger.warn to avoid noise in test output
 vi.spyOn(console, 'warn').mockImplementation(() => { });
 
 describe("adapter", () => {

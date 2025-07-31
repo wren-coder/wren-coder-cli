@@ -18,6 +18,7 @@ import { StateAnnotation } from "../types/stateAnnotation.js";
 import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../index.js";
+import { logger } from "../utils/logging.js";
 
 const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
@@ -53,7 +54,7 @@ export class CoderAgent extends BaseAgent {
   async stream(state: typeof StateAnnotation.State) {
     const messages = state.messages;
     const plan = messages[messages.length - 1].content.toString();
-    console.log("[Coder] Starting implementation.")
+    logger.info("[Coder] Starting implementation.")
 
     messages.push(new HumanMessage(CODER_USER_PROMPT(plan)));
     const result = await this.generationService.stream({
@@ -61,7 +62,7 @@ export class CoderAgent extends BaseAgent {
       messages
     });
 
-    console.log("[Coder] All steps completed");
+    logger.info("[Coder] All steps completed");
     return result!;
   }
 }

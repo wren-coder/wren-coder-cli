@@ -12,6 +12,7 @@ import { Temperature, TopP } from "../types/llmParameters.js";
 import { ProviderNotFoundError } from "../errors/ProviderNotFoundError.js";
 import { ChatDeepSeek } from "@langchain/deepseek";
 import { ChatOpenAI } from "@langchain/openai";
+import { logger } from "../utils/logging.js";
 
 export interface LlmModelConfig {
     provider: Provider;
@@ -69,7 +70,7 @@ export function createLlmFromConfig(config: LlmModelConfig): BaseChatModel {
             }
 
         default:
-            console.error(`Failed to create LLM for provider ${configWithRetries.provider}`);
+            logger.error(`Failed to create LLM for provider ${configWithRetries.provider}`);
             throw new ProviderNotFoundError(configWithRetries.provider);
     }
 

@@ -6,6 +6,7 @@
 
 import { ZodSchema } from 'zod';
 import { StateAnnotation } from '../types/stateAnnotation.js';
+import { logger } from "../utils/logging.js";
 
 /**
  * Parses a JSON string with a specific format that includes a code block.
@@ -63,8 +64,8 @@ export function extractStructuredResponse<T>(
   if (result.structuredResponse) {
     return schema.parse(result.structuredResponse);
   } else {
-    console.warn("Fell back to string parsing");
-    console.log(result)
+    logger.warn("Fell back to string parsing");
+    logger.info(result)
     const content = result.messages[result.messages.length - 1].content.toString();
     const parsed = parseJsonString(content);
     return schema.parse(parsed);

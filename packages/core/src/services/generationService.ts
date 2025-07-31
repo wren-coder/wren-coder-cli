@@ -9,6 +9,7 @@ import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { processLargeContext, CompressionConfig } from "../utils/compression.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { MessageRoles } from "../types/messageRole.js";
+import { logger } from "../utils/logging.js";
 
 export interface GenerationServiceConfig {
   compressionConfig: CompressionConfig;
@@ -97,7 +98,7 @@ export class GenerationService {
         } else {
           output = JSON.stringify(m.toJSON());
         }
-        console.log(`[${role}] ${output}`);
+        logger.info(`[${role}] ${output}`);
       });
       shownCount = all.length;
     }
@@ -111,7 +112,7 @@ export class GenerationService {
       .at(-1);
 
     if (last) {
-      console.log("assistant:", last.content);
+      logger.info("assistant:", last.content);
     }
     return finalState.messages;
   }

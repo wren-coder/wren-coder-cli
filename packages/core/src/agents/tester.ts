@@ -19,7 +19,7 @@ import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../models/adapter.js";
 import { HumanMessage } from "@langchain/core/messages";
-import { TesterResponseSchema } from "../schemas/response.js";
+import { logger } from "../utils/logging.js";
 
 const AGENT_NAME = 'Tester';
 const AGENT_DESC = 'Tests vs. the user spec, returns pass/fail and feedback';
@@ -54,10 +54,10 @@ export class TesterAgent extends BaseAgent {
   }
 
   async stream(state: typeof StateAnnotation.State) {
-    console.log("[Tester] Starting testing");
+    logger.info("[Tester] Starting testing");
     const messages = state.messages;
     const plan = messages[messages.length - 1].content.toString()
-    console.log(plan);
+    logger.info(plan);
     messages.push(new HumanMessage(TESTER_USER_PROMPT(`${plan}`)));
     const result = await this.generationService.stream({
       ...state,
@@ -65,7 +65,7 @@ export class TesterAgent extends BaseAgent {
     });
 
     const evalResult = !result.messages[result.messages.length - 1].content.toString().includes("❌");
-    console.log(`[Tester] Testing completed.`);
+    logger.info(`[Tester] Testing completed.`);
     return {
       ...result,
       eval: evalResult

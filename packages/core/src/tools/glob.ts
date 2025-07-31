@@ -13,6 +13,7 @@ import { formatError } from "../utils/format-error.js";
 import { ToolName } from "./enum.js";
 import { CompressionConfig, processLargeContext } from "../utils/compression.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
+import { logger } from "../utils/logging.js";
 
 interface GlobToolConfig {
     workingDir: string,
@@ -31,7 +32,7 @@ export const GlobTool = ({ workingDir, llm, compressionConfig }: GlobToolConfig)
                 .split(path.sep)
                 .join("/");
 
-            console.log(
+            logger.info(
                 `[GlobTool] Searching for files matching pattern: ${fullPattern} within ${workingDir}`
             );
 

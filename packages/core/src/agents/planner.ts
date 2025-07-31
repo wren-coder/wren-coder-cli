@@ -17,6 +17,7 @@ import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../models/adapter.js";
 import { HumanMessage } from "@langchain/core/messages";
+import { logger } from "../utils/logging.js";
 
 const AGENT_NAME = 'planner';
 const AGENT_DESC = 'Analyzes the codebase, tests, and configurations to draft clear, step‑by‑step plans that reference project conventions and required verification steps.';
@@ -50,7 +51,7 @@ export class PlannerAgent extends BaseAgent {
   }
 
   async stream(state: typeof StateAnnotation.State) {
-    console.log("[Planner] Starting plan generation");
+    logger.info("[Planner] Starting plan generation");
     const messages = state.messages;
     const prompt = messages[messages.length - 1].content.toString()
     messages.push(new HumanMessage(PLANNER_USER_PROMPT(`${prompt}`)));
@@ -58,7 +59,7 @@ export class PlannerAgent extends BaseAgent {
       ...state,
       messages
     });
-    console.log(`[Planner] Plan generation completed.`);
+    logger.info(`[Planner] Plan generation completed.`);
     return result;
   }
 }
