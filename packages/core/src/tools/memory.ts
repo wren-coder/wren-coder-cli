@@ -43,7 +43,7 @@ function formatError(err: unknown): string {
  * save_memory
  * Saves a short fact to long‑term memory, under ~/.wren/MEMORY.md.
  */
-export const SaveMemoryTool = ({ workingDir }: MemoryToolConfig) => tool(
+export const SaveMemoryTool = () => tool(
     async ({ fact }: { fact: string }) => {
         const memoryFile = getGlobalMemoryFilePath();
         const entry = `- ${fact.trim().replace(/^(-+\s*)+/, "").trim()}`;

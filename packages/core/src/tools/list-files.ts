@@ -9,6 +9,7 @@ import { z } from "zod";
 import { formatError } from "../utils/format-error.js";
 import glob from "fast-glob";
 import { ToolName } from "./enum.js";
+import path from "path";
 
 interface ListFilesToolConfig {
     workingDir: string,
@@ -23,7 +24,10 @@ const DESC = "Find filesystem paths matching a glob. Input: { pattern: string }.
 export const ListFilesTool = ({ workingDir }: ListFilesToolConfig) => tool(
     async ({ pattern }: { pattern: string }) => {
         try {
-            return await glob(pattern);
+            const absolutePattern = path.isAbsolute(pattern)
+                ? pattern
+                : path.join(workingDir, pattern);
+            return await glob(absolutePattern, { cwd: workingDir });
         } catch (err: unknown) {
             return `Error listing files for "${pattern}": ${formatError(err)}`;
         }

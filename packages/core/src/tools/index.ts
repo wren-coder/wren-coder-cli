@@ -12,6 +12,5 @@ export * from "./list-files.js";
 export * from "./memory.js";
 export * from "./read-console.js";
 export * from "./read-file.js";
-export * from "./screenshot.js";
 export * from "./shell.js";
 export * from "./write-file.js";

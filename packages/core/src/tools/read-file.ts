@@ -11,6 +11,7 @@ import { formatError } from "../utils/format-error.js";
 import { ToolName } from "./enum.js";
 import { CompressionConfig, processLargeContext } from "../utils/compression.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
+import path from "path";
 
 interface ReadFileToolConfig {
     workingDir: string,
@@ -26,18 +27,21 @@ const DESC = "Read text from a file. Input: { path: string }. Returns file conte
  * Automatically compresses large files to stay within context limits.
  */
 export const ReadFileTool = ({ workingDir, llm, compressionConfig }: ReadFileToolConfig) => tool(
-    async ({ path }: { path: string }) => {
+    async ({ path: filePath }: { path: string }) => {
         try {
-            const data = await fs.readFile(path, "utf-8");
+            const absolutePath = path.isAbsolute(filePath)
+                ? filePath
+                : path.join(workingDir, filePath);
 
+            if (!absolutePath.startsWith(path.resolve(workingDir))) {
+                return `Error: Path "${filePath}" is outside the working directory`;
+            }
 
+            const data = await fs.readFile(absolutePath, "utf-8");
             const result = await processLargeContext(data, llm, compressionConfig);
             return result.content;
-
-
-            return data;
         } catch (err) {
-            return `Error reading file "${path}":  ${formatError(err)}`;
+            return `Error reading file "${filePath}": ${formatError(err)}`;
         }
     },
     {
@@ -46,7 +50,7 @@ export const ReadFileTool = ({ workingDir, llm, compressionConfig }: ReadFileToo
         schema: z.object({
             path: z
                 .string()
-                .describe("The filesystem path of the file to read"),
+                .describe("The filesystem path of the file to read (relative to working directory or absolute)"),
         }),
     }
 );

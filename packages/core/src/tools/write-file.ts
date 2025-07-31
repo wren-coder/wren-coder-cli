@@ -7,25 +7,24 @@
 import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 import { promises as fs } from "fs";
-import { dirname } from "path";
+import path from "path";
 import { formatError } from "../utils/format-error.js";
 import { ToolName } from "./enum.js";
-import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
 interface WriteFileToolConfig {
     workingDir: string,
 }
 
-const DESC = "Write text to a file. Input: { path: string; content: string; append?: boolean }. Overwrites by default, or appends if append=true. Large content will be automatically chunked.";
+const DESC = "Write text to a file. Input: { path: string; content: string; append?: boolean }. Paths are relative to working directory unless absolute. Overwrites by default, or appends if append=true.";
 
 /**
  * WriteFileTool
  * Writes (or appends) text to a file at the given path.
- * Automatically chunks large content to stay within context limits.
+ * All file operations are scoped to the working directory.
  */
 export const WriteFileTool = ({ workingDir }: WriteFileToolConfig) => tool(
     async ({
-        path,
+        path: filePath,
         content,
         append = false,
     }: {
@@ -34,17 +33,29 @@ export const WriteFileTool = ({ workingDir }: WriteFileToolConfig) => tool(
         append?: boolean;
     }) => {
         try {
-            // ensure directory exists
-            await fs.mkdir(dirname(path), { recursive: true });
+            // Resolve the path relative to working directory
+            const absolutePath = path.isAbsolute(filePath)
+                ? filePath
+                : path.join(workingDir, filePath);
+
+            // Normalize path and verify it's within working directory
+            const resolvedPath = path.normalize(absolutePath);
+            if (!resolvedPath.startsWith(path.normalize(workingDir) + path.sep)) {
+                return `Error: Path "${filePath}" resolves outside working directory`;
+            }
+
+            // Ensure directory exists
+            await fs.mkdir(path.dirname(resolvedPath), { recursive: true });
+
             if (append) {
-                await fs.appendFile(path, content, "utf-8");
-                return `Appended to "${path}".`;
+                await fs.appendFile(resolvedPath, content, "utf-8");
+                return `Appended to "${resolvedPath.replace(workingDir, '')}"`;
             } else {
-                await fs.writeFile(path, content, "utf-8");
-                return `Wrote to "${path}".`;
+                await fs.writeFile(resolvedPath, content, "utf-8");
+                return `Wrote to "${resolvedPath.replace(workingDir, '')}"`;
             }
         } catch (err) {
-            return `Error writing file "${path}":  ${formatError(err)}`;
+            return `Error writing file "${filePath}": ${formatError(err)}`;
         }
     },
     {
@@ -53,7 +64,7 @@ export const WriteFileTool = ({ workingDir }: WriteFileToolConfig) => tool(
         schema: z.object({
             path: z
                 .string()
-                .describe("The filesystem path of the file to write"),
+                .describe("The file path (relative to working directory or absolute)"),
             content: z
                 .string()
                 .describe("The text content to write into the file"),
