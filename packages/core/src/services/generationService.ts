@@ -81,22 +81,13 @@ export class GenerationService {
     return await this.agent.invoke(processedState, { recursionLimit: this.graphRecursionLimit });
   }
 
-  async * stream(state: typeof StateAnnotation.State) {
+  async stream(state: typeof StateAnnotation.State) {
     const processedMessages = await this.compressMessages(state.messages);
     const processedState = {
       ...state,
       messages: processedMessages
     };
 
-    if (this.agent.stream) {
-      const stream = await this.agent.stream(processedState, { streamMode: "values", recursionLimit: this.graphRecursionLimit });
-
-      for await (const chunk of stream) {
-        yield chunk;
-      }
-    } else {
-      const result = await this.agent.invoke(processedState);
-      yield result;
-    }
+    return this.agent.stream(processedState, { streamMode: "values", recursionLimit: this.graphRecursionLimit });
   }
 }

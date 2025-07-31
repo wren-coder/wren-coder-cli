@@ -123,7 +123,7 @@ export class Chat {
         let finalState: { messages: BaseMessage[] } | undefined;
         let shownCount = this.messageHistory.length;
 
-        const iterator = this.generationService.stream(
+        const iterator = await this.generationService.stream(
             {
                 messages: this.messageHistory,
                 eval: false,
