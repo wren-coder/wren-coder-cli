@@ -59,18 +59,16 @@ export class EvaluatorAgent extends BaseAgent {
   async invoke(state: typeof StateAnnotation.State) {
     console.log("[EVALUATOR] Starting testing");
     const messages = state.messages;
-    const plan = messages[messages.length - 1].content.toString()
-    console.log(plan);
-    messages.push(new HumanMessage(EVALUATOR_USER_PROMPT(`${plan}`)));
+    messages.push(new HumanMessage(EVALUATOR_USER_PROMPT(`${state.original_request}`)));
     const result = await this.generationService.invoke({
       ...state,
       messages
     });
 
-    const { suggestions } = extractStructuredResponse<EvaluatorResponse>(result, EvaluatorResponseSchema);
+    const evalResult = extractStructuredResponse<EvaluatorResponse>(result, EvaluatorResponseSchema);
 
-    result.suggestions = suggestions;
-    console.log(`[Evaluator] Evaluation generation completed with ${suggestions.length} suggestions`);
+    result.eval = evalResult.status_report.implementation_status;
+    console.log(`[Evaluator] Evaluation generation completed with ${evalResult.status_report.implementation_status}`);
     return result;
   }
 }

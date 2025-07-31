@@ -13,9 +13,6 @@ export const StateAnnotation = Annotation.Root({
         reducer: (all, one) =>
             Array.isArray(one) ? all.concat(one) : all.concat([one]),
     }),
-    suggestions: Annotation<string[]>({
-        default: () => [],
-        reducer: (all, one) =>
-            Array.isArray(one) ? all.concat(one) : all.concat([one]),
-    }),
+    original_request: Annotation<string>,
+    eval: Annotation<boolean>,
 });

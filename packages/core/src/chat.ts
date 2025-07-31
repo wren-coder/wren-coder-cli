@@ -16,7 +16,7 @@ import { MessageRoles } from "./types/messageRole.js";
 import { CompressionConfig, getModelSpecificCompressionConfig } from "./utils/compression.js";
 import { AgentConfig, createAgentConfig } from "./agents/agentConfig.js";
 import { GenerationService } from "./services/generationService.js";
-import { PLANNER_USER_PROMPT, TesterAgent } from "./index.js";
+import { TesterAgent } from "./index.js";
 
 export interface ChatConfig {
     llmConfig: LlmConfig,
@@ -82,7 +82,7 @@ export class Chat {
             .addConditionalEdges(
                 this.evaluatorAgent.getName(),
                 state => {
-                    if (state.suggestions && state.suggestions.length > 0) return this.plannerAgent.getName();
+                    if (!state.eval) return this.plannerAgent.getName();
                     return END;
                 }
             )
@@ -126,7 +126,8 @@ export class Chat {
         const iterator = this.generationService.stream(
             {
                 messages: this.messageHistory,
-                suggestions: []
+                eval: false,
+                original_request: query,
             }
         );
 
