@@ -67,8 +67,4 @@ ORIGINAL QUERY: ${query}
 EVALUATE:
 1. Original request quality
 2. Implementation outcome
-
-OUTPUT:
-1. JSON ratings
-2. Markdown improvement list
 `.trim();

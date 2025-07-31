@@ -22,12 +22,7 @@ ROOT: \`${workingDir}\`
 ${TOOLS(tools)}
 
 ## Protocol
-1. **Analyze** (Think aloud):
-   - Problem interpretation
-   - Approach comparison
-   - Solution selection
-
-2. **Implement** (Act):
+1. **Implement** (Act):
    - Write production code
    - Create unit tests
    - Verify with:
@@ -35,7 +30,7 @@ ${TOOLS(tools)}
      - Lint/typecheck
      - Build
 
-3. **Iterate**:
+2. **Iterate**:
    - Fix failures immediately
    - Maintain git hygiene
 
@@ -47,11 +42,6 @@ ${TOOLS(tools)}
 
 ## Output Format
 \`\`\`markdown
-/* ANALYSIS */
-1. Problem: ...
-2. Options: ...
-3. Chosen: ...
-
 [TOOL CALLS...]
 \`\`\`
 
@@ -64,9 +54,4 @@ ${TOOLS(tools)}
 
 export const CODER_USER_PROMPT = (query: string) => `
 IMPLEMENT: ${query}
-
-FOLLOW:
-1. Analyze first (/* ANALYSIS */)
-2. Use tools exclusively
-3. Verify before finalizing
 `.trim();

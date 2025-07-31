@@ -68,10 +68,4 @@ ${TOOLS(tools)}
 
 export const PLANNER_USER_PROMPT = (query: string) => `
 GENERATE PLAN FOR: ${query}
-
-STRICT REQUIREMENTS:
-1. Start with /* ANALYSIS */
-2. Use exact markdown format
-3. Include verification steps
-4. Specify all paths
 `.trim();

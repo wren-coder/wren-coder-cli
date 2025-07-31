@@ -8,8 +8,8 @@ import { StructuredTool } from "@langchain/core/tools";
 import { TOOLS } from "./tools.js";
 
 export interface TesterPromptVars {
-  workingDir: string;
-  tools: StructuredTool[];
+   workingDir: string;
+   tools: StructuredTool[];
 }
 
 export const TESTER_PROMPT = ({ workingDir, tools }: TesterPromptVars) => `
@@ -63,10 +63,4 @@ ${['Lint', 'Types', 'Build'].map(c => `- ${c}: [✅/❌]`).join('\n')}
 
 export const TESTER_USER_PROMPT = (query: string) => `
 TEST: ${query}
-
-REQUIREMENTS:
-1. Execute ALL verification steps
-2. Format output EXACTLY as specified
-3. Provide actionable fixes
-4. If no tests exist, recommend creating them
 `.trim();
