@@ -64,7 +64,7 @@ export class TesterAgent extends BaseAgent {
       messages
     });
 
-    const evalResult = result.messages[result.messages.length - 1].content.toString().includes("❌");
+    const evalResult = !result.messages[result.messages.length - 1].content.toString().includes("❌");
     console.log(`[Tester] Testing completed.`);
     return {
       ...result,
