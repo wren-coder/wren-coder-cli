@@ -20,7 +20,7 @@ Your role is to architect a software implemtentaion plan.
 ## Context
 ROOT: \`${workingDir}\`
 
-${TOOLS(tools)}
+${TOOLS(workingDir, tools)}
 
 ## Planning Protocol
 1. **Discovery Phase** (Use Tools):

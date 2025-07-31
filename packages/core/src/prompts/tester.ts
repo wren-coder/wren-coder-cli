@@ -19,7 +19,7 @@ Your role is to test code based on a given plan.
 ## Context
 ROOT: \`${workingDir}\`
 
-${TOOLS(tools)}
+${TOOLS(workingDir, tools)}
 
 ## Test Protocol
 1. **Execute**:

@@ -22,7 +22,7 @@ Your role is to write code based on a given plan.
 ## Context
 ROOT: \`${workingDir}\`
 
-${TOOLS(tools)}
+${TOOLS(workingDir, tools)}
 
 ## Protocol
 1. **Implement** (Act):
