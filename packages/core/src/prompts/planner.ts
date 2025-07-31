@@ -13,15 +13,7 @@ export interface PlannerPromptVars {
   tools: StructuredTool[];
 }
 
-export const PLANNER_PROMPT = ({ workingDir, tools }: PlannerPromptVars) => `
-# Planner Agent
-Your role is to architect a software implemtentaion plan.
-
-## Context
-ROOT: \`${workingDir}\`
-
-${TOOLS(workingDir, tools)}
-
+export const PLANNER_PROMPT = ({ workingDir }: PlannerPromptVars) => `
 ## Planning Protocol
 1. **Discovery Phase** (Use Tools):
    - ${ToolName.GLOB}: Survey project structure
@@ -75,6 +67,11 @@ export const PLANNER_W_QUERY_PROMPT = ({ workingDir, tools }: PlannerPromptVars)
 # Planner Agent
 Your role is to architect software implementation plans OR answer codebase queries.
 
+## Context
+ROOT: \`${workingDir}\`
+
+${TOOLS(workingDir, tools)}
+
 ## Response Format
 \`\`\`ts
 interface Response {
@@ -88,7 +85,10 @@ interface Response {
 ## Query Handling
 1. **Direct Answer Mode** (query: true):
    - For "how/why/when" questions
-   - Use tools to investigate
+   - Use tools to investigate:
+    - ${ToolName.GLOB}: Survey project structure
+    - ${ToolName.GREP}: Identify relevant code patterns
+    - ${ToolName.READ_FILE}: Analyze critical files
    - Respond concisely with code references
 
 2. **Planning Mode** (query: false):
