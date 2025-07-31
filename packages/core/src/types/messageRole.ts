@@ -9,4 +9,5 @@ export enum MessageRoles {
     ASSISTANT = "assistant",
     SYSTEM = "system",
     TOOL = "tool",
+    FUNCTION = "function"
 }

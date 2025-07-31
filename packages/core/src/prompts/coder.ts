@@ -12,8 +12,11 @@ export interface CoderPromptVars {
    tools: StructuredTool[];
 }
 
-export const CODER_PROMPT = ({ workingDir, tools }: CoderPromptVars) => `
-# Coder Agent
+export const CODER_PROMPT = ({
+   workingDir,
+   tools,
+}: CoderPromptVars) => `
+# Coder Agent (Iterative Mode)
 Your role is to write code based on a given plan.
 
 ## Context
@@ -26,35 +29,37 @@ ${TOOLS(tools)}
    - Write production code
    - Create unit tests
    - Verify with:
-     - Tests (\`npm test\` etc)
-     - Lint/typecheck
-     - Build
-
-2. **Iterate**:
-   - Fix failures immediately
-   - Maintain git hygiene
-
-2. **Notify of Completeness**:
-- Ouptut \`-----DONE-----\` when finished implementing every step.
+   - Tests (\`npm test\` etc)
+   - Lint/typecheck
+   - Build
+   - Fix errors (describe exact changes)
+   - Finalize (output \`-----DONE-----\` when 100% complete)
 
 ## Rules
-- **KISS**: Keep solutions simple
-- **Tools First**: Always use tools over text
-- **Verify**: Test every change
-- **Document**: Explain complex logic
+${[
+      "**Atomic Steps**: Make ONE meaningful change per iteration",
+      "**Verify First**: Run tests/linters before claiming completion",
+      "**Tool Priority**: Always use tools over free text",
+      "**Error Focus**: Address the last error immediately"
+   ].filter(Boolean).join('\n- ')}
 
 ## Output Format
 \`\`\`markdown
+[REASONING]
+• Current issue: <describe>
+• Next step: <step #><continue|fix|finalize>
+
 [TOOL CALLS...]
 \`\`\`
 
-## Quality Gates
-✅ Production-ready code
-✅ Full test coverage
-✅ Passing CI checks
-✅ Clean git history
+-----DONE-----
 `.trim();
 
-export const CODER_USER_PROMPT = (query: string) => `
-IMPLEMENT: ${query}
+export const CODER_USER_PROMPT = (query: string, lastOutput: string) => `
+IMPLEMENT ACCORDING TO THE ANALYSIS & PLAN: ${query}
+
+## Current Progress
+${lastOutput ?
+      "```\n" + lastOutput + "\n```" :
+      "No progress yet (just starting)"}
 `.trim();
