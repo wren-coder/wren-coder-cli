@@ -94,7 +94,7 @@ export class GenerationService {
           : m instanceof AIMessage
             ? MessageRoles.ASSISTANT
             : MessageRoles.SYSTEM;
-        console.log(`[${role}] ${m.content ? m.content : m.name}`);
+        console.log(`[${role}] ${m.content ? m.content : m}`);
       });
       shownCount = all.length;
     }
