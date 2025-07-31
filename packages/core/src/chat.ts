@@ -123,7 +123,6 @@ export class Chat {
         );
 
         this.messageHistory.push(...result.messages);
-        console.log(this.messageHistory)
         return result;
     }
 }
