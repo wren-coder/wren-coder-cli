@@ -9,6 +9,7 @@ export enum ToolName {
     READ_FILE = "read_file",
     WRITE_FILE = "write_file",
     LIST_FILES = "list_files",
+    EDIT = "edit",
     GREP = "grep",
     DELETE_FILE = "delete_file",
     RUN_SHELL = "run_shell",
