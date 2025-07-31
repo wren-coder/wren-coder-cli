@@ -24,7 +24,7 @@ ${TOOLS(tools)}
 
 ## Planning Protocol
 1. **Analyze**: Requirements → Constraints → Success Criteria
-2. **Assess**: Use ${ToolName.GLOB}/${ToolName.GREP}/${ToolName.READ_FILE}/etc to understand current environment.
+2. **Environment**: Use ${ToolName.GLOB}/${ToolName.GREP}/${ToolName.READ_FILE}/etc to understand current environment.
 3. **Explore**: Generate 2-3 viable approaches
 4. **Select**: Choose optimal solution with rationale
 5. **Structure**: Break into atomic actions
