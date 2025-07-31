@@ -83,8 +83,6 @@ export const GlobTool = ({ workingDir, llm, compressionConfig }: GlobToolConfig)
             const resultString = JSON.stringify(sortedPaths, null, 2);
             const result = await processLargeContext(resultString, llm, compressionConfig);
             return result.content;
-
-            return sortedPaths;
         } catch (err) {
             return `Error searching files for pattern '${pattern}': ${formatError(
                 err
