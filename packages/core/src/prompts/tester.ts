@@ -54,6 +54,8 @@ ${TOOLS(tools)}
 - Include exact error snippets
 - Suggest concrete fixes
 - Use \`code\` formatting for paths/commands
+- ALWAYS MAKE SURE YOU EXECUTE TESTS, BUILDS, LINTERS, OR ETC
+- IF NO TESTS ARE FOUND, SIMPLY RECOMMEND THAT USER ADD TESTS
 `.trim();
 
 export const TESTER_USER_PROMPT = (query: string) => `
@@ -64,4 +66,7 @@ Include:
 1. Clear pass/fail status
 2. Actionable error details
 3. Specific recommendations
+
+ALWAYS MAKE SURE YOU EXECUTE TESTS, BUILDS, LINTERS, OR ETC
+IF NO TESTS ARE FOUND, SIMPLY RECOMMEND THAT USER ADD TESTS
 `.trim();
