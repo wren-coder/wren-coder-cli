@@ -4,7 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export type LogLevel = 'error' | 'warn' | 'info' | 'debug';
+export enum LogLevel {
+  ERROR = 'error',
+  WARN = 'warn',
+  INFO = 'info',
+  DEBUG = 'debug',
+}
 
 export interface Logger {
   error(...args: any[]): void;
@@ -16,7 +21,7 @@ export interface Logger {
 class ConsoleLogger implements Logger {
   private level: LogLevel;
 
-  constructor(level: LogLevel = 'info') {
+  constructor(level: LogLevel = LogLevel.INFO) {
     this.level = level;
   }
 
@@ -25,31 +30,31 @@ class ConsoleLogger implements Logger {
   }
 
   error(...args: any[]) {
-    if (this.shouldLog('error')) {
-      logger.error('[ERROR]', ...args);
+    if (this.shouldLog(LogLevel.ERROR)) {
+      console.error('[ERROR]', ...args);
     }
   }
 
   warn(...args: any[]) {
-    if (this.shouldLog('warn')) {
-      logger.warn('[WARN]', ...args);
+    if (this.shouldLog(LogLevel.WARN)) {
+      console.warn('[WARN]', ...args);
     }
   }
 
   info(...args: any[]) {
-    if (this.shouldLog('info')) {
-      logger.info('[INFO]', ...args);
+    if (this.shouldLog(LogLevel.INFO)) {
+      console.info('[INFO]', ...args);
     }
   }
 
   debug(...args: any[]) {
-    if (this.shouldLog('debug')) {
-      logger.debug('[DEBUG]', ...args);
+    if (this.shouldLog(LogLevel.DEBUG)) {
+      console.debug('[DEBUG]', ...args);
     }
   }
 
   private shouldLog(level: LogLevel): boolean {
-    const levels: LogLevel[] = ['error', 'warn', 'info', 'debug'];
+    const levels: LogLevel[] = [LogLevel.ERROR, LogLevel.WARN, LogLevel.INFO, LogLevel.DEBUG];
     const currentLevelIndex = levels.indexOf(this.level);
     const messageLevelIndex = levels.indexOf(level);
 
@@ -58,7 +63,7 @@ class ConsoleLogger implements Logger {
 }
 
 let currentLogger: Logger | null = null;
-let currentLogLevel: LogLevel = 'info';
+let currentLogLevel: LogLevel = LogLevel.INFO;
 
 export function getLogger(): Logger {
   if (!currentLogger) {

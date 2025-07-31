@@ -15,6 +15,7 @@ import { CompressionConfig, getModelSpecificCompressionConfig } from "./utils/co
 import { AgentConfig, createAgentConfig } from "./agents/agentConfig.js";
 import { GenerationService } from "./services/generationService.js";
 import { TesterAgent } from "./index.js";
+import { logger, LogLevel, setLogLevel } from "./utils/logging.js";
 
 export interface ChatConfig {
     llmConfig: LlmConfig,
@@ -50,6 +51,8 @@ export class Chat {
 
         const graph = this.createGraph();
         this.generationService = this.createGenerationService(coderAgentConfig.llmModelConfig, graph);
+
+        if (this.debug) setLogLevel(LogLevel.DEBUG);
     }
 
     private createGenerationService(llmModelConfig: LlmModelConfig, graph: ReturnType<typeof this.createGraph>) {
