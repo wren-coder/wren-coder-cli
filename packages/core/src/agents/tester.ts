@@ -13,13 +13,12 @@ import { ListFilesTool } from "../tools/list-files.js";
 import { GlobTool } from "../tools/glob.js";
 import { ScreenshotTool } from "../tools/screenshot.js";
 import { ReadConsoleLogTool } from "../tools/read-console.js";
-import { TESTER_PROMPT } from "../prompts/tester.js";
+import { TESTER_PROMPT, TESTER_USER_PROMPT } from "../prompts/tester.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../models/adapter.js";
-import { TesterResponse, TesterResponseSchema } from "../schemas/response.js";
-import { extractStructuredResponse } from "../utils/jsonParser.js";
+import { HumanMessage } from "@langchain/core/messages";
 
 const AGENT_NAME = 'Tester';
 const AGENT_DESC = 'Tests vs. the user spec, returns pass/fail and feedback';
@@ -47,25 +46,21 @@ export class TesterAgent extends BaseAgent {
       llm,
       tools,
       compressionConfig,
-      responseFormat: TesterResponseSchema,
       graphRecursionLimit,
     });
   }
 
   async invoke(state: typeof StateAnnotation.State) {
-    console.log("[Tester] Executing Test");
-    const result = await this.generationService.invoke(state);
-    try {
-      const response = extractStructuredResponse<TesterResponse>(result, TesterResponseSchema);
-
-      const testResult = response.result;
-      const testErrors = response.errors;
-
-      console.log(`[Tester] Test ${testResult}`);
-      return { ...result, testResult, testErrors };
-    } catch (_err) {
-      console.error('Could not parse test result');
-      return { ...result, testResult: 'PASS' };
-    }
+    console.log("[Tester] Starting testing");
+    const messages = state.messages;
+    const plan = messages[messages.length - 1].content.toString()
+    console.log(plan);
+    messages.push(new HumanMessage(TESTER_USER_PROMPT(`${plan}`)));
+    const result = await this.generationService.invoke({
+      ...state,
+      messages
+    });
+    console.log(`[Tester] Testing completed.`);
+    return result;
   }
 }

@@ -13,15 +13,6 @@ export const StateAnnotation = Annotation.Root({
         reducer: (all, one) =>
             Array.isArray(one) ? all.concat(one) : all.concat([one]),
     }),
-    steps: Annotation<Array<{
-        action: string;
-        description: string;
-        details: string[];
-    }>>({
-        default: () => [],
-        reducer: (all, one) =>
-            Array.isArray(one) ? all.concat(one) : all.concat([one]),
-    }),
     suggestions: Annotation<string[]>({
         default: () => [],
         reducer: (all, one) =>

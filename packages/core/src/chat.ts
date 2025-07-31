@@ -16,7 +16,7 @@ import { MessageRoles } from "./types/messageRole.js";
 import { CompressionConfig, getModelSpecificCompressionConfig } from "./utils/compression.js";
 import { AgentConfig, createAgentConfig } from "./agents/agentConfig.js";
 import { GenerationService } from "./services/generationService.js";
-import { PLANNER_USER_PROMPT } from "./index.js";
+import { PLANNER_USER_PROMPT, TesterAgent } from "./index.js";
 
 export interface ChatConfig {
     llmConfig: LlmConfig,
@@ -30,6 +30,7 @@ export interface ChatConfig {
 export class Chat {
     protected plannerAgent: PlannerAgent;
     protected coderAgent: CoderAgent;
+    protected testerAgent: TesterAgent;
     protected evaluatorAgent: EvaluatorAgent;
     protected messageHistory: BaseMessage[] = [];
     protected debug: boolean;
@@ -48,6 +49,7 @@ export class Chat {
 
         this.coderAgent = new CoderAgent(coderAgentConfig);
         this.plannerAgent = new PlannerAgent(plannerAgentConfig);
+        this.testerAgent = new TesterAgent(coderAgentConfig);
         this.evaluatorAgent = new EvaluatorAgent(evaluatorAgentConfig);
 
         const graph = this.createGraph();
@@ -69,18 +71,13 @@ export class Chat {
         return new StateGraph(StateAnnotation)
             .addNode(this.plannerAgent.getName(), this.plannerAgent.invoke)
             .addNode(this.coderAgent.getName(), this.coderAgent.invoke)
+            .addNode(this.testerAgent.getName(), this.testerAgent.invoke)
             .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.invoke)
 
             .addEdge(START, this.plannerAgent.getName())
             .addEdge(this.plannerAgent.getName(), this.coderAgent.getName())
-
-            .addConditionalEdges(
-                this.coderAgent.getName(),
-                state => {
-                    if (state.steps && state.steps.length > 0) return this.coderAgent.getName();
-                    return this.evaluatorAgent.getName();
-                }
-            )
+            .addEdge(this.coderAgent.getName(), this.testerAgent.getName())
+            .addEdge(this.testerAgent.getName(), this.evaluatorAgent.getName())
 
             .addConditionalEdges(
                 this.evaluatorAgent.getName(),
@@ -129,7 +126,6 @@ export class Chat {
         const iterator = this.generationService.stream(
             {
                 messages: this.messageHistory,
-                steps: [],
                 suggestions: []
             }
         );

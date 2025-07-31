@@ -7,7 +7,7 @@
 import { DuckDuckGoSearch } from "@langchain/community/tools/duckduckgo_search";
 import { BaseAgent } from "./base.js";
 import { ShellTool } from "../tools/shell.js";
-import { EVALUATOR_PROMPT } from "../prompts/evaluator.js";
+import { EVALUATOR_PROMPT, EVALUATOR_USER_PROMPT } from "../prompts/evaluator.js";
 import { ReadFileTool } from "../tools/read-file.js";
 import { GrepTool } from "../tools/grep.js";
 import { ListFilesTool } from "../tools/list-files.js";
@@ -20,6 +20,7 @@ import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../models/adapter.js";
 import { extractStructuredResponse } from "../utils/jsonParser.js";
+import { HumanMessage } from "@langchain/core/messages";
 
 const AGENT_NAME = 'evaluator';
 const AGENT_DESC = 'Evaluates code + tests vs. the user spec, returns pass/fail and feedback';
@@ -56,7 +57,15 @@ export class EvaluatorAgent extends BaseAgent {
 
 
   async invoke(state: typeof StateAnnotation.State) {
-    const result = await this.generationService.invoke(state);
+    console.log("[EVALUATOR] Starting testing");
+    const messages = state.messages;
+    const plan = messages[messages.length - 1].content.toString()
+    console.log(plan);
+    messages.push(new HumanMessage(EVALUATOR_USER_PROMPT(`${plan}`)));
+    const result = await this.generationService.invoke({
+      ...state,
+      messages
+    });
 
     const { suggestions } = extractStructuredResponse<EvaluatorResponse>(result, EvaluatorResponseSchema);
 

@@ -14,19 +14,16 @@ import { GrepTool } from "../tools/grep.js";
 import { ListFilesTool } from "../tools/list-files.js";
 import { GlobTool } from "../tools/glob.js";
 import { HumanMessage } from "@langchain/core/messages";
-import { TesterAgent } from "./tester.js";
-import { formatError } from "../utils/format-error.js";
 import { StateAnnotation } from "../types/stateAnnotation.js";
 import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
-import { createLlmFromConfig, TESTER_USER_PROMPT } from "../index.js";
+import { createLlmFromConfig } from "../index.js";
 
 const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
 const MAX_SEARCH_RESULTS = 5;
 
 export class CoderAgent extends BaseAgent {
-  protected testerAgent: TesterAgent;
   constructor({ workingDir, llmModelConfig, compressionConfig, graphRecursionLimit }: AgentConfig) {
     const llm = createLlmFromConfig(llmModelConfig);
     compressionConfig = compressionConfig ?? getModelSpecificCompressionConfig(llmModelConfig.provider, llmModelConfig.model);
@@ -50,62 +47,17 @@ export class CoderAgent extends BaseAgent {
       graphRecursionLimit,
     });
 
-    this.testerAgent = new TesterAgent({ workingDir, llmModelConfig, compressionConfig, graphRecursionLimit });
     this.invoke = this.invoke.bind(this);
   }
 
   async invoke(state: typeof StateAnnotation.State) {
-    let result = { ...state };
-    console.log(`[Coder] Starting execution with ${result.steps.length} steps`);
-
-    while (result.steps.length > 0) {
-      const currentStep = result.steps[0];
-      const stepString = `${currentStep.action}: ${currentStep.description}\nDetails: ${Array.isArray(currentStep.details) ? currentStep.details.join(', ') : currentStep.details}`;
-
-      console.log(`[Coder] Executing step (${result.steps.length} remaining): ${currentStep.action} - ${currentStep.description}`);
-
-      const stepState = {
-        ...result,
-        messages: [...result.messages, new HumanMessage(CODER_USER_PROMPT(stepString))]
-      };
-
-      try {
-        const agentResult = await this.generationService.invoke(stepState);
-
-        console.log(`[Coder] Testing implementation for: ${currentStep.description}`);
-        const testAgentResult = await this.testerAgent.invoke({
-          ...stepState,
-          messages: [...stepState.messages, new HumanMessage(TESTER_USER_PROMPT(stepString))]
-        });
-
-        const { testResult, testErrors } = testAgentResult;
-
-        console.log(`[Coder] Test result for "${currentStep.description}": ${testResult ? 'PASS' : 'FAIL'}.  ${testErrors ? 'With errors' + testErrors : ''}}`);
-
-        if (testResult) {
-          result = {
-            ...agentResult,
-            steps: result.steps.slice(1)
-          };
-        } else {
-          const newStep = {
-            action: "fix",
-            description: "Fix failed test",
-            details: [`The implementation for "${currentStep.description}" failed tests. ${testErrors}`]
-          };
-
-          result = {
-            ...agentResult,
-            steps: [newStep, ...result.steps]
-          };
-          console.log(`[Coder] Added fix step for: ${currentStep.description} `);
-        }
-      } catch (error) {
-        console.error(`[Coder] Error during step execution: ${formatError(error)} `);
-        throw error;
-      }
-    }
-
+    const messages = state.messages;
+    const plan = messages[messages.length - 1].content.toString()
+    messages.push(new HumanMessage(CODER_USER_PROMPT(`${plan}`)));
+    const result = await this.generationService.invoke({
+      ...state,
+      messages
+    });
     console.log("[Coder] All steps completed");
     return result;
   }

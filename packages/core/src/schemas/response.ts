@@ -24,14 +24,5 @@ export const EvaluatorResponseSchema = z.object({
   suggestions: z.array(z.string()).describe('Array of steps describing what to improve')
 });
 
-/**
- * Schema for the evaluator agent's response
- */
-export const TesterResponseSchema = z.object({
-  result: z.enum(["PASS", "FAIL"]),
-  errors: z.array(z.string()).or(z.string()).nullable().optional()
-});
 
-export type PlannerResponse = z.infer<typeof PlannerResponseSchema>;
 export type EvaluatorResponse = z.infer<typeof EvaluatorResponseSchema>;
-export type TesterResponse = z.infer<typeof TesterResponseSchema>;
