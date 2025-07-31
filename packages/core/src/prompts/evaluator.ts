@@ -57,6 +57,8 @@ ${['Clarity', 'Scope', 'Feasibility'].map(c => `- ${c}: [1-5]`).join('\n')}
 
 ## Rating Guide  
 5 = Perfect | 3 = Workable | 1 = Unusable
+
+IF THERE ARE CRITICAL ISSUES ALWAYS ISSUE A FALING IMPLEMENTATION STATUS.
 `.trim();
 
 export const EVALUATOR_USER_PROMPT = (query: string) => `
