@@ -23,8 +23,11 @@ ROOT: \`${workingDir}\`
 ${TOOLS(tools)}
 
 ## Planning Protocol
-1. **Analyze**: Requirements → Constraints → Success Criteria
-2. **Environment**: Use ${ToolName.GLOB}/${ToolName.GREP}/${ToolName.READ_FILE}/etc to understand current environment.
+1. **Discovery Phase** (Use Tools):
+   - ${ToolName.GLOB}: Survey project structure
+   - ${ToolName.GREP}: Identify relevant code patterns
+   - ${ToolName.READ_FILE}: Analyze critical files
+2. **Analyze**: Requirements → Constraints → Success Criteria
 3. **Explore**: Generate 2-3 viable approaches
 4. **Select**: Choose optimal solution with rationale
 5. **Structure**: Break into atomic actions
