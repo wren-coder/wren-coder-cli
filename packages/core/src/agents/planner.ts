@@ -62,6 +62,7 @@ export class PlannerAgent extends BaseAgent {
 
     logger.info(`[Planner] Plan generation completed.`);
 
+    // this is pretty hacky but works for now.
     const lm = result.messages[result.messages.length - 1].content.toString();
     return {
       ...result,
