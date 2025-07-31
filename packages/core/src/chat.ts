@@ -15,7 +15,7 @@ import { CompressionConfig, getModelSpecificCompressionConfig } from "./utils/co
 import { AgentConfig, createAgentConfig } from "./agents/agentConfig.js";
 import { GenerationService } from "./services/generationService.js";
 import { TesterAgent } from "./index.js";
-import { logger, LogLevel, setLogLevel } from "./utils/logging.js";
+import { LogLevel, setLogLevel } from "./utils/logging.js";
 
 export interface ChatConfig {
     llmConfig: LlmConfig,
@@ -73,8 +73,15 @@ export class Chat {
             .addNode(this.testerAgent.getName(), this.testerAgent.stream)
 
             .addEdge(START, this.plannerAgent.getName())
-            .addEdge(this.plannerAgent.getName(), this.coderAgent.getName())
             .addEdge(this.coderAgent.getName(), this.testerAgent.getName())
+
+            .addConditionalEdges(
+                this.plannerAgent.getName(),
+                state => {
+                    if (!state.query) return this.coderAgent.getName();
+                    return END;
+                }
+            )
 
             .addConditionalEdges(
                 this.testerAgent.getName(),
@@ -122,6 +129,7 @@ export class Chat {
                 messages: this.messageHistory,
                 eval: false,
                 original_request: query,
+                query: false
             }
         );
 

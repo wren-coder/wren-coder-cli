@@ -59,7 +59,13 @@ export class PlannerAgent extends BaseAgent {
       ...state,
       messages
     });
+
     logger.info(`[Planner] Plan generation completed.`);
-    return result;
+
+    const lm = result.messages[result.messages.length - 1].content.toString();
+    return {
+      ...result,
+      query: !(lm.trim().includes("## Plan") && lm.trim().includes("## Verification")),
+    };
   }
 }

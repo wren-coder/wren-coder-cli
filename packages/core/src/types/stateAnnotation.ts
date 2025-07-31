@@ -14,5 +14,6 @@ export const StateAnnotation = Annotation.Root({
             Array.isArray(one) ? all.concat(one) : all.concat([one]),
     }),
     original_request: Annotation<string>,
+    query: Annotation<boolean>,
     eval: Annotation<boolean>,
 });
