@@ -27,7 +27,7 @@ export const ListFilesTool = ({ workingDir }: ListFilesToolConfig) => tool(
             const absolutePattern = path.isAbsolute(pattern)
                 ? pattern
                 : path.join(workingDir, pattern);
-            return await glob(absolutePattern, { cwd: workingDir });
+            return (await glob(absolutePattern, { cwd: workingDir })).join("\n");
         } catch (err: unknown) {
             return `Error listing files for "${pattern}": ${formatError(err)}`;
         }
