@@ -20,6 +20,7 @@ export interface LlmModelConfig {
     topP?: TopP;
     apiKey?: string;
     maxRetries?: number;
+    maxTokens?: number,
 }
 
 interface DefaultLlmConfig {

@@ -52,12 +52,18 @@ export class CoderAgent extends BaseAgent {
 
   async invoke(state: typeof StateAnnotation.State) {
     const messages = state.messages;
-    const plan = messages[messages.length - 1].content.toString()
-    messages.push(new HumanMessage(CODER_USER_PROMPT(`${plan}`)));
-    const result = await this.generationService.invoke({
-      ...state,
-      messages
-    });
+    let lm = "";
+    let result;
+
+    while (!lm.includes("-----DONE-----")) {
+      lm = messages[messages.length - 1].content.toString();
+      messages.push(new HumanMessage(CODER_USER_PROMPT(`${lm}`)));
+      result = await this.generationService.invoke({
+        ...state,
+        messages
+      });
+    }
+
     console.log("[Coder] All steps completed");
     return result;
   }

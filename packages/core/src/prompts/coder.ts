@@ -34,6 +34,9 @@ ${TOOLS(tools)}
    - Fix failures immediately
    - Maintain git hygiene
 
+2. **Notify of Completeness**:
+- Ouptut \`-----DONE-----\` when finished implementing every step.
+
 ## Rules
 - **KISS**: Keep solutions simple
 - **Tools First**: Always use tools over text
