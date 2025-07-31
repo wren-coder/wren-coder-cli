@@ -29,7 +29,7 @@ ${TOOLS(tools)}
 
 2. **Implement** (Act):
    - Write production code
-   - Create adjacent tests
+   - Create unit tests
    - Verify with:
      - Tests (\`npm test\` etc)
      - Lint/typecheck
