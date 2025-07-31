@@ -94,7 +94,17 @@ export class GenerationService {
           : m instanceof AIMessage
             ? MessageRoles.ASSISTANT
             : MessageRoles.SYSTEM;
-        console.log(`[${role}] ${m.content ? m.content : m}`);
+        let output;
+        if (m.content) {
+          output = m.content;
+        } else if (m instanceof AIMessage && m.tool_calls) {
+          output = `Tool calls: ${m.tool_calls.map(tc =>
+            `${tc.name}(${JSON.stringify(tc.args)})`
+          ).join(', ')}`;
+        } else {
+          output = JSON.stringify(m.toJSON());
+        }
+        console.log(`[${role}] ${output}`);
       });
       shownCount = all.length;
     }

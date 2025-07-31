@@ -19,6 +19,7 @@ import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../models/adapter.js";
 import { HumanMessage } from "@langchain/core/messages";
+import { TesterResponseSchema } from "../schemas/response.js";
 
 const AGENT_NAME = 'Tester';
 const AGENT_DESC = 'Tests vs. the user spec, returns pass/fail and feedback';
@@ -62,7 +63,12 @@ export class TesterAgent extends BaseAgent {
       ...state,
       messages
     });
+
+    const evalResult = result.messages[result.messages.length - 1].content.toString().includes("❌");
     console.log(`[Tester] Testing completed.`);
-    return result!;
+    return {
+      ...result,
+      eval: evalResult
+    };
   }
 }

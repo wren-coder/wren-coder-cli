@@ -8,7 +8,6 @@ import { BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { CoderAgent } from "./agents/coder.js";
 import { PlannerAgent } from "./agents/planner.js";
 import { createLlmFromConfig, isAgentSpecificConfig, LlmConfig, LlmModelConfig } from "./models/adapter.js";
-import { EvaluatorAgent } from "./agents/evaluator.js";
 import { StateGraph, START, END } from "@langchain/langgraph";
 import { ApprovalMode } from "./types/approvalMode.js";
 import { StateAnnotation } from "./types/stateAnnotation.js";
@@ -30,7 +29,6 @@ export class Chat {
     protected plannerAgent: PlannerAgent;
     protected coderAgent: CoderAgent;
     protected testerAgent: TesterAgent;
-    protected evaluatorAgent: EvaluatorAgent;
     protected messageHistory: BaseMessage[] = [];
     protected debug: boolean;
     protected graphRecursionLimit?: number;
@@ -44,12 +42,11 @@ export class Chat {
         this.compressionConfig = config.compressionConfig;
         this.workingDir = config.workingDir ?? process.cwd();
 
-        const { coderAgentConfig, plannerAgentConfig, evaluatorAgentConfig } = this.loadAgentConfigs(config.llmConfig);
+        const { coderAgentConfig, plannerAgentConfig } = this.loadAgentConfigs(config.llmConfig);
 
         this.coderAgent = new CoderAgent(coderAgentConfig);
         this.plannerAgent = new PlannerAgent(plannerAgentConfig);
         this.testerAgent = new TesterAgent(coderAgentConfig);
-        this.evaluatorAgent = new EvaluatorAgent(evaluatorAgentConfig);
 
         const graph = this.createGraph();
         this.generationService = this.createGenerationService(coderAgentConfig.llmModelConfig, graph);
@@ -71,17 +68,15 @@ export class Chat {
             .addNode(this.plannerAgent.getName(), this.plannerAgent.stream)
             .addNode(this.coderAgent.getName(), this.coderAgent.stream)
             .addNode(this.testerAgent.getName(), this.testerAgent.stream)
-            .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.stream)
 
             .addEdge(START, this.plannerAgent.getName())
             .addEdge(this.plannerAgent.getName(), this.coderAgent.getName())
             .addEdge(this.coderAgent.getName(), this.testerAgent.getName())
-            .addEdge(this.testerAgent.getName(), this.evaluatorAgent.getName())
 
             .addConditionalEdges(
-                this.evaluatorAgent.getName(),
+                this.testerAgent.getName(),
                 state => {
-                    if (!state.eval) return this.plannerAgent.getName();
+                    if (!state.eval) return this.coderAgent.getName();
                     return END;
                 }
             )
