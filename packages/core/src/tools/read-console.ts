@@ -66,7 +66,7 @@ export const ReadConsoleLogTool = ({
                 }
             }
 
-            return logs.length > 0 ? logs : `No console messages emitted by ${url}.`;
+            return logs.length > 0 ? logs.join("\n") : `No console messages emitted by ${url}.`;
         } catch (e: unknown) {
             const error = e as Error;
             return `Error capturing console logs: ${error.message}`;
