@@ -42,7 +42,7 @@ export const EditToolResultSchema = z.object({
 
 // Define the configuration interface
 interface EditToolConfig {
-  targetDir: string;
+  workingDir: string;
 }
 
 // Define the tool description
@@ -77,7 +77,7 @@ function normalizeLineEndings(content: string): string {
 }
 
 // Main tool implementation
-export const EditTool = ({ targetDir }: EditToolConfig) =>
+export const EditTool = ({ workingDir }: EditToolConfig) =>
   tool(
     async (params: z.infer<typeof EditToolParamsSchema>) => {
       try {
@@ -92,10 +92,10 @@ export const EditTool = ({ targetDir }: EditToolConfig) =>
           };
         }
 
-        if (!isWithinRoot(validatedParams.file_path, targetDir)) {
+        if (!isWithinRoot(validatedParams.file_path, workingDir)) {
           return {
-            llmContent: `Error: File path must be within the root directory (${targetDir}): ${validatedParams.file_path}`,
-            returnDisplay: `Error: File path must be within the root directory (${targetDir}): ${validatedParams.file_path}`,
+            llmContent: `Error: File path must be within the root directory (${workingDir}): ${validatedParams.file_path}`,
+            returnDisplay: `Error: File path must be within the root directory (${workingDir}): ${validatedParams.file_path}`,
           };
         }
 
@@ -199,7 +199,7 @@ export const EditTool = ({ targetDir }: EditToolConfig) =>
           // Prepare display result
           let displayResult: z.infer<typeof EditToolResultSchema>["returnDisplay"];
           if (isNewFile) {
-            displayResult = `Created ${shortenPath(makeRelative(validatedParams.file_path, targetDir))}`;
+            displayResult = `Created ${shortenPath(makeRelative(validatedParams.file_path, workingDir))}`;
           } else {
             // Generate diff for display
             const fileName = path.basename(validatedParams.file_path);

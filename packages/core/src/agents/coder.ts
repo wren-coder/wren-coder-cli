@@ -19,6 +19,7 @@ import { AgentConfig } from "./agentConfig.js";
 import { getModelSpecificCompressionConfig } from "../utils/compression.js";
 import { createLlmFromConfig } from "../index.js";
 import { logger } from "../utils/logging.js";
+import { EditTool } from "../tools/edit.js";
 
 const AGENT_NAME = 'coder';
 const AGENT_DESC = 'Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.';
@@ -36,6 +37,7 @@ export class CoderAgent extends BaseAgent {
       GrepTool({ workingDir }),
       ListFilesTool({ workingDir }),
       GlobTool({ workingDir, llm, compressionConfig }),
+      EditTool({ workingDir }),
     ];
 
     super({
