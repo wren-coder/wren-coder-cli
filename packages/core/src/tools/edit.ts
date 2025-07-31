@@ -10,7 +10,6 @@ import { promises as fs } from "fs";
 import path from "path";
 import { ToolName } from "./enum.js";
 import { createPatch } from "diff";
-import { makeRelative, shortenPath } from "../utils/paths.js";
 import { isNodeError } from "../utils/errors.js";
 import { isWithinRoot } from "../utils/file.js";
 import { DEFAULT_DIFF_OPTIONS } from "../types/diff.js";
@@ -27,17 +26,6 @@ const EditToolParamsSchema = z.object({
   expected_replacements: z.number().optional().describe(
     "Number of replacements expected. Defaults to 1 if not specified. Use when you want to replace multiple occurrences."
   ),
-});
-
-export const EditToolResultSchema = z.object({
-  llmContent: z.string(),
-  returnDisplay: z.union([
-    z.string(),
-    z.object({
-      fileDiff: z.string(),
-      fileName: z.string(),
-    }),
-  ]),
 });
 
 // Define the configuration interface
@@ -86,18 +74,13 @@ export const EditTool = ({ workingDir }: EditToolConfig) =>
 
         // Validate file path
         if (!path.isAbsolute(validatedParams.file_path)) {
-          return {
-            llmContent: `Error: File path must be absolute: ${validatedParams.file_path}`,
-            returnDisplay: `Error: File path must be absolute: ${validatedParams.file_path}`,
-          };
+          return `Error: File path must be absolute: ${validatedParams.file_path}`;
         }
 
         if (!isWithinRoot(validatedParams.file_path, workingDir)) {
-          return {
-            llmContent: `Error: File path must be within the root directory (${workingDir}): ${validatedParams.file_path}`,
-            returnDisplay: `Error: File path must be within the root directory (${workingDir}): ${validatedParams.file_path}`,
-          };
-        }
+          return `Error: File path must be within the root directory (${workingDir}): ${validatedParams.file_path}`;
+        };
+
 
         // Calculate the edit outcome
         const expectedReplacements = validatedParams.expected_replacements ?? 1;
@@ -171,10 +154,7 @@ export const EditTool = ({ workingDir }: EditToolConfig) =>
         // Apply the replacement if no error occurred
         let newContent: string;
         if (error) {
-          return {
-            llmContent: error.raw,
-            returnDisplay: `Error: ${error.display}`,
-          };
+          return error.raw;
         }
 
         if (isNewFile) {
@@ -196,14 +176,9 @@ export const EditTool = ({ workingDir }: EditToolConfig) =>
           }
           await fs.writeFile(validatedParams.file_path, newContent, 'utf8');
 
-          // Prepare display result
-          let displayResult: z.infer<typeof EditToolResultSchema>["returnDisplay"];
-          if (isNewFile) {
-            displayResult = `Created ${shortenPath(makeRelative(validatedParams.file_path, workingDir))}`;
-          } else {
-            // Generate diff for display
+          if (!isNewFile) {
             const fileName = path.basename(validatedParams.file_path);
-            const fileDiff = createPatch(
+            createPatch(
               fileName,
               currentContent ?? '',
               newContent,
@@ -211,7 +186,6 @@ export const EditTool = ({ workingDir }: EditToolConfig) =>
               'Proposed',
               DEFAULT_DIFF_OPTIONS,
             );
-            displayResult = { fileDiff, fileName };
           }
 
           const llmSuccessMessageParts = [
@@ -220,23 +194,14 @@ export const EditTool = ({ workingDir }: EditToolConfig) =>
               : `Successfully modified file: ${validatedParams.file_path} (${occurrences} replacements).`,
           ];
 
-          return {
-            llmContent: llmSuccessMessageParts.join(' '),
-            returnDisplay: displayResult,
-          };
+          return llmSuccessMessageParts.join(' ');
         } catch (writeErr) {
           const errorMsg = writeErr instanceof Error ? writeErr.message : String(writeErr);
-          return {
-            llmContent: `Error executing edit: ${errorMsg}`,
-            returnDisplay: `Error writing file: ${errorMsg}`,
-          };
+          return `Error executing edit: ${errorMsg}`;
         }
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : String(err);
-        return {
-          llmContent: `Error preparing edit: ${errorMsg}`,
-          returnDisplay: `Error preparing edit: ${errorMsg}`,
-        };
+        return `Error preparing edit: ${errorMsg}`;
       }
     },
     {

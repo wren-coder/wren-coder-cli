@@ -197,23 +197,14 @@ export async function processSingleFileContent(
     rootDirectory: string,
     offset?: number,
     limit?: number,
-): Promise<ProcessedFileReadResult> {
+): Promise<string> {
     try {
         if (!fs.existsSync(filePath)) {
-            // Sync check is acceptable before async read
-            return {
-                llmContent: [{ type: 'text', text: '' }],
-                returnDisplay: 'File not found.',
-                error: `File not found: ${filePath}`,
-            };
+            return `File not found: ${filePath}`;
         }
         const stats = await fs.promises.stat(filePath);
         if (stats.isDirectory()) {
-            return {
-                llmContent: [{ type: 'text', text: '' }],
-                returnDisplay: 'Path is a directory.',
-                error: `Path is a directory, not a file: ${filePath}`,
-            };
+            return `Path is a directory, not a file: ${filePath}`;
         }
         const fileSizeInBytes = stats.size;
         // 20MB limit
@@ -232,34 +223,15 @@ export async function processSingleFileContent(
             .replace(/\\/g, '/');
         switch (fileType) {
             case 'binary': {
-                return {
-                    llmContent: [
-                        {
-                            type: 'text',
-                            text: `Cannot display content of binary file: ${relativePathForDisplay}`,
-                        },
-                    ],
-                    returnDisplay: `Skipped binary file: ${relativePathForDisplay}`,
-                };
+                return `Cannot display content of binary file: ${relativePathForDisplay}`;
             }
             case 'svg': {
                 const SVG_MAX_SIZE_BYTES = 1 * 1024 * 1024;
                 if (stats.size > SVG_MAX_SIZE_BYTES) {
-                    return {
-                        llmContent: [
-                            {
-                                type: 'text',
-                                text: `Cannot display content of SVG file larger than 1MB: ${relativePathForDisplay}`,
-                            },
-                        ],
-                        returnDisplay: `Skipped large SVG file (>1MB): ${relativePathForDisplay}`,
-                    };
+                    return `Cannot display content of SVG file larger than 1MB: ${relativePathForDisplay}`;
                 }
                 const content = await fs.promises.readFile(filePath, 'utf8');
-                return {
-                    llmContent: [{ type: 'text', text: content }],
-                    returnDisplay: `Read SVG as text: ${relativePathForDisplay}`,
-                };
+                return content;
             }
             case 'text': {
                 const content = await fs.promises.readFile(filePath, 'utf8');
@@ -284,7 +256,6 @@ export async function processSingleFileContent(
                     return line;
                 });
                 const contentRangeTruncated = endLine < originalLineCount;
-                const isTruncated = contentRangeTruncated || linesWereTruncatedInLength;
                 let llmTextContent = '';
                 if (contentRangeTruncated) {
                     llmTextContent += `[File content truncated: showing lines ${actualStartLine + 1}-${endLine} of ${originalLineCount} total lines. Use offset/limit parameters to view more.]
@@ -294,13 +265,7 @@ export async function processSingleFileContent(
 `;
                 }
                 llmTextContent += formattedLines.join('\n');
-                return {
-                    llmContent: [{ type: 'text', text: llmTextContent }],
-                    returnDisplay: isTruncated ? '(truncated)' : '',
-                    isTruncated,
-                    originalLineCount,
-                    linesShown: [actualStartLine + 1, endLine],
-                };
+                return llmTextContent;
             }
             case 'image':
             case 'pdf':
@@ -311,29 +276,12 @@ export async function processSingleFileContent(
                 const mimeType = mime.lookup(filePath) || 'application/octet-stream';
                 // Create a data URL for LangGraph
                 const dataUrl = `data:${mimeType};base64,${base64Data}`;
-                return {
-                    llmContent: [
-                        {
-                            type: 'image_url',
-                            image_url: { url: dataUrl },
-                        },
-                    ],
-                    returnDisplay: `Read ${fileType} file: ${relativePathForDisplay}`,
-                };
+                return dataUrl;
             }
             default: {
                 // Should not happen with current detectFileType logic
                 const exhaustiveCheck: never = fileType;
-                return {
-                    llmContent: [
-                        {
-                            type: 'text',
-                            text: `Unhandled file type: ${exhaustiveCheck}`,
-                        },
-                    ],
-                    returnDisplay: `Skipped unhandled file type: ${relativePathForDisplay}`,
-                    error: `Unhandled file type for ${filePath}`,
-                };
+                return `Unhandled file type: ${exhaustiveCheck}`;
             }
         }
     } catch (error) {
@@ -341,15 +289,6 @@ export async function processSingleFileContent(
         const displayPath = path
             .relative(rootDirectory, filePath)
             .replace(/\\/g, '/');
-        return {
-            llmContent: [
-                {
-                    type: 'text',
-                    text: `Error reading file ${displayPath}: ${errorMessage}`,
-                },
-            ],
-            returnDisplay: `Error reading file ${displayPath}: ${errorMessage}`,
-            error: `Error reading file ${filePath}: ${errorMessage}`,
-        };
+        return `Error reading file ${displayPath}: ${errorMessage}`;
     }
 }
