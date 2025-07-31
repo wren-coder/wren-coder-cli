@@ -72,16 +72,9 @@ export class GenerationService {
     }
   }
 
-  async stream(state: typeof StateAnnotation.State): Promise<typeof StateAnnotation.State> {
-    const processedMessages = await this.compressMessages(state.messages);
-    const processedState = {
-      ...state,
-      messages: processedMessages
-    };
-    const iterator = await this.agent.stream(processedState, { streamMode: "values", recursionLimit: this.graphRecursionLimit });
-
+  private async processStream(iterator: any, prevMessageCount: number) {
     let finalState: { messages: BaseMessage[] } | undefined;
-    let shownCount = processedMessages.length;
+    let shownCount = prevMessageCount;
     for await (const state of iterator) {
       finalState = state;
 
@@ -120,10 +113,21 @@ export class GenerationService {
     if (last) {
       console.log("assistant:", last.content);
     }
+    return finalState.messages;
+  }
+
+  async stream(state: typeof StateAnnotation.State): Promise<typeof StateAnnotation.State> {
+    const processedMessages = await this.compressMessages(state.messages);
+    const processedState = {
+      ...state,
+      messages: processedMessages
+    };
+    const iterator = await this.agent.stream(processedState, { streamMode: "values", recursionLimit: this.graphRecursionLimit });
+    const streamMessages = await this.processStream(iterator, processedMessages.length);
 
     return {
       ...processedState,
-      messages: finalState.messages
+      messages: streamMessages
     }
   }
 }
