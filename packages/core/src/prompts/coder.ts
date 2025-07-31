@@ -40,7 +40,8 @@ ${[
       "**Atomic Steps**: Make ONE meaningful change per iteration",
       "**Verify First**: Run tests/linters before claiming completion",
       "**Tool Priority**: Always use tools over free text",
-      "**Error Focus**: Address the last error immediately"
+      "**Error Focus**: Address the last error immediately",
+      "**Comments & Documentation**: Don't add superfulous comments. Only add concise doc strings."
    ].filter(Boolean).join('\n- ')}
 
 ## Output Format
