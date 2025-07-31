@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
+import { BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { CoderAgent } from "./agents/coder.js";
 import { PlannerAgent } from "./agents/planner.js";
 import { createLlmFromConfig, isAgentSpecificConfig, LlmConfig, LlmModelConfig } from "./models/adapter.js";
@@ -12,7 +12,6 @@ import { EvaluatorAgent } from "./agents/evaluator.js";
 import { StateGraph, START, END } from "@langchain/langgraph";
 import { ApprovalMode } from "./types/approvalMode.js";
 import { StateAnnotation } from "./types/stateAnnotation.js";
-import { MessageRoles } from "./types/messageRole.js";
 import { CompressionConfig, getModelSpecificCompressionConfig } from "./utils/compression.js";
 import { AgentConfig, createAgentConfig } from "./agents/agentConfig.js";
 import { GenerationService } from "./services/generationService.js";
@@ -69,10 +68,10 @@ export class Chat {
 
     private createGraph() {
         return new StateGraph(StateAnnotation)
-            .addNode(this.plannerAgent.getName(), this.plannerAgent.invoke)
-            .addNode(this.coderAgent.getName(), this.coderAgent.invoke)
-            .addNode(this.testerAgent.getName(), this.testerAgent.invoke)
-            .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.invoke)
+            .addNode(this.plannerAgent.getName(), this.plannerAgent.stream)
+            .addNode(this.coderAgent.getName(), this.coderAgent.stream)
+            .addNode(this.testerAgent.getName(), this.testerAgent.stream)
+            .addNode(this.evaluatorAgent.getName(), this.evaluatorAgent.stream)
 
             .addEdge(START, this.plannerAgent.getName())
             .addEdge(this.plannerAgent.getName(), this.coderAgent.getName())
@@ -120,10 +119,7 @@ export class Chat {
     async query(query: string) {
         this.messageHistory.push(new HumanMessage(query));
 
-        let finalState: { messages: BaseMessage[] } | undefined;
-        let shownCount = this.messageHistory.length;
-
-        const iterator = await this.generationService.stream(
+        const result = await this.generationService.stream(
             {
                 messages: this.messageHistory,
                 eval: false,
@@ -131,34 +127,6 @@ export class Chat {
             }
         );
 
-        for await (const state of iterator) {
-            finalState = state;
-
-            if (this.debug) {
-                const all = state.messages;
-                const newlyAdded = all.slice(shownCount);
-                newlyAdded.forEach((m: BaseMessage) => {
-                    const role = m instanceof HumanMessage
-                        ? MessageRoles.USER
-                        : m instanceof AIMessage
-                            ? MessageRoles.ASSISTANT
-                            : MessageRoles.SYSTEM;
-                    console.log(`[${role}] ${m.content}`);
-                });
-                shownCount = all.length;
-            }
-        }
-
-        if (!finalState) throw new Error("Stream completed without yielding a state");
-        this.messageHistory = finalState.messages;
-
-        // last AI message is the "final" reply
-        const last = this.messageHistory
-            .filter((m): m is AIMessage => m instanceof AIMessage)
-            .at(-1);
-
-        if (last) {
-            console.log("assistant:", last.content);
-        }
+        return result;
     }
 }

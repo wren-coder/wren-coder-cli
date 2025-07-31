@@ -49,20 +49,20 @@ export class TesterAgent extends BaseAgent {
       graphRecursionLimit,
     });
 
-    this.invoke = this.invoke.bind(this);
+    this.stream = this.stream.bind(this);
   }
 
-  async invoke(state: typeof StateAnnotation.State) {
+  async stream(state: typeof StateAnnotation.State) {
     console.log("[Tester] Starting testing");
     const messages = state.messages;
     const plan = messages[messages.length - 1].content.toString()
     console.log(plan);
     messages.push(new HumanMessage(TESTER_USER_PROMPT(`${plan}`)));
-    const result = await this.generationService.invoke({
+    const result = await this.generationService.stream({
       ...state,
       messages
     });
     console.log(`[Tester] Testing completed.`);
-    return result;
+    return result!;
   }
 }

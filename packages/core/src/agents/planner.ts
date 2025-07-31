@@ -46,15 +46,15 @@ export class PlannerAgent extends BaseAgent {
       graphRecursionLimit,
     });
 
-    this.invoke = this.invoke.bind(this);
+    this.stream = this.stream.bind(this);
   }
 
-  async invoke(state: typeof StateAnnotation.State) {
+  async stream(state: typeof StateAnnotation.State) {
     console.log("[Planner] Starting plan generation");
     const messages = state.messages;
     const prompt = messages[messages.length - 1].content.toString()
     messages.push(new HumanMessage(PLANNER_USER_PROMPT(`${prompt}`)));
-    const result = await this.generationService.invoke({
+    const result = await this.generationService.stream({
       ...state,
       messages
     });

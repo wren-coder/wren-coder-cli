@@ -47,7 +47,7 @@ export abstract class BaseAgent implements AgentInterface {
         });
     }
 
-    abstract invoke(state: typeof StateAnnotation.State): Promise<typeof StateAnnotation.State>;
+    abstract stream(state: typeof StateAnnotation.State): Promise<typeof StateAnnotation.State>;
 
     getName(): string {
         return this.name;

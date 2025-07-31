@@ -52,22 +52,22 @@ export class EvaluatorAgent extends BaseAgent {
       graphRecursionLimit,
     });
 
-    this.invoke = this.invoke.bind(this);
+    this.stream = this.stream.bind(this);
   }
 
 
-  async invoke(state: typeof StateAnnotation.State) {
+  async stream(state: typeof StateAnnotation.State) {
     console.log("[EVALUATOR] Starting testing");
     const messages = state.messages;
     messages.push(new HumanMessage(EVALUATOR_USER_PROMPT(`${state.original_request}`)));
-    const result = await this.generationService.invoke({
+    const result = await this.generationService.stream({
       ...state,
       messages
     });
 
     const evalResult = extractStructuredResponse<EvaluatorResponse>(result, EvaluatorResponseSchema);
 
-    result.eval = evalResult.status_report.implementation_status;
+    result.eval = evalResult.status_report.implementation_status === 'pass';
     console.log(`[Evaluator] Evaluation generation completed with ${evalResult.status_report.implementation_status}`);
     return result;
   }

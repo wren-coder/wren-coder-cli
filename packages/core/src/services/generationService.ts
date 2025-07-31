@@ -5,9 +5,10 @@
  */
 
 import { StateAnnotation } from "../types/stateAnnotation.js";
-import { BaseMessage, HumanMessage } from "@langchain/core/messages";
+import { AIMessage, BaseMessage, HumanMessage } from "@langchain/core/messages";
 import { processLargeContext, CompressionConfig } from "../utils/compression.js";
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
+import { MessageRoles } from "../types/messageRole.js";
 
 export interface GenerationServiceConfig {
   compressionConfig: CompressionConfig;
@@ -71,23 +72,48 @@ export class GenerationService {
     }
   }
 
-  async invoke(state: typeof StateAnnotation.State) {
+  async stream(state: typeof StateAnnotation.State): Promise<typeof StateAnnotation.State> {
     const processedMessages = await this.compressMessages(state.messages);
     const processedState = {
       ...state,
       messages: processedMessages
     };
+    const iterator = await this.agent.stream(processedState, { streamMode: "values", recursionLimit: this.graphRecursionLimit });
 
-    return await this.agent.invoke(processedState, { recursionLimit: this.graphRecursionLimit });
-  }
+    let finalState: { messages: BaseMessage[] } | undefined;
+    let shownCount = processedMessages.length;
+    for await (const state of iterator) {
+      finalState = state;
 
-  async stream(state: typeof StateAnnotation.State) {
-    const processedMessages = await this.compressMessages(state.messages);
-    const processedState = {
-      ...state,
-      messages: processedMessages
-    };
 
-    return this.agent.stream(processedState, { streamMode: "values", recursionLimit: this.graphRecursionLimit });
+      const all = state.messages;
+      const newlyAdded = all.slice(shownCount);
+      newlyAdded.forEach((m: BaseMessage) => {
+        const role = m instanceof HumanMessage
+          ? MessageRoles.USER
+          : m instanceof AIMessage
+            ? MessageRoles.ASSISTANT
+            : MessageRoles.SYSTEM;
+        console.log(`[${role}] ${m.content}`);
+      });
+      shownCount = all.length;
+    }
+
+    if (!finalState) {
+      throw new Error();
+    }
+
+    const last = finalState.messages
+      .filter((m): m is AIMessage => m instanceof AIMessage)
+      .at(-1);
+
+    if (last) {
+      console.log("assistant:", last.content);
+    }
+
+    return {
+      ...processedState,
+      messages: finalState.messages
+    }
   }
 }

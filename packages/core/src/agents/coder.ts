@@ -47,28 +47,28 @@ export class CoderAgent extends BaseAgent {
       graphRecursionLimit,
     });
 
-    this.invoke = this.invoke.bind(this);
+    this.stream = this.stream.bind(this);
   }
 
-  async invoke(state: typeof StateAnnotation.State) {
+  async stream(state: typeof StateAnnotation.State) {
     const messages = state.messages;
     const plan = messages[messages.length - 1].content.toString();
     let lm = "";
     let result;
 
     while (!lm.includes("-----DONE-----")) {
-      console.log("lm ", lm)
+      console.log("---lm--- ", lm, " ---end---")
       messages.push(new HumanMessage(CODER_USER_PROMPT(plan, lm)));
-      result = await this.generationService.invoke({
+      result = await this.generationService.stream({
         ...state,
         messages
       });
 
-      const currMessages = result.messages;
+      const currMessages = result!.messages;
       lm = currMessages[currMessages.length - 1].content.toString();
     }
 
     console.log("[Coder] All steps completed");
-    return result;
+    return result!;
   }
 }
