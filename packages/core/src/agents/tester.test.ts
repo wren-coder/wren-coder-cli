@@ -11,7 +11,7 @@ import { Model } from "../types/model.js";
 
 describe("TesterAgent", () => {
   const workingDir = "/test/dir";
-  
+
   const llmModelConfig = {
     provider: Provider.OPENAI as Provider,
     model: "gpt-4" as Model,
@@ -19,29 +19,29 @@ describe("TesterAgent", () => {
   };
 
   it("should create an instance with correct properties", () => {
-    const agent = new TesterAgent({ 
+    const agent = new TesterAgent({
       workingDir,
       llmModelConfig
     });
-    
+
     expect(agent.getName()).toBe("Tester");
     expect(agent.getDescription()).toBe("Tests vs. the user spec, returns pass/fail and feedback");
   });
 
   it("should have an invoke method", () => {
-    const agent = new TesterAgent({ 
+    const agent = new TesterAgent({
       workingDir,
       llmModelConfig
     });
-    expect(typeof agent.invoke).toBe("function");
+    expect(typeof agent.stream).toBe("function");
   });
 
   it("should have the correct tools configured", () => {
-    const agent = new TesterAgent({ 
+    const agent = new TesterAgent({
       workingDir,
       llmModelConfig
     });
-    
+
     // Verify that the agent instantiates correctly
     expect(agent).toBeDefined();
     // We can't easily check the tools array directly since it's protected,

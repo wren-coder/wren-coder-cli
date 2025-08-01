@@ -11,7 +11,7 @@ import { Model } from "../types/model.js";
 
 describe("CoderAgent", () => {
   const workingDir = "/test/dir";
-  
+
   const llmModelConfig = {
     provider: Provider.OPENAI as Provider,
     model: "gpt-4" as Model,
@@ -19,20 +19,20 @@ describe("CoderAgent", () => {
   };
 
   it("should create an instance with correct properties", () => {
-    const agent = new CoderAgent({ 
+    const agent = new CoderAgent({
       workingDir,
       llmModelConfig
     });
-    
+
     expect(agent.getName()).toBe("coder");
     expect(agent.getDescription()).toBe("Executes approved plans by editing and creating code using absolute paths, matching existing style and architecture, and running build, lint, and test commands to ensure quality.");
   });
 
   it("should have an invoke method", () => {
-    const agent = new CoderAgent({ 
+    const agent = new CoderAgent({
       workingDir,
       llmModelConfig
     });
-    expect(typeof agent.invoke).toBe("function");
+    expect(typeof agent.stream).toBe("function");
   });
 });;
