@@ -53,7 +53,6 @@ describe("Coder Prompt", () => {
   it("should generate a prompt with the correct working directory", () => {
     const vars: CoderPromptVars = { workingDir: "/test/project", tools };
     const prompt = CODER_PROMPT(vars);
-    console.log("Generated prompt:", prompt); // Temporary log to see actual output
 
     expect(prompt).toContain("# Coder Agent (Iterative Mode)");
     expect(prompt).toContain("ROOT: `/test/project`");
