@@ -29,13 +29,14 @@ describe("GenerationService", () => {
     });
     const state = {
       messages: [new HumanMessage("Hello")],
-      steps: [],
-      suggestions: []
+      eval: false,
+      original_request: "",
+      query: false
     } as typeof StateAnnotation.State;
 
     mockAgent.invoke.mockResolvedValue({ content: "Response" });
 
-    const result = await service.invoke(state);
+    const result = await service.stream(state);
 
     expect(mockAgent.invoke).toHaveBeenCalled();
     expect(result).toEqual({ content: "Response" });
@@ -49,8 +50,9 @@ describe("GenerationService", () => {
     });
     const state = {
       messages: [new HumanMessage("Hello")],
-      steps: [],
-      suggestions: []
+      eval: false,
+      original_request: "",
+      query: false
     } as typeof StateAnnotation.State;
 
     const mockStream = (async function* () {
@@ -60,7 +62,7 @@ describe("GenerationService", () => {
 
     mockAgent.stream.mockResolvedValue(mockStream);
 
-    const results: any[] = [];
+    const results = [];
     for await (const chunk of service.stream(state)) {
       results.push(chunk);
     }
@@ -84,13 +86,14 @@ describe("GenerationService", () => {
         new HumanMessage("Message 3"),
         new AIMessage("Response 3")
       ],
-      steps: [],
-      suggestions: []
+      eval: false,
+      original_request: "",
+      query: false
     } as typeof StateAnnotation.State;
 
     mockAgent.invoke.mockResolvedValue({ content: "Response" });
 
-    await service.invoke(state);
+    await service.stream(state);
 
     const calledWithState = mockAgent.invoke.mock.calls[0][0];
     expect(calledWithState.messages).toHaveLength(2);
@@ -109,13 +112,14 @@ describe("GenerationService", () => {
     const longMessage = "A".repeat(1000);
     const state = {
       messages: [new HumanMessage(longMessage)],
-      steps: [],
-      suggestions: []
+      eval: false,
+      original_request: "",
+      query: false,
     } as typeof StateAnnotation.State;
 
     mockAgent.invoke.mockResolvedValue({ content: "Response" });
 
-    await service.invoke(state);
+    await service.stream(state);
 
     // Should have called the agent with compressed messages
     expect(mockAgent.invoke).toHaveBeenCalled();

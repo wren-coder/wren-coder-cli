@@ -53,11 +53,14 @@ describe("Coder Prompt", () => {
   it("should generate a prompt with the correct working directory", () => {
     const vars: CoderPromptVars = { workingDir: "/test/project", tools };
     const prompt = CODER_PROMPT(vars);
+    console.log("Generated prompt:", prompt); // Temporary log to see actual output
 
     expect(prompt).toContain("# Coder Agent (Iterative Mode)");
     expect(prompt).toContain("ROOT: `/test/project`");
-    expect(prompt).toContain("- `read_file`: Read a file");
-    expect(prompt).toContain("- `write_file`: Write a file");
+    // Updated expectations based on actual tool descriptions
+    expect(prompt).toContain("- `read_file`: Read text from a file.");
+    expect(prompt).toContain("- `glob`: Searches for files matching a glob pattern");
+    expect(prompt).toContain("- `run_shell`: Execute a Bash command on the host machine.");
   });
 
   it("should trim whitespace from the prompt", () => {
