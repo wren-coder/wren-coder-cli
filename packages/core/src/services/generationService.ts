@@ -10,13 +10,13 @@ import { processLargeContext, CompressionConfig } from "../utils/compression.js"
 import { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import { MessageRoles } from "../types/messageRole.js";
 import { logger } from "../utils/logging.js";
-import { RunnableWithMessageHistory } from "@langchain/core/runnables";
+
 import { IterableReadableStream } from "@langchain/core/utils/stream";
 
 export interface GenerationServiceConfig {
   compressionConfig: CompressionConfig;
   llm: BaseChatModel,
-  agent: RunnableWithMessageHistory<typeof StateAnnotation.State, typeof StateAnnotation.State>,
+  agent: any,
   graphRecursionLimit?: number;
 }
 
@@ -75,7 +75,7 @@ export class GenerationService {
     }
   }
 
-  private async processStream(iterator: IterableReadableStream, prevMessageCount: number) {
+  private async processStream(iterator: IterableReadableStream<typeof StateAnnotation.State>, prevMessageCount: number) {
     let finalState: { messages: BaseMessage[] } | undefined;
     let shownCount = prevMessageCount;
     for await (const state of iterator) {
