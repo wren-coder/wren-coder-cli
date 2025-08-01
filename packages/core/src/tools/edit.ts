@@ -69,31 +69,28 @@ export const EditTool = ({ workingDir }: EditToolConfig) =>
   tool(
     async (params: z.infer<typeof EditToolParamsSchema>) => {
       try {
-        // Validate input parameters
-        const validatedParams = EditToolParamsSchema.parse(params);
-
         // Validate file path
-        if (!path.isAbsolute(validatedParams.file_path)) {
-          return `Error: File path must be absolute: ${validatedParams.file_path}`;
+        if (!path.isAbsolute(params.file_path)) {
+          return `Error: File path must be absolute: ${params.file_path}`;
         }
 
-        if (!isWithinRoot(validatedParams.file_path, workingDir)) {
-          return `Error: File path must be within the root directory (${workingDir}): ${validatedParams.file_path}`;
+        if (!isWithinRoot(params.file_path, workingDir)) {
+          return `Error: File path must be within the root directory (${workingDir}): ${params.file_path}`;
         };
 
 
         // Calculate the edit outcome
-        const expectedReplacements = validatedParams.expected_replacements ?? 1;
+        const expectedReplacements = params.expected_replacements ?? 1;
         let currentContent: string | null = null;
         let fileExistsFlag = false;
         let isNewFile = false;
-        let finalNewString = validatedParams.new_string;
-        let finalOldString = validatedParams.old_string;
+        let finalNewString = params.new_string;
+        let finalOldString = params.old_string;
         let occurrences = 0;
         let error: { display: string; raw: string } | undefined = undefined;
 
         try {
-          currentContent = await fs.readFile(validatedParams.file_path, 'utf8');
+          currentContent = await fs.readFile(params.file_path, 'utf8');
           // Normalize line endings to LF for consistent processing.
           currentContent = normalizeLineEndings(currentContent);
           fileExistsFlag = true;
@@ -105,14 +102,14 @@ export const EditTool = ({ workingDir }: EditToolConfig) =>
           fileExistsFlag = false;
         }
 
-        if (validatedParams.old_string === '' && !fileExistsFlag) {
+        if (params.old_string === '' && !fileExistsFlag) {
           // Creating a new file
           isNewFile = true;
         } else if (!fileExistsFlag) {
           // Trying to edit a non-existent file (and old_string is not empty)
           error = {
             display: `File not found. Cannot apply edit. Use an empty old_string to create a new file.`,
-            raw: `File not found: ${validatedParams.file_path}`,
+            raw: `File not found: ${params.file_path}`,
           };
         } else if (currentContent !== null) {
           // Editing an existing file
@@ -120,34 +117,34 @@ export const EditTool = ({ workingDir }: EditToolConfig) =>
           // In a real implementation, you'd want to properly validate the strings
           // and potentially interact with an LLM for correction
 
-          finalOldString = validatedParams.old_string;
-          finalNewString = validatedParams.new_string;
+          finalOldString = params.old_string;
+          finalNewString = params.new_string;
           occurrences = (currentContent.match(new RegExp(finalOldString, 'g')) || []).length;
 
-          if (validatedParams.old_string === '') {
+          if (params.old_string === '') {
             // Error: Trying to create a file that already exists
             error = {
               display: `Failed to edit. Attempted to create a file that already exists.`,
-              raw: `File already exists, cannot create: ${validatedParams.file_path}`,
+              raw: `File already exists, cannot create: ${params.file_path}`,
             };
           } else if (occurrences === 0) {
             error = {
               display: `Failed to edit, could not find the string to replace.`,
-              raw: `Failed to edit, 0 occurrences found for old_string in ${validatedParams.file_path}. No edits made. The exact text in old_string was not found. Ensure you're not escaping content incorrectly and check whitespace, indentation, and context. Use read_file tool to verify.`,
+              raw: `Failed to edit, 0 occurrences found for old_string in ${params.file_path}. No edits made. The exact text in old_string was not found. Ensure you're not escaping content incorrectly and check whitespace, indentation, and context. Use read_file tool to verify.`,
             };
           } else if (occurrences !== expectedReplacements) {
             const occurenceTerm =
               expectedReplacements === 1 ? 'occurrence' : 'occurrences';
             error = {
               display: `Failed to edit, expected ${expectedReplacements} ${occurenceTerm} but found ${occurrences}.`,
-              raw: `Failed to edit, Expected ${expectedReplacements} ${occurenceTerm} but found ${occurrences} for old_string in file: ${validatedParams.file_path}`,
+              raw: `Failed to edit, Expected ${expectedReplacements} ${occurenceTerm} but found ${occurrences} for old_string in file: ${params.file_path}`,
             };
           }
         } else {
           // Defensive case
           error = {
             display: `Failed to read content of file.`,
-            raw: `Failed to read content of existing file: ${validatedParams.file_path}`,
+            raw: `Failed to read content of existing file: ${params.file_path}`,
           };
         }
 
@@ -170,14 +167,14 @@ export const EditTool = ({ workingDir }: EditToolConfig) =>
 
         // Write the file
         try {
-          const dirName = path.dirname(validatedParams.file_path);
+          const dirName = path.dirname(params.file_path);
           if (!(await fileExists(dirName))) {
             await fs.mkdir(dirName, { recursive: true });
           }
-          await fs.writeFile(validatedParams.file_path, newContent, 'utf8');
+          await fs.writeFile(params.file_path, newContent, 'utf8');
 
           if (!isNewFile) {
-            const fileName = path.basename(validatedParams.file_path);
+            const fileName = path.basename(params.file_path);
             createPatch(
               fileName,
               currentContent ?? '',
@@ -190,8 +187,8 @@ export const EditTool = ({ workingDir }: EditToolConfig) =>
 
           const llmSuccessMessageParts = [
             isNewFile
-              ? `Created new file: ${validatedParams.file_path} with provided content.`
-              : `Successfully modified file: ${validatedParams.file_path} (${occurrences} replacements).`,
+              ? `Created new file: ${params.file_path} with provided content.`
+              : `Successfully modified file: ${params.file_path} (${occurrences} replacements).`,
           ];
 
           return llmSuccessMessageParts.join(' ');
