@@ -100,7 +100,7 @@ export class GenerationService {
         } else {
           output = JSON.stringify(m.toJSON());
         }
-        logger.info(`[${role}] ${output}`);
+        logger.debug(`[${role}] ${output}`);
       });
       shownCount = all.length;
     }
@@ -114,7 +114,7 @@ export class GenerationService {
       .at(-1);
 
     if (last) {
-      logger.info("assistant:", last.content);
+      logger.debug("assistant:", last.content);
     }
     return finalState.messages;
   }

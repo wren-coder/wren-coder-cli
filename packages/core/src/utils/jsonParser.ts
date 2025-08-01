@@ -65,7 +65,7 @@ export function extractStructuredResponse<T>(
     return schema.parse(result.structuredResponse);
   } else {
     logger.warn("Fell back to string parsing");
-    logger.info(result)
+    logger.debug(result)
     const content = result.messages[result.messages.length - 1].content.toString();
     const parsed = parseJsonString(content);
     return schema.parse(parsed);

@@ -55,7 +55,7 @@ export class TesterAgent extends BaseAgent {
     logger.info("[Tester] Starting testing");
     const messages = state.messages;
     const plan = messages[messages.length - 1].content.toString()
-    logger.info(plan);
+    logger.debug(plan);
     messages.push(new HumanMessage(TESTER_USER_PROMPT(`${plan}`)));
     const result = await this.generationService.stream({
       ...state,
