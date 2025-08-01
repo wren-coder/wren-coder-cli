@@ -57,7 +57,7 @@ describe("adapter", () => {
                 topP: 0.9,
             };
 
-            const llm = await createLlmFromConfig(config);
+            const llm = createLlmFromConfig(config);
             expect(llm).toBeDefined();
             // Check that it's a DeepSeek model by checking its constructor name
             expect(llm.constructor.name).toContain("ChatDeepSeek");
